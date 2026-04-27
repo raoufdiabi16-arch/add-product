@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Add Product</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;}
+:root{
+  --blue:#007aff;--blue-soft:rgba(0,122,255,0.10);--blue-border:rgba(0,122,255,0.20);
+  --green:#34c759;--red:#ff3b30;--orange:#ff9500;
+  --bg:#f5f5f7;--card:#ffffff;--border:rgba(0,0,0,0.07);
+  --text:#1c1c1e;--sub:#636366;--muted:#aeaeb2;
+  --glass:rgba(255,255,255,0.72);--glass-blur:blur(28px) saturate(200%);
+}
+body{background:var(--bg);min-height:100vh;overflow-x:hidden;}
+.shell{max-width:430px;margin:0 auto;background:#f5f5f7;min-height:100vh;position:relative;}
+
+/* ── HEADER ── */
+.top-bar{position:sticky;top:0;z-index:50;background:rgba(245,245,247,0.85);backdrop-filter:blur(32px) saturate(200%);-webkit-backdrop-filter:blur(32px) saturate(200%);padding:14px 16px 12px;border-bottom:0.5px solid rgba(0,0,0,0.08);display:flex;align-items:center;gap:12px;}
+.back-pill{background:var(--glass);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:0.8px solid rgba(255,255,255,0.85);border-radius:50px;padding:8px 16px 8px 12px;display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--blue);cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.06);transition:all .15s;}
+.back-pill:active{transform:scale(.95);opacity:.8;}
+.bar-title{flex:1;text-align:center;font-size:17px;font-weight:700;color:var(--text);}
+.publish-pill{background:linear-gradient(135deg,#007aff,#0055d5);border-radius:50px;padding:8px 18px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(0,122,255,0.30);transition:all .15s;}
+.publish-pill:active{transform:scale(.95);}
+
+/* ── SCROLL BODY ── */
+.scroll-body{padding:20px 16px 120px;display:flex;flex-direction:column;gap:14px;}
+
+/* ── SECTION CARD ── */
+.section-card{background:var(--card);border-radius:22px;border:0.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,0.04);overflow:hidden;}
+.section-label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;padding:16px 16px 8px;}
+
+/* ── IMAGE UPLOAD ── */
+.images-wrap{padding:0 14px 14px;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+.images-wrap::-webkit-scrollbar{display:none;}
+.img-slot{flex-shrink:0;width:90px;height:90px;border-radius:18px;background:rgba(0,122,255,0.05);border:1.5px dashed rgba(0,122,255,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;scroll-snap-align:start;position:relative;overflow:hidden;transition:all .2s;}
+.img-slot.has-img{border-style:solid;border-color:rgba(0,0,0,0.06);}
+.img-slot:active{transform:scale(.94);}
+.img-slot i{font-size:20px;color:rgba(0,122,255,0.5);}
+.img-slot span{font-size:10px;color:var(--muted);margin-top:4px;font-weight:500;}
+.img-slot img{width:100%;height:100%;object-fit:cover;border-radius:16px;}
+.img-del{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.55);display:none;align-items:center;justify-content:center;font-size:9px;color:#fff;cursor:pointer;}
+.img-slot.has-img .img-del{display:flex;}
+.img-counter{font-size:11px;color:var(--muted);padding:0 16px 12px;font-weight:500;}
+
+/* ── INPUT FIELD ── */
+.field-wrap{padding:4px 16px 14px;display:flex;flex-direction:column;gap:3px;}
+.field-wrap:first-of-type{padding-top:0;}
+.field-label{font-size:12px;font-weight:600;color:var(--sub);}
+.glass-input{background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.8px solid rgba(0,0,0,0.09);border-radius:14px;padding:12px 14px;font-size:15px;color:var(--text);width:100%;outline:none;transition:all .18s;box-shadow:0 1px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8);}
+.glass-input:focus{border-color:rgba(0,122,255,0.45);background:rgba(255,255,255,0.8);box-shadow:0 0 0 3px rgba(0,122,255,0.10),0 1px 4px rgba(0,0,0,0.03);}
+.glass-input::placeholder{color:var(--muted);}
+textarea.glass-input{resize:none;min-height:90px;line-height:1.5;}
+
+/* ── PRICE ROW ── */
+.price-row{display:flex;gap:10px;}
+.price-row .field-wrap{flex:1;padding-left:0;padding-right:0;}
+.price-icon{position:relative;}
+.price-icon .glass-input{padding-left:32px;}
+.price-sign{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;font-weight:700;color:var(--sub);}
+
+/* ── TOGGLE ROW ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-top:0.5px solid rgba(0,0,0,0.05);}
+.toggle-row:first-child{border-top:none;}
+.toggle-left{display:flex;flex-direction:column;gap:2px;}
+.toggle-title{font-size:15px;font-weight:500;color:var(--text);}
+.toggle-sub{font-size:12px;color:var(--muted);}
+.ios-toggle{width:51px;height:31px;background:#e5e5ea;border-radius:50px;cursor:pointer;position:relative;transition:background .25s ease;flex-shrink:0;}
+.ios-toggle.on{background:var(--green);}
+.ios-toggle::after{content:'';position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.20);transition:left .25s cubic-bezier(.34,1.56,.64,1);}
+.ios-toggle.on::after{left:22px;}
+.toggle-content{overflow:hidden;max-height:0;opacity:0;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s ease;padding:0 16px;}
+.toggle-content.open{max-height:400px;opacity:1;padding-bottom:14px;}
+
+/* ── COLORS ── */
+.colors-area{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:4px;}
+.color-circle{width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;border:2px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all .18s;position:relative;flex-shrink:0;}
+.color-circle.selected{border-color:#1c1c1e;transform:scale(1.1);}
+.color-circle .del-color{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;font-size:11px;}
+.color-circle:hover .del-color{display:flex;}
+.add-color-btn{width:38px;height:38px;border-radius:50%;background:rgba(0,122,255,0.09);border:1.5px dashed rgba(0,122,255,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:var(--blue);transition:all .15s;flex-shrink:0;}
+.add-color-btn:active{transform:scale(.92);}
+.color-picker-wrap{display:flex;align-items:center;gap:8px;padding-top:8px;}
+.color-name-tag{font-size:12px;font-weight:500;color:var(--sub);background:rgba(0,0,0,0.05);border-radius:50px;padding:4px 12px;}
+input[type=color]{width:0;height:0;opacity:0;position:absolute;}
+
+/* ── SELECT ── */
+.glass-select{background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.8px solid rgba(0,0,0,0.09);border-radius:14px;padding:12px 14px;font-size:15px;color:var(--text);width:100%;outline:none;transition:all .18s;box-shadow:0 1px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8);-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aeaeb2' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+.glass-select:focus{border-color:rgba(0,122,255,0.45);box-shadow:0 0 0 3px rgba(0,122,255,0.10);}
+
+/* ── CHIPS ── */
+.chips-row{display:flex;flex-wrap:wrap;gap:8px;padding-top:4px;}
+.chip{background:rgba(120,120,128,0.09);border:0.5px solid rgba(0,0,0,0.07);border-radius:50px;padding:7px 16px;font-size:13px;font-weight:500;color:var(--sub);cursor:pointer;transition:all .15s;}
+.chip:active{transform:scale(.95);}
+.chip.active{background:rgba(0,122,255,0.11);border-color:rgba(0,122,255,0.22);color:var(--blue);}
+
+/* ── DELIVERY BADGE ── */
+.delivery-toggle-card{background:var(--card);border-radius:22px;border:0.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,0.04);overflow:hidden;}
+.delivery-inner{display:flex;align-items:center;gap:14px;padding:16px;}
+.delivery-icon{width:48px;height:48px;background:linear-gradient(135deg,rgba(52,199,89,0.12),rgba(52,199,89,0.05));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--green);flex-shrink:0;}
+.delivery-text{flex:1;}
+.delivery-title{font-size:15px;font-weight:600;color:var(--text);}
+.delivery-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.delivery-badge{position:absolute;top:-4px;right:-4px;background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;border:2px solid #fff;display:none;}
+.delivery-icon-wrap{position:relative;}
+.delivery-toggle-card.on .delivery-badge{display:block;}
+.delivery-toggle-card.on .delivery-inner{background:linear-gradient(135deg,rgba(52,199,89,0.06),rgba(52,199,89,0.02));}
+
+/* ── BOTTOM PUBLISH ── */
+.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:12px 16px 32px;background:rgba(245,245,247,0.90);backdrop-filter:blur(32px) saturate(200%);-webkit-backdrop-filter:blur(32px) saturate(200%);border-top:0.5px solid rgba(0,0,0,0.07);box-shadow:0 -6px 24px rgba(0,0,0,0.05);z-index:40;}
+.publish-btn{width:100%;background:linear-gradient(135deg,#007aff,#0047d5);border:none;border-radius:50px;padding:15px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 6px 20px rgba(0,122,255,0.32);transition:all .15s;}
+.publish-btn:active{transform:scale(.97);}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(28,28,30,0.92);backdrop-filter:blur(20px);color:#fff;padding:10px 22px;border-radius:50px;font-size:13px;font-weight:500;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── CHAR COUNT ── */
+.char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:3px;}
+
+/* ── CONDITION SELECTOR ── */
+.condition-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:4px;}
+.cond-tab{background:rgba(120,120,128,0.07);border:0.8px solid rgba(0,0,0,0.07);border-radius:14px;padding:10px 12px;cursor:pointer;transition:all .18s;}
+.cond-tab:active{transform:scale(.97);}
+.cond-tab.active{background:rgba(0,122,255,0.10);border-color:rgba(0,122,255,0.28);}
+.cond-name{font-size:14px;font-weight:600;color:var(--text);}
+.cond-tab.active .cond-name{color:var(--blue);}
+.cond-desc{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;}
+.cond-tab.active .cond-desc{color:rgba(0,122,255,0.7);}
+
+/* ── FIELD HINT ── */
+.field-hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px;}
+.field-hint em{color:var(--sub);font-style:normal;font-weight:500;}
+
+/* ── UNIT TOGGLE ── */
+.unit-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,122,255,0.10);border:0.5px solid rgba(0,122,255,0.20);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--blue);cursor:pointer;transition:all .15s;}
+.unit-toggle:active{transform:translateY(-50%) scale(.93);}
+.dim-unit{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:600;color:var(--muted);pointer-events:none;}
+.dim-preview{margin-top:10px;background:rgba(0,122,255,0.06);border:0.5px solid rgba(0,122,255,0.15);border-radius:12px;padding:8px 12px;font-size:12px;color:var(--blue);font-weight:600;text-align:center;}
+
+/* ── VIDEO LINKS ── */
+.video-link-row{display:flex;align-items:center;gap:10px;}
+.video-platform-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.video-platform-icon.yt{background:rgba(255,0,0,0.10);color:#ff0000;}
+.video-platform-icon.tt{background:rgba(0,0,0,0.07);color:#1c1c1e;}
+.video-platform-icon.ig{background:linear-gradient(135deg,rgba(193,53,132,0.12),rgba(88,81,219,0.10));color:#c13584;}
+.video-url-input{font-size:13px;padding:10px 12px;}
+.url-status{width:22px;flex-shrink:0;font-size:14px;text-align:center;}
+
+/* animations */
+@keyframes pop{0%{transform:scale(0.7);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.color-circle{animation:pop .25s ease;}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="toast" id="toast"></div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="back-pill" onclick="showToast('← Back')">
+    <i class="fas fa-chevron-left" style="font-size:13px;"></i> Back
+  </div>
+  <div class="bar-title">New Product</div>
+  <div class="publish-pill" onclick="handlePublish()">Publish</div>
+</div>
+
+<div class="scroll-body">
+
+  <!-- ── IMAGES ── -->
+  <div class="section-card">
+    <div class="section-label">Photos <span id="imgCountLabel" style="color:var(--blue);font-weight:700;">0/12</span></div>
+    <div class="images-wrap" id="imagesWrap"></div>
+  </div>
+
+  <!-- ── PRODUCT INFO ── -->
+  <div class="section-card">
+    <div class="section-label">Product Info</div>
+    <div class="field-wrap">
+      <div class="field-label">Product Name *</div>
+      <input class="glass-input" id="prodName" placeholder="e.g. Vintage Leather Jacket" maxlength="80" oninput="updateChar('prodName','nameCount',80)">
+      <div class="char-count" id="nameCount">0 / 80</div>
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">Description</div>
+      <textarea class="glass-input" id="prodDesc" placeholder="Describe your product in detail..." maxlength="500" rows="4" oninput="updateChar('prodDesc','descCount',500)"></textarea>
+      <div class="char-count" id="descCount">0 / 500</div>
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">Brand / Maker</div>
+      <input class="glass-input" id="prodBrand" placeholder="e.g. Nike, Apple, Handmade...">
+    </div>
+  </div>
+
+  <!-- ── PRICING ── -->
+  <div class="section-card">
+    <div class="section-label">Pricing</div>
+    <div style="padding:0 16px 14px;display:flex;flex-direction:column;gap:12px;">
+      <div>
+        <div class="field-label" style="margin-bottom:6px;">Current Price *</div>
+        <div class="price-icon" style="position:relative;">
+          <span class="price-sign">$</span>
+          <input class="glass-input" id="prodPrice" type="number" placeholder="0.00" min="0" step="0.01" style="padding-left:32px;">
+        </div>
+      </div>
+    </div>
+    <!-- Old Price Toggle -->
+    <div class="toggle-row">
+      <div class="toggle-left">
+        <div class="toggle-title">Show Old Price</div>
+        <div class="toggle-sub">Display a crossed-out original price</div>
+      </div>
+      <div class="ios-toggle" id="oldPriceToggle" onclick="toggleFeature('oldPriceToggle','oldPriceContent')"></div>
+    </div>
+    <div class="toggle-content" id="oldPriceContent">
+      <div class="field-label" style="margin-bottom:6px;">Old Price</div>
+      <div class="price-icon" style="position:relative;">
+        <span class="price-sign" style="color:#ff3b30;text-decoration:line-through;">$</span>
+        <input class="glass-input" id="prodOldPrice" type="number" placeholder="0.00" min="0" step="0.01" style="padding-left:32px;border-color:rgba(255,59,48,0.20);">
+      </div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:6px;">
+        <i class="fas fa-tag" style="font-size:11px;color:var(--red);"></i>
+        <span style="font-size:12px;color:var(--sub);" id="discountLabel">Enter both prices to see discount</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COLORS ── -->
+  <div class="section-card">
+    <div class="toggle-row" style="border-top:none;">
+      <div class="toggle-left">
+        <div class="toggle-title">Available Colors</div>
+        <div class="toggle-sub">Let buyers pick a color</div>
+      </div>
+      <div class="ios-toggle" id="colorsToggle" onclick="toggleFeature('colorsToggle','colorsContent')"></div>
+    </div>
+    <div class="toggle-content" id="colorsContent">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Tap + to add any color &middot; Tap a color circle to remove it</p>
+      <div class="colors-area" id="colorsArea">
+        <div class="add-color-btn" id="addColorBtn" onclick="document.getElementById('colorPickerInput').click()"><i class="fas fa-plus"></i></div>
+      </div>
+      <input type="color" id="colorPickerInput" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" onchange="addColor(this.value)">
+    </div>
+  </div>
+
+  <!-- ── DETAILS ── -->
+  <div class="section-card">
+    <div class="section-label">Details</div>
+    <div class="field-wrap">
+      <div class="field-label">Category</div>
+      <select class="glass-select" id="prodCat">
+        <option value="">Select category...</option>
+        <optgroup label="Fashion">
+          <option>Men's Clothing</option><option>Women's Clothing</option><option>Kids' Clothing</option>
+          <option>Shoes — Men</option><option>Shoes — Women</option><option>Shoes — Kids</option>
+          <option>Bags & Wallets</option><option>Watches</option><option>Jewelry</option>
+          <option>Sunglasses</option><option>Hats & Caps</option><option>Scarves & Gloves</option>
+        </optgroup>
+        <optgroup label="Electronics">
+          <option>Smartphones</option><option>Laptops & Computers</option><option>Tablets</option>
+          <option>Headphones & Speakers</option><option>Cameras</option><option>Gaming</option>
+          <option>Smartwatches & Wearables</option><option>TV & Audio</option><option>Accessories & Cables</option>
+        </optgroup>
+        <optgroup label="Home & Living">
+          <option>Furniture</option><option>Kitchen & Dining</option><option>Bedding & Bath</option>
+          <option>Decor & Lighting</option><option>Garden & Outdoor</option><option>Storage & Organisation</option>
+        </optgroup>
+        <optgroup label="Sports & Outdoors">
+          <option>Gym & Fitness</option><option>Team Sports</option><option>Outdoor & Camping</option>
+          <option>Cycling</option><option>Water Sports</option><option>Racket Sports</option>
+        </optgroup>
+        <optgroup label="Beauty & Care">
+          <option>Skincare</option><option>Makeup & Cosmetics</option><option>Hair Care</option>
+          <option>Fragrances</option><option>Personal Care</option>
+        </optgroup>
+        <optgroup label="Books & Media">
+          <option>Books</option><option>Textbooks & Study</option><option>Music & Vinyl</option>
+          <option>Movies & DVDs</option><option>Video Games</option>
+        </optgroup>
+        <optgroup label="Other">
+          <option>Toys & Collectibles</option><option>Art & Crafts</option><option>Food & Beverages</option>
+          <option>Health & Wellness</option><option>Stationery</option><option>Pet Supplies</option>
+          <option>Other</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">Condition</div>
+      <div class="condition-selector" id="conditionSelector">
+        <div class="cond-tab active" data-val="New" onclick="selectCondition(this)">
+          <div class="cond-name">New</div>
+          <div class="cond-desc">Never used, original packaging</div>
+        </div>
+        <div class="cond-tab" data-val="Like New" onclick="selectCondition(this)">
+          <div class="cond-name">Like New</div>
+          <div class="cond-desc">Used once or twice, no defects</div>
+        </div>
+        <div class="cond-tab" data-val="Good" onclick="selectCondition(this)">
+          <div class="cond-name">Good</div>
+          <div class="cond-desc">Minor signs of use, fully functional</div>
+        </div>
+        <div class="cond-tab" data-val="Fair" onclick="selectCondition(this)">
+          <div class="cond-name">Fair</div>
+          <div class="cond-desc">Visible wear, works properly</div>
+        </div>
+      </div>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-left">
+        <div class="toggle-title">Stock Quantity</div>
+        <div class="toggle-sub">Specify how many you have</div>
+      </div>
+      <div class="ios-toggle" id="qtyToggle" onclick="toggleFeature('qtyToggle','qtyContent')"></div>
+    </div>
+    <div class="toggle-content" id="qtyContent">
+      <input class="glass-input" id="prodQty" type="number" placeholder="How many in stock?" min="1" step="1">
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-left">
+        <div class="toggle-title">SKU / Product Code</div>
+        <div class="toggle-sub">Internal reference code</div>
+      </div>
+      <div class="ios-toggle" id="skuToggle" onclick="toggleFeature('skuToggle','skuContent')"></div>
+    </div>
+    <div class="toggle-content" id="skuContent">
+      <input class="glass-input" id="prodSKU" placeholder="e.g. SHIRT-BLU-M-001">
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-left">
+        <div class="toggle-title">Size / Variants</div>
+        <div class="toggle-sub">Let buyers choose a size</div>
+      </div>
+      <div class="ios-toggle" id="sizeToggle" onclick="toggleFeature('sizeToggle','sizeContent')"></div>
+    </div>
+    <div class="toggle-content" id="sizeContent" style="max-height:none;">
+      <div class="chips-row" id="sizeChips">
+        <div class="chip" data-val="XXS">XXS</div>
+        <div class="chip" data-val="XS">XS</div>
+        <div class="chip" data-val="S">S</div>
+        <div class="chip" data-val="M">M</div>
+        <div class="chip" data-val="L">L</div>
+        <div class="chip" data-val="XL">XL</div>
+        <div class="chip" data-val="XXL">XXL</div>
+        <div class="chip" data-val="3XL">3XL</div>
+        <div class="chip" data-val="4XL">4XL</div>
+        <div class="chip" data-val="36">36</div>
+        <div class="chip" data-val="37">37</div>
+        <div class="chip" data-val="38">38</div>
+        <div class="chip" data-val="39">39</div>
+        <div class="chip" data-val="40">40</div>
+        <div class="chip" data-val="41">41</div>
+        <div class="chip" data-val="42">42</div>
+        <div class="chip" data-val="43">43</div>
+        <div class="chip" data-val="44">44</div>
+        <div class="chip" data-val="45">45</div>
+        <div class="chip" data-val="One Size">One Size</div>
+      </div>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-left">
+        <div class="toggle-title">Tags</div>
+        <div class="toggle-sub">Keywords to help buyers find your product</div>
+      </div>
+      <div class="ios-toggle" id="tagsToggle" onclick="toggleFeature('tagsToggle','tagsContent')"></div>
+    </div>
+    <div class="toggle-content" id="tagsContent">
+      <div class="field-hint" style="margin-bottom:8px;">Think: material, style, occasion, or color. Example: <em>leather, handmade, gift, minimalist</em></div>
+      <input class="glass-input" id="prodTags" placeholder="leather, handmade, gift, minimalist...">
+    </div>
+  </div>
+
+  <!-- ── WEIGHT & DIMENSIONS ── -->
+  <div class="section-card">
+    <div class="section-label">Weight &amp; Dimensions <span style="color:var(--red);font-weight:700;font-size:11px;">Required</span></div>
+    <div style="padding:0 16px 6px;">
+      <div class="field-hint" style="margin-bottom:12px;">Accurate measurements help buyers know what they're getting and allow correct shipping cost calculation.</div>
+      <div class="field-label" style="margin-bottom:8px;">Weight</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div style="position:relative;flex:1;">
+          <input class="glass-input" id="prodWeight" type="number" placeholder="0.0" min="0" step="0.1" style="padding-right:52px;">
+          <div class="unit-toggle" id="weightUnitToggle" onclick="toggleWeightUnit()"><span id="weightUnit">kg</span></div>
+        </div>
+      </div>
+      <div class="field-label" style="margin-top:14px;margin-bottom:8px;">Dimensions (L × W × H)</div>
+      <div class="field-hint" style="margin-bottom:8px;">Enter the product's outer size — useful for clothing, boxes, electronics, furniture.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div style="position:relative;">
+          <input class="glass-input" id="dimL" type="number" placeholder="Length" min="0" step="0.1" style="padding-right:36px;font-size:14px;">
+          <span class="dim-unit">cm</span>
+        </div>
+        <div style="position:relative;">
+          <input class="glass-input" id="dimW" type="number" placeholder="Width" min="0" step="0.1" style="padding-right:36px;font-size:14px;">
+          <span class="dim-unit">cm</span>
+        </div>
+        <div style="position:relative;">
+          <input class="glass-input" id="dimH" type="number" placeholder="Height" min="0" step="0.1" style="padding-right:36px;font-size:14px;">
+          <span class="dim-unit">cm</span>
+        </div>
+      </div>
+      <div id="dimPreview" class="dim-preview" style="display:none;"></div>
+    </div>
+    <div style="height:14px;"></div>
+  </div>
+
+  <!-- ── VIDEO LINKS ── -->
+  <div class="section-card">
+    <div class="toggle-row" style="border-top:none;">
+      <div class="toggle-left">
+        <div class="toggle-title">Product Video</div>
+        <div class="toggle-sub">Add a video link to showcase your product</div>
+      </div>
+      <div class="ios-toggle" id="videoToggle" onclick="toggleFeature('videoToggle','videoContent')"></div>
+    </div>
+    <div class="toggle-content" id="videoContent">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Paste a link from any platform below. Each one is optional.</p>
+      <!-- YouTube -->
+      <div class="video-link-row">
+        <div class="video-platform-icon yt"><i class="fab fa-youtube"></i></div>
+        <div style="flex:1;">
+          <input class="glass-input video-url-input" id="urlYT" placeholder="YouTube video URL..." oninput="validateVideoUrl('urlYT','ytStatus')">
+        </div>
+        <div class="url-status" id="ytStatus"></div>
+      </div>
+      <!-- TikTok -->
+      <div class="video-link-row" style="margin-top:10px;">
+        <div class="video-platform-icon tt"><i class="fab fa-tiktok"></i></div>
+        <div style="flex:1;">
+          <input class="glass-input video-url-input" id="urlTT" placeholder="TikTok video URL..." oninput="validateVideoUrl('urlTT','ttStatus')">
+        </div>
+        <div class="url-status" id="ttStatus"></div>
+      </div>
+      <!-- Instagram -->
+      <div class="video-link-row" style="margin-top:10px;">
+        <div class="video-platform-icon ig"><i class="fab fa-instagram"></i></div>
+        <div style="flex:1;">
+          <input class="glass-input video-url-input" id="urlIG" placeholder="Instagram Reel URL..." oninput="validateVideoUrl('urlIG','igStatus')">
+        </div>
+        <div class="url-status" id="igStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FREE CAMPUS DELIVERY ── -->
+  <div class="delivery-toggle-card" id="campusCard">
+    <div class="delivery-inner">
+      <div class="delivery-icon-wrap">
+        <div class="delivery-icon">🎓</div>
+        <div class="delivery-badge">FREE</div>
+      </div>
+      <div class="delivery-text">
+        <div class="delivery-title">Free Campus Delivery</div>
+        <div class="delivery-sub">Deliver for free to university students on campus</div>
+      </div>
+      <div class="ios-toggle" id="campusToggle" onclick="toggleCampus()"></div>
+    </div>
+  </div>
+
+  <!-- ── RETURN & NOTES ── -->
+  <div class="section-card">
+    <div class="section-label">Policies & Notes</div>
+    <div class="toggle-row" style="border-top:none;">
+      <div class="toggle-left">
+        <div class="toggle-title">Accepts Returns</div>
+        <div class="toggle-sub">Buyers can return within 7 days</div>
+      </div>
+      <div class="ios-toggle" id="returnToggle" onclick="toggleFeature('returnToggle','returnContent')"></div>
+    </div>
+    <div class="toggle-content" id="returnContent">
+      <div class="field-label" style="margin-bottom:6px;">Return Window</div>
+      <select class="glass-select" id="returnDays">
+        <option>7 days</option><option>14 days</option><option>30 days</option>
+      </select>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-left">
+        <div class="toggle-title">Negotiable Price</div>
+        <div class="toggle-sub">Allow buyers to make offers</div>
+      </div>
+      <div class="ios-toggle" id="negotiateToggle" onclick="toggleSimple('negotiateToggle')"></div>
+    </div>
+  </div>
+
+</div><!-- end scroll-body -->
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <button class="publish-btn" onclick="handlePublish()">
+    <i class="fas fa-paper-plane"></i> Publish Product
+  </button>
+</div>
+
+</div><!-- shell -->
+
+<script>
+/* ── IMAGE SLOTS ── */
+const MAX_IMGS=12;
+let imgData=[];
+
+function buildSlots(){
+  const wrap=document.getElementById('imagesWrap'); wrap.innerHTML='';
+  imgData.forEach((src,i)=>{
+    const d=document.createElement('div'); d.className='img-slot has-img';
+    d.innerHTML=`<img src="${src}"><div class="img-del" onclick="removeImg(${i})"><i class="fas fa-xmark"></i></div>`;
+    wrap.appendChild(d);
+  });
+  if(imgData.length<MAX_IMGS){
+    const add=document.createElement('div'); add.className='img-slot';
+    add.innerHTML='<i class="fas fa-plus"></i><span>Add Photo</span>';
+    add.onclick=()=>{ const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.multiple=true;inp.onchange=e=>loadImgs(e.target.files);inp.click(); };
+    wrap.appendChild(add);
+  }
+  document.getElementById('imgCountLabel').innerText=imgData.length+'/'+MAX_IMGS;
+}
+function loadImgs(files){
+  const remaining=MAX_IMGS-imgData.length;
+  const toLoad=[...files].slice(0,remaining);
+  toLoad.forEach(f=>{
+    const r=new FileReader(); r.onload=e=>{imgData.push(e.target.result);buildSlots();};r.readAsDataURL(f);
+  });
+  if(files.length>remaining) showToast('Max 12 photos allowed');
+}
+function removeImg(i){imgData.splice(i,1);buildSlots();}
+buildSlots();
+
+/* ── TOGGLE ── */
+function toggleFeature(toggleId,contentId){
+  const t=document.getElementById(toggleId),c=document.getElementById(contentId);
+  const on=!t.classList.contains('on'); t.classList.toggle('on',on); c.classList.toggle('open',on);
+}
+function toggleSimple(id){document.getElementById(id).classList.toggle('on');}
+
+/* ── CAMPUS DELIVERY ── */
+function toggleCampus(){
+  const t=document.getElementById('campusToggle'),card=document.getElementById('campusCard');
+  const on=!t.classList.contains('on'); t.classList.toggle('on',on); card.classList.toggle('on',on);
+  if(on) showToast('🎓 Free campus delivery enabled!');
+}
+
+/* ── COLORS ── */
+let colors=[];
+function addColor(hex){
+  if(colors.includes(hex)){showToast('Color already added');return;}
+  colors.push(hex); renderColors();
+}
+function removeColor(i){ colors.splice(i,1); renderColors(); }
+function renderColors(){
+  const area=document.getElementById('colorsArea'); area.innerHTML='';
+  colors.forEach((c,i)=>{
+    const el=document.createElement('div'); el.className='color-circle'; el.style.background=c;
+    const isWhite=c.toLowerCase()==='#ffffff'||c.toLowerCase()==='#fff';
+    el.style.border=isWhite?'2px solid #e5e5ea':'2px solid transparent';
+    el.title='Tap to remove';
+    el.onclick=()=>removeColor(i);
+    area.appendChild(el);
+  });
+  const addBtn=document.createElement('div'); addBtn.className='add-color-btn'; addBtn.id='addColorBtn';
+  addBtn.innerHTML='<i class="fas fa-plus"></i>';
+  addBtn.onclick=()=>document.getElementById('colorPickerInput').click();
+  area.appendChild(addBtn);
+}
+renderColors();
+
+/* ── CONDITION ── */
+function selectCondition(el){
+  document.querySelectorAll('.cond-tab').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── SIZE CHIPS (multi) ── */
+document.querySelectorAll('#sizeChips .chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('active')));
+
+/* ── WEIGHT UNIT ── */
+let weightUnitKg=true;
+function toggleWeightUnit(){
+  weightUnitKg=!weightUnitKg;
+  document.getElementById('weightUnit').innerText=weightUnitKg?'kg':'lb';
+}
+
+/* ── DIMENSIONS PREVIEW ── */
+['dimL','dimW','dimH'].forEach(id=>{
+  document.getElementById(id)?.addEventListener('input',updateDimPreview);
+});
+function updateDimPreview(){
+  const l=document.getElementById('dimL').value;
+  const w=document.getElementById('dimW').value;
+  const h=document.getElementById('dimH').value;
+  const prev=document.getElementById('dimPreview');
+  if(l&&w&&h){
+    prev.style.display='block';
+    prev.innerText=`📦 ${l} × ${w} × ${h} cm`;
+  } else {
+    prev.style.display='none';
+  }
+}
+
+/* ── VIDEO URL VALIDATION ── */
+function validateVideoUrl(inputId,statusId){
+  const val=document.getElementById(inputId).value.trim();
+  const el=document.getElementById(statusId);
+  if(!val){el.innerText='';return;}
+  const isValid=/^https?:\/\/.+\..+/.test(val);
+  el.innerText=isValid?'✅':'❌';
+}
+
+
+document.getElementById('prodPrice')?.addEventListener('input',updateDiscount);
+document.getElementById('prodOldPrice')?.addEventListener('input',updateDiscount);
+function updateDiscount(){
+  const p=parseFloat(document.getElementById('prodPrice').value);
+  const op=parseFloat(document.getElementById('prodOldPrice').value);
+  const lbl=document.getElementById('discountLabel');
+  if(!lbl) return;
+  if(p>0&&op>0&&op>p){
+    const pct=Math.round(((op-p)/op)*100);
+    lbl.innerHTML=`<span style="color:var(--red);font-weight:700;">Save ${pct}%</span> off original price`;
+  } else {
+    lbl.innerText='Enter both prices to see discount';
+  }
+}
+
+/* ── CHAR COUNT ── */
+function updateChar(inputId,labelId,max){
+  const v=document.getElementById(inputId).value.length;
+  const l=document.getElementById(labelId); l.innerText=v+' / '+max;
+  l.style.color=v>max*0.9?'#ff3b30':'var(--muted)';
+}
+
+/* ── TOAST ── */
+let _tt;
+function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2200);}
+
+/* ── PUBLISH ── */
+function handlePublish(){
+  const name=document.getElementById('prodName').value.trim();
+  const price=document.getElementById('prodPrice').value;
+  if(!name){showToast('⚠️ Product name is required');document.getElementById('prodName').focus();return;}
+  if(!price){showToast('⚠️ Price is required');document.getElementById('prodPrice').focus();return;}
+  showToast('🚀 Product published successfully!');
+}
+</script>
+</body>
+</html>
