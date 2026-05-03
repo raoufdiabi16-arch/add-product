@@ -3,642 +3,926 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Add Product</title>
+<title>Create Store</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;}
 :root{
-  --blue:#007aff;--blue-soft:rgba(0,122,255,0.10);--blue-border:rgba(0,122,255,0.20);
-  --green:#34c759;--red:#ff3b30;--orange:#ff9500;
-  --bg:#f5f5f7;--card:#ffffff;--border:rgba(0,0,0,0.07);
-  --text:#1c1c1e;--sub:#636366;--muted:#aeaeb2;
-  --glass:rgba(255,255,255,0.72);--glass-blur:blur(28px) saturate(200%);
+  --blue:#007aff;--blue2:#0055d5;--green:#34c759;--red:#ff3b30;--orange:#ff9500;--purple:#af52de;
+  --bg:#f5f5f7;--card:#fff;--border:rgba(0,0,0,0.07);--text:#1c1c1e;--sub:#636366;--muted:#aeaeb2;
+  --glass:rgba(255,255,255,0.75);--shadow:0 2px 16px rgba(0,0,0,0.06);
 }
 body{background:var(--bg);min-height:100vh;overflow-x:hidden;}
-.shell{max-width:430px;margin:0 auto;background:#f5f5f7;min-height:100vh;position:relative;}
+.shell{max-width:430px;margin:0 auto;min-height:100vh;background:#f5f5f7;position:relative;display:flex;flex-direction:column;}
 
-/* ── HEADER ── */
-.top-bar{position:sticky;top:0;z-index:50;background:rgba(245,245,247,0.85);backdrop-filter:blur(32px) saturate(200%);-webkit-backdrop-filter:blur(32px) saturate(200%);padding:14px 16px 12px;border-bottom:0.5px solid rgba(0,0,0,0.08);display:flex;align-items:center;gap:12px;}
-.back-pill{background:var(--glass);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:0.8px solid rgba(255,255,255,0.85);border-radius:50px;padding:8px 16px 8px 12px;display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--blue);cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.06);transition:all .15s;}
-.back-pill:active{transform:scale(.95);opacity:.8;}
+/* ── TOP BAR ── */
+.top-bar{position:sticky;top:0;z-index:50;background:rgba(245,245,247,0.88);backdrop-filter:blur(32px) saturate(200%);-webkit-backdrop-filter:blur(32px) saturate(200%);padding:14px 16px 12px;border-bottom:0.5px solid rgba(0,0,0,0.08);display:flex;align-items:center;gap:12px;}
+.back-btn{background:rgba(255,255,255,0.72);backdrop-filter:blur(20px);border:0.8px solid rgba(255,255,255,0.85);border-radius:50px;padding:8px 16px 8px 12px;display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--blue);cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.06);transition:all .15s;}
+.back-btn:active{transform:scale(.95);}
 .bar-title{flex:1;text-align:center;font-size:17px;font-weight:700;color:var(--text);}
-.publish-pill{background:linear-gradient(135deg,#007aff,#0055d5);border-radius:50px;padding:8px 18px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(0,122,255,0.30);transition:all .15s;}
-.publish-pill:active{transform:scale(.95);}
+.bar-step{font-size:13px;font-weight:600;color:var(--muted);}
 
-/* ── SCROLL BODY ── */
-.scroll-body{padding:20px 16px 120px;display:flex;flex-direction:column;gap:14px;}
+/* ── PROGRESS BAR ── */
+.progress-wrap{padding:14px 16px 0;}
+.progress-labels{display:flex;justify-content:space-between;margin-bottom:7px;}
+.progress-label{font-size:11px;font-weight:600;color:var(--muted);transition:color .3s;}
+.progress-label.active{color:var(--blue);}
+.progress-track{height:5px;background:rgba(0,0,0,0.07);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#007aff,#34c759);border-radius:99px;transition:width .55s cubic-bezier(.34,1.10,.64,1);}
+.progress-pct{text-align:center;font-size:12px;font-weight:700;color:var(--blue);margin-top:5px;}
+
+/* ── PAGES ── */
+.pages{flex:1;overflow:hidden;position:relative;}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;pointer-events:none;transform:translateX(40px);transition:opacity .35s ease,transform .35s cubic-bezier(.34,1.10,.64,1);}
+.page.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.page.exit-left{opacity:0;transform:translateX(-40px);}
+.page-body{padding:20px 16px 120px;display:flex;flex-direction:column;gap:16px;}
 
 /* ── SECTION CARD ── */
-.section-card{background:var(--card);border-radius:22px;border:0.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,0.04);overflow:hidden;}
-.section-label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;padding:16px 16px 8px;}
+.card{background:var(--card);border-radius:22px;border:0.5px solid var(--border);box-shadow:var(--shadow);overflow:hidden;}
+.card-label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;padding:16px 16px 10px;}
 
-/* ── IMAGE UPLOAD ── */
-.images-wrap{padding:0 14px 14px;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
-.images-wrap::-webkit-scrollbar{display:none;}
-.img-slot{flex-shrink:0;width:90px;height:90px;border-radius:18px;background:rgba(0,122,255,0.05);border:1.5px dashed rgba(0,122,255,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;scroll-snap-align:start;position:relative;overflow:hidden;transition:all .2s;}
-.img-slot.has-img{border-style:solid;border-color:rgba(0,0,0,0.06);}
-.img-slot:active{transform:scale(.94);}
-.img-slot i{font-size:20px;color:rgba(0,122,255,0.5);}
-.img-slot span{font-size:10px;color:var(--muted);margin-top:4px;font-weight:500;}
-.img-slot img{width:100%;height:100%;object-fit:cover;border-radius:16px;}
-.img-del{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.55);display:none;align-items:center;justify-content:center;font-size:9px;color:#fff;cursor:pointer;}
-.img-slot.has-img .img-del{display:flex;}
-.img-counter{font-size:11px;color:var(--muted);padding:0 16px 12px;font-weight:500;}
+/* ── PLAN CARDS ── */
+.plan-card{background:var(--card);border-radius:20px;border:1.5px solid var(--border);box-shadow:var(--shadow);padding:16px 16px 16px 52px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.20,.64,1);position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px;}
+.plan-card:active{transform:scale(.97);}
+.plan-card.selected{border-color:var(--blue);background:rgba(0,122,255,0.025);box-shadow:0 0 0 4px rgba(0,122,255,0.09),var(--shadow);}
+.plan-badge{position:absolute;top:12px;right:12px;border-radius:6px;padding:3px 9px;font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;}
+.plan-badge.hot{background:rgba(255,59,48,0.10);color:var(--red);border:0.5px solid rgba(255,59,48,0.18);}
+.plan-badge.best{background:rgba(0,122,255,0.10);color:var(--blue);border:0.5px solid rgba(0,122,255,0.18);}
+.plan-icon{position:absolute;top:16px;left:14px;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.plan-icon.blue{background:rgba(0,122,255,0.10);}
+.plan-icon.green{background:rgba(52,199,89,0.10);}
+.plan-icon.purple{background:rgba(175,82,222,0.10);}
+.plan-name{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
+.plan-desc{font-size:12px;color:var(--sub);line-height:1.5;}
+.plan-price-row{display:flex;align-items:baseline;gap:6px;margin-top:2px;}
+.plan-price{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-1px;line-height:1;}
+.plan-price-unit{font-size:12px;font-weight:500;color:var(--muted);}
+.plan-old-price{font-size:13px;font-weight:600;color:var(--muted);text-decoration:line-through;}
+.plan-promo{background:rgba(52,199,89,0.08);border:0.5px solid rgba(52,199,89,0.18);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:5px;width:fit-content;}
+.plan-check{position:absolute;bottom:16px;right:14px;width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;transition:all .22s;}
+.plan-card.selected .plan-check{background:var(--blue);border-color:var(--blue);}
+.plan-check i{font-size:10px;color:#fff;opacity:0;transition:opacity .18s;}
+.plan-card.selected .plan-check i{opacity:1;}
+.plan-features{display:flex;flex-direction:column;gap:3px;margin-top:4px;}
+.plan-feature{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--sub);}
+.plan-feature i{font-size:10px;color:var(--green);}
+.plan-divider{height:.5px;background:rgba(0,0,0,0.05);margin:6px 0;}
+
+/* ── INTEGRATION CARDS ── */
+.integrations-grid{display:flex;flex-direction:column;gap:10px;}
+.int-card{background:var(--card);border-radius:18px;border:2px solid transparent;box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:all .22s;}
+.int-card.selected{border-color:var(--blue);background:rgba(0,122,255,0.02);}
+.int-header{display:flex;align-items:center;gap:14px;padding:16px;}
+.int-logo{width:46px;height:46px;border-radius:14px;object-fit:contain;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.int-logo img{width:100%;height:100%;object-fit:contain;}
+.int-info{flex:1;}
+.int-name{font-size:15px;font-weight:700;color:var(--text);}
+.int-desc{font-size:12px;color:var(--muted);margin-top:2px;}
+.int-toggle{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.05);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);transition:all .2s;flex-shrink:0;}
+.int-card.selected .int-toggle{background:var(--blue);color:#fff;}
+.int-api-area{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s ease;opacity:0;padding:0 16px;}
+.int-card.selected .int-api-area{max-height:100px;opacity:1;padding-bottom:16px;}
+.api-input-wrap{display:flex;gap:8px;align-items:center;}
+.glass-input{background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.8px solid rgba(0,0,0,0.09);border-radius:14px;padding:11px 14px;font-size:14px;color:var(--text);width:100%;outline:none;transition:all .18s;box-shadow:0 1px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8);}
+.glass-input:focus{border-color:rgba(0,122,255,0.45);background:rgba(255,255,255,0.8);box-shadow:0 0 0 3px rgba(0,122,255,0.10);}
+.glass-input::placeholder{color:var(--muted);}
+.api-copy-btn{flex-shrink:0;background:rgba(0,122,255,0.10);border:0.5px solid rgba(0,122,255,0.20);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--blue);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.api-copy-btn:active{transform:scale(.94);}
+
+/* ── PRODUCTS ── */
+.prod-grid{display:grid;gap:12px;}
+.prod-grid.cols-1{grid-template-columns:1fr;}
+.prod-grid.cols-2{grid-template-columns:1fr 1fr;}
+.prod-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.prod-slot{border-radius:18px;overflow:hidden;background:var(--card);border:0.5px solid var(--border);box-shadow:var(--shadow);cursor:pointer;transition:all .2s;position:relative;min-height:130px;}
+.prod-slot:active{transform:scale(.96);}
+.prod-slot.empty{background:rgba(0,122,255,0.03);border:1.5px dashed rgba(0,122,255,0.22);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.prod-slot.empty i{font-size:22px;color:rgba(0,122,255,0.38);margin-bottom:6px;}
+.prod-slot.empty span{font-size:10px;color:var(--muted);font-weight:500;text-align:center;}
+.prod-slot.filled .prod-img{width:100%;aspect-ratio:1;object-fit:cover;}
+.prod-slot.filled .prod-img-ph{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#f0f0f5,#e8e8f0);display:flex;align-items:center;justify-content:center;}
+.prod-slot.filled .prod-img-ph i{font-size:28px;color:rgba(0,0,0,0.15);}
+.prod-info{padding:8px 9px 10px;}
+.prod-name-sm{font-size:11px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prod-price-sm{font-size:12px;font-weight:700;color:var(--blue);}
+.prod-num{position:absolute;top:5px;right:5px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;}
+.prod-del{position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,0.50);display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;cursor:pointer;z-index:2;}
+.grid-note{font-size:12px;color:var(--muted);text-align:center;padding:4px 0 0;}
 
 /* ── INPUT FIELD ── */
-.field-wrap{padding:4px 16px 14px;display:flex;flex-direction:column;gap:3px;}
-.field-wrap:first-of-type{padding-top:0;}
+.field-wrap{padding:4px 16px 14px;display:flex;flex-direction:column;gap:4px;}
 .field-label{font-size:12px;font-weight:600;color:var(--sub);}
-.glass-input{background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.8px solid rgba(0,0,0,0.09);border-radius:14px;padding:12px 14px;font-size:15px;color:var(--text);width:100%;outline:none;transition:all .18s;box-shadow:0 1px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8);}
-.glass-input:focus{border-color:rgba(0,122,255,0.45);background:rgba(255,255,255,0.8);box-shadow:0 0 0 3px rgba(0,122,255,0.10),0 1px 4px rgba(0,0,0,0.03);}
-.glass-input::placeholder{color:var(--muted);}
-textarea.glass-input{resize:none;min-height:90px;line-height:1.5;}
+textarea.glass-input{resize:none;line-height:1.5;}
+.char-count{font-size:11px;color:var(--muted);text-align:right;}
 
 /* ── PRICE ROW ── */
-.price-row{display:flex;gap:10px;}
-.price-row .field-wrap{flex:1;padding-left:0;padding-right:0;}
+.price-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px;}
 .price-icon{position:relative;}
-.price-icon .glass-input{padding-left:32px;}
-.price-sign{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;font-weight:700;color:var(--sub);}
+.price-icon .glass-input{padding-left:28px;}
+.price-sign{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--sub);}
 
-/* ── TOGGLE ROW ── */
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-top:0.5px solid rgba(0,0,0,0.05);}
-.toggle-row:first-child{border-top:none;}
-.toggle-left{display:flex;flex-direction:column;gap:2px;}
-.toggle-title{font-size:15px;font-weight:500;color:var(--text);}
-.toggle-sub{font-size:12px;color:var(--muted);}
-.ios-toggle{width:51px;height:31px;background:#e5e5ea;border-radius:50px;cursor:pointer;position:relative;transition:background .25s ease;flex-shrink:0;}
-.ios-toggle.on{background:var(--green);}
-.ios-toggle::after{content:'';position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.20);transition:left .25s cubic-bezier(.34,1.56,.64,1);}
-.ios-toggle.on::after{left:22px;}
-.toggle-content{overflow:hidden;max-height:0;opacity:0;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s ease;padding:0 16px;}
-.toggle-content.open{max-height:400px;opacity:1;padding-bottom:14px;}
+/* ── IMG UPLOAD ROW ── */
+.imgs-row{display:flex;gap:10px;overflow-x:auto;padding:0 14px 14px;-webkit-overflow-scrolling:touch;}
+.imgs-row::-webkit-scrollbar{display:none;}
+.img-slot{flex-shrink:0;width:82px;height:82px;border-radius:16px;background:rgba(0,122,255,0.05);border:1.5px dashed rgba(0,122,255,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;transition:all .2s;}
+.img-slot.has-img{border-style:solid;border-color:rgba(0,0,0,0.06);}
+.img-slot:active{transform:scale(.94);}
+.img-slot img{width:100%;height:100%;object-fit:cover;border-radius:14px;}
+.img-slot i{font-size:18px;color:rgba(0,122,255,0.45);}
+.img-slot span{font-size:9px;color:var(--muted);margin-top:3px;font-weight:500;}
+.img-del{position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.55);display:none;align-items:center;justify-content:center;font-size:8px;color:#fff;cursor:pointer;}
+.img-slot.has-img .img-del{display:flex;}
 
-/* ── COLORS ── */
-.colors-area{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:4px;}
-.color-circle{width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;border:2px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all .18s;position:relative;flex-shrink:0;}
-.color-circle.selected{border-color:#1c1c1e;transform:scale(1.1);}
-.color-circle .del-color{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;font-size:11px;}
-.color-circle:hover .del-color{display:flex;}
-.add-color-btn{width:38px;height:38px;border-radius:50%;background:rgba(0,122,255,0.09);border:1.5px dashed rgba(0,122,255,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:var(--blue);transition:all .15s;flex-shrink:0;}
-.add-color-btn:active{transform:scale(.92);}
-.color-picker-wrap{display:flex;align-items:center;gap:8px;padding-top:8px;}
-.color-name-tag{font-size:12px;font-weight:500;color:var(--sub);background:rgba(0,0,0,0.05);border-radius:50px;padding:4px 12px;}
-input[type=color]{width:0;height:0;opacity:0;position:absolute;}
-
-/* ── SELECT ── */
-.glass-select{background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.8px solid rgba(0,0,0,0.09);border-radius:14px;padding:12px 14px;font-size:15px;color:var(--text);width:100%;outline:none;transition:all .18s;box-shadow:0 1px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8);-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aeaeb2' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
-.glass-select:focus{border-color:rgba(0,122,255,0.45);box-shadow:0 0 0 3px rgba(0,122,255,0.10);}
-
-/* ── CHIPS ── */
-.chips-row{display:flex;flex-wrap:wrap;gap:8px;padding-top:4px;}
-.chip{background:rgba(120,120,128,0.09);border:0.5px solid rgba(0,0,0,0.07);border-radius:50px;padding:7px 16px;font-size:13px;font-weight:500;color:var(--sub);cursor:pointer;transition:all .15s;}
-.chip:active{transform:scale(.95);}
-.chip.active{background:rgba(0,122,255,0.11);border-color:rgba(0,122,255,0.22);color:var(--blue);}
-
-/* ── DELIVERY BADGE ── */
-.delivery-toggle-card{background:var(--card);border-radius:22px;border:0.5px solid var(--border);box-shadow:0 2px 14px rgba(0,0,0,0.04);overflow:hidden;}
-.delivery-inner{display:flex;align-items:center;gap:14px;padding:16px;}
-.delivery-icon{width:48px;height:48px;background:linear-gradient(135deg,rgba(52,199,89,0.12),rgba(52,199,89,0.05));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--green);flex-shrink:0;}
-.delivery-text{flex:1;}
-.delivery-title{font-size:15px;font-weight:600;color:var(--text);}
-.delivery-sub{font-size:12px;color:var(--muted);margin-top:2px;}
-.delivery-badge{position:absolute;top:-4px;right:-4px;background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;border:2px solid #fff;display:none;}
-.delivery-icon-wrap{position:relative;}
-.delivery-toggle-card.on .delivery-badge{display:block;}
-.delivery-toggle-card.on .delivery-inner{background:linear-gradient(135deg,rgba(52,199,89,0.06),rgba(52,199,89,0.02));}
-
-/* ── BOTTOM PUBLISH ── */
-.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:12px 16px 32px;background:rgba(245,245,247,0.90);backdrop-filter:blur(32px) saturate(200%);-webkit-backdrop-filter:blur(32px) saturate(200%);border-top:0.5px solid rgba(0,0,0,0.07);box-shadow:0 -6px 24px rgba(0,0,0,0.05);z-index:40;}
-.publish-btn{width:100%;background:linear-gradient(135deg,#007aff,#0047d5);border:none;border-radius:50px;padding:15px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 6px 20px rgba(0,122,255,0.32);transition:all .15s;}
-.publish-btn:active{transform:scale(.97);}
+/* ── BOTTOM BAR ── */
+.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:12px 16px 32px;background:rgba(245,245,247,0.92);backdrop-filter:blur(32px) saturate(200%);-webkit-backdrop-filter:blur(32px) saturate(200%);border-top:0.5px solid rgba(0,0,0,0.07);z-index:40;}
+.next-btn{width:100%;background:linear-gradient(135deg,#007aff,#0047d5);border:none;border-radius:50px;padding:15px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 6px 20px rgba(0,122,255,0.30);transition:all .15s;}
+.next-btn:active{transform:scale(.97);}
+.next-btn:disabled{opacity:.5;pointer-events:none;}
 
 /* ── TOAST ── */
 .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(28,28,30,0.92);backdrop-filter:blur(20px);color:#fff;padding:10px 22px;border-radius:50px;font-size:13px;font-weight:500;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ── CHAR COUNT ── */
-.char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:3px;}
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal-sheet{background:#f5f5f7;border-radius:28px 28px 0 0;width:100%;max-width:430px;max-height:93vh;overflow-y:auto;transform:translateY(100%);transition:transform .38s cubic-bezier(.34,1.10,.64,1);padding-bottom:40px;}
+.modal-overlay.show .modal-sheet{transform:translateY(0);}
+.modal-handle{width:38px;height:4px;background:rgba(0,0,0,0.12);border-radius:2px;margin:12px auto 0;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;}
+.modal-title{font-size:17px;font-weight:700;color:var(--text);}
+.modal-cancel{font-size:15px;font-weight:500;color:var(--blue);cursor:pointer;}
+.modal-save{background:linear-gradient(135deg,#007aff,#0047d5);border-radius:50px;padding:8px 18px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 3px 12px rgba(0,122,255,0.28);transition:all .15s;}
+.modal-save:active{transform:scale(.95);}
+.modal-body{display:flex;flex-direction:column;gap:14px;padding:8px 16px 0;}
+.modal-section{background:#fff;border-radius:20px;border:0.5px solid rgba(0,0,0,0.07);box-shadow:0 2px 10px rgba(0,0,0,0.04);overflow:hidden;}
+.modal-sec-label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;padding:14px 16px 8px;}
+.mfield{padding:4px 16px 14px;display:flex;flex-direction:column;gap:4px;}
+.mfield-label{font-size:12px;font-weight:600;color:var(--sub);}
+.sep{height:.5px;background:rgba(0,0,0,0.06);margin:0 16px;}
+.m-price-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
-/* ── CONDITION SELECTOR ── */
-.condition-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:4px;}
-.cond-tab{background:rgba(120,120,128,0.07);border:0.8px solid rgba(0,0,0,0.07);border-radius:14px;padding:10px 12px;cursor:pointer;transition:all .18s;}
-.cond-tab:active{transform:scale(.97);}
-.cond-tab.active{background:rgba(0,122,255,0.10);border-color:rgba(0,122,255,0.28);}
-.cond-name{font-size:14px;font-weight:600;color:var(--text);}
-.cond-tab.active .cond-name{color:var(--blue);}
-.cond-desc{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;}
-.cond-tab.active .cond-desc{color:rgba(0,122,255,0.7);}
+/* ── STEP DOTS ── */
+.step-dots{display:flex;justify-content:center;gap:7px;padding:10px 0 4px;}
+.step-dot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,0.12);transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.step-dot.active{width:22px;border-radius:4px;background:var(--blue);}
 
-/* ── FIELD HINT ── */
-.field-hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px;}
-.field-hint em{color:var(--sub);font-style:normal;font-weight:500;}
+/* ── QUESTION HEADER ── */
+.q-header{padding:10px 0 4px;}
+.q-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.4px;line-height:1.2;}
+.q-sub{font-size:14px;color:var(--sub);margin-top:5px;line-height:1.5;}
 
-/* ── UNIT TOGGLE ── */
-.unit-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,122,255,0.10);border:0.5px solid rgba(0,122,255,0.20);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--blue);cursor:pointer;transition:all .15s;}
-.unit-toggle:active{transform:translateY(-50%) scale(.93);}
-.dim-unit{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:600;color:var(--muted);pointer-events:none;}
-.dim-preview{margin-top:10px;background:rgba(0,122,255,0.06);border:0.5px solid rgba(0,122,255,0.15);border-radius:12px;padding:8px 12px;font-size:12px;color:var(--blue);font-weight:600;text-align:center;}
-
-/* ── VIDEO LINKS ── */
-.video-link-row{display:flex;align-items:center;gap:10px;}
-.video-platform-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.video-platform-icon.yt{background:rgba(255,0,0,0.10);color:#ff0000;}
-.video-platform-icon.tt{background:rgba(0,0,0,0.07);color:#1c1c1e;}
-.video-platform-icon.ig{background:linear-gradient(135deg,rgba(193,53,132,0.12),rgba(88,81,219,0.10));color:#c13584;}
-.video-url-input{font-size:13px;padding:10px 12px;}
-.url-status{width:22px;flex-shrink:0;font-size:14px;text-align:center;}
-
-/* animations */
-@keyframes pop{0%{transform:scale(0.7);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-.color-circle{animation:pop .25s ease;}
+/* ── BRAND LOGOS SVG FALLBACK ── */
+.logo-gsheets{background:linear-gradient(135deg,#0f9d58,#34a853);}
+.logo-tiktok{background:#000;}
+.logo-meta{background:linear-gradient(135deg,#0082fb,#0064d2);}
+.logo-youtube{background:#ff0000;}
+.logo-facebook{background:#1877f2;}
+.logo-bark{background:linear-gradient(135deg,#8B5CF6,#6D28D9);}
 </style>
 </head>
 <body>
 <div class="shell">
-<div class="toast" id="toast"></div>
+  <div class="toast" id="toast"></div>
 
-<!-- TOP BAR -->
-<div class="top-bar">
-  <div class="back-pill" onclick="showToast('← Back')">
-    <i class="fas fa-chevron-left" style="font-size:13px;"></i> Back
+  <!-- ── TOP BAR ── -->
+  <div class="top-bar">
+    <div class="back-btn" onclick="goBack()">
+      <i class="fas fa-chevron-left" style="font-size:12px;"></i> Back
+    </div>
+    <div class="bar-title" id="barTitle">Create Store</div>
+    <div class="bar-step" id="barStep">1 / 3</div>
   </div>
-  <div class="bar-title">New Product</div>
-  <div class="publish-pill" onclick="handlePublish()">Publish</div>
+
+  <!-- ── PROGRESS ── -->
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <span class="progress-label active" id="pl1">Plan</span>
+      <span class="progress-label" id="pl2">Features</span>
+      <span class="progress-label" id="pl3">Products</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:16%;"></div></div>
+    <div class="progress-pct" id="progressPct">16%</div>
+    <div class="step-dots">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ PAGES ══════════════════ -->
+  <div class="pages" id="pages">
+
+    <!-- ── PAGE 1: PLAN ── -->
+    <div class="page active" id="page1">
+      <div class="page-body">
+        <div class="q-header">
+          <div class="q-title">How do you want your external store?</div>
+          <div class="q-sub">Choose the plan that fits your needs best.</div>
+        </div>
+
+        <!-- Plan 1: Single -->
+        <div class="plan-card" id="plan-0" onclick="selectPlan(0)">
+          <div class="plan-icon blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/>
+            </svg>
+          </div>
+          <div class="plan-name">Single Product</div>
+          <div class="plan-desc">A focused landing page built around one product — fast, minimal, high-converting.</div>
+          <div class="plan-divider"></div>
+          <div class="plan-price-row">
+            <div class="plan-price">490</div>
+            <div class="plan-price-unit">DA &nbsp;one-time</div>
+          </div>
+          <div class="plan-features">
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>1 product page</div>
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>All integrations included</div>
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>Mobile optimised</div>
+          </div>
+          <div class="plan-check"><i class="fas fa-check"></i></div>
+        </div>
+
+        <!-- Plan 2: 6 products -->
+        <div class="plan-card" id="plan-1" onclick="selectPlan(1)">
+          <div class="plan-badge hot">Promo</div>
+          <div class="plan-icon green">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+          </div>
+          <div class="plan-name">Standard Store</div>
+          <div class="plan-desc">List up to 6 products with a full catalogue experience. Ideal for growing brands.</div>
+          <div class="plan-divider"></div>
+          <div class="plan-price-row">
+            <div class="plan-price">290</div>
+            <div class="plan-price-unit">DA / 1st month</div>
+            <div class="plan-old-price">690</div>
+          </div>
+          <div class="plan-promo">
+            <i class="fas fa-arrow-right" style="font-size:9px;"></i> Renews at 690 DA / month
+          </div>
+          <div class="plan-features">
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>Up to 6 products</div>
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>All integrations included</div>
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>Orders dashboard</div>
+          </div>
+          <div class="plan-check"><i class="fas fa-check"></i></div>
+        </div>
+
+        <!-- Plan 3: 12 products -->
+        <div class="plan-card" id="plan-2" onclick="selectPlan(2)">
+          <div class="plan-badge best">Best Value</div>
+          <div class="plan-icon purple">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#af52de" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </div>
+          <div class="plan-name">Pro Store</div>
+          <div class="plan-desc">Full catalogue power. Up to 12 products, priority support, and custom domain.</div>
+          <div class="plan-divider"></div>
+          <div class="plan-price-row">
+            <div class="plan-price">690</div>
+            <div class="plan-price-unit">DA / 1st month</div>
+            <div class="plan-old-price">990</div>
+          </div>
+          <div class="plan-promo">
+            <i class="fas fa-arrow-right" style="font-size:9px;"></i> Renews at 990 DA / month
+          </div>
+          <div class="plan-features">
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>Up to 12 products</div>
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>Priority support</div>
+            <div class="plan-feature"><i class="fas fa-check-circle"></i>Custom domain</div>
+          </div>
+          <div class="plan-check"><i class="fas fa-check"></i></div>
+        </div>
+      </div>
+    </div><!-- /page1 -->
+
+    <!-- ── PAGE 2: FEATURES / INTEGRATIONS ── -->
+    <div class="page" id="page2">
+      <div class="page-body">
+        <div class="q-header">
+          <div class="q-title">Choose your integrations</div>
+          <div class="q-sub">Select the tools you want to connect to your store. All optional.</div>
+        </div>
+        <div class="integrations-grid">
+
+          <!-- Google Sheets -->
+          <div class="int-card" id="int-sheets" onclick="toggleInt('int-sheets')">
+            <div class="int-header">
+              <div class="int-logo logo-gsheets" style="border-radius:14px;">
+                <svg width="28" height="28" viewBox="0 0 87.3 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M53.8 0L87.3 26.7V78H33.6L0 52V0h53.8z" fill="#0F9D58" opacity=".15"/>
+                  <path d="M53.8 0v26.7h33.5L53.8 0z" fill="#fff" opacity=".3"/>
+                  <rect x="18" y="30" width="51" height="5" rx="2" fill="#fff"/>
+                  <rect x="18" y="42" width="51" height="5" rx="2" fill="#fff"/>
+                  <rect x="18" y="54" width="35" height="5" rx="2" fill="#fff"/>
+                </svg>
+              </div>
+              <div class="int-info">
+                <div class="int-name">Google Sheets</div>
+                <div class="int-desc">Sync orders automatically to a spreadsheet</div>
+              </div>
+              <div class="int-toggle"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="int-api-area">
+              <div class="api-input-wrap">
+                <input class="glass-input" placeholder="Paste your Sheet ID here..." onclick="event.stopPropagation()">
+                <div class="api-copy-btn" onclick="event.stopPropagation();showToast('📋 Copied!')">Copy</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TikTok Pixel -->
+          <div class="int-card" id="int-tiktok" onclick="toggleInt('int-tiktok')">
+            <div class="int-header">
+              <div class="int-logo logo-tiktok" style="border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.21 8.21 0 004.84 1.56V6.79a4.85 4.85 0 01-1.07-.1z"/>
+                </svg>
+              </div>
+              <div class="int-info">
+                <div class="int-name">TikTok Pixel</div>
+                <div class="int-desc">Track conversions from TikTok ads</div>
+              </div>
+              <div class="int-toggle"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="int-api-area">
+              <div class="api-input-wrap">
+                <input class="glass-input" placeholder="Paste your Pixel ID here..." onclick="event.stopPropagation()">
+                <div class="api-copy-btn" onclick="event.stopPropagation();showToast('📋 Copied!')">Copy</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Meta Business Ads -->
+          <div class="int-card" id="int-meta" onclick="toggleInt('int-meta')">
+            <div class="int-header">
+              <div class="int-logo logo-meta" style="border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="16" viewBox="0 0 60 38" fill="none">
+                  <path d="M7.75 19.35C7.75 17.2 8.67 15.64 9.92 15.64c1.01 0 1.7.65 2.56 2.14l5.27 9.04 5.28-9.04c.86-1.49 1.56-2.14 2.56-2.14 1.25 0 2.17 1.56 2.17 3.71v9.16c0 1.1.53 1.73 1.39 1.73.86 0 1.39-.63 1.39-1.73v-9.16c0-3.45-1.86-5.85-4.95-5.85-1.72 0-3.07.79-4.16 2.54L18 22.13l-3.43-6.13c-1.09-1.75-2.44-2.54-4.16-2.54-3.09 0-4.95 2.4-4.95 5.85v9.16c0 1.1.53 1.73 1.39 1.73.86 0 1.39-.63 1.39-1.73l.51-9.12z" fill="#fff"/>
+                  <path d="M35.86 28.51c-2.62 0-4.42-2.19-4.42-5.29 0-3.1 1.8-5.29 4.42-5.29 2.62 0 4.42 2.19 4.42 5.29 0 3.1-1.8 5.29-4.42 5.29zm0-13.35c-4.35 0-7.27 3.3-7.27 8.06s2.92 8.06 7.27 8.06 7.27-3.3 7.27-8.06-2.92-8.06-7.27-8.06z" fill="#fff"/>
+                  <path d="M48.34 28.51c-2.62 0-4.42-2.19-4.42-5.29 0-3.1 1.8-5.29 4.42-5.29 2.62 0 4.42 2.19 4.42 5.29 0 3.1-1.8 5.29-4.42 5.29zm0-13.35c-4.35 0-7.27 3.3-7.27 8.06s2.92 8.06 7.27 8.06 7.27-3.3 7.27-8.06-2.92-8.06-7.27-8.06z" fill="#fff"/>
+                </svg>
+              </div>
+              <div class="int-info">
+                <div class="int-name">Meta Business Ads</div>
+                <div class="int-desc">Connect your Meta Ads account</div>
+              </div>
+              <div class="int-toggle"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="int-api-area">
+              <div class="api-input-wrap">
+                <input class="glass-input" placeholder="Paste your Meta Pixel ID..." onclick="event.stopPropagation()">
+                <div class="api-copy-btn" onclick="event.stopPropagation();showToast('📋 Copied!')">Copy</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- YouTube Ads -->
+          <div class="int-card" id="int-youtube" onclick="toggleInt('int-youtube')">
+            <div class="int-header">
+              <div class="int-logo logo-youtube" style="border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" viewBox="0 0 24 17" fill="none">
+                  <path d="M23.5 2.6A3 3 0 0021.4.5C19.5 0 12 0 12 0S4.5 0 2.6.5A3 3 0 00.5 2.6C0 4.5 0 8.5 0 8.5s0 4 .5 5.9a3 3 0 002.1 2.1C4.5 17 12 17 12 17s7.5 0 9.4-.5a3 3 0 002.1-2.1c.5-1.9.5-5.9.5-5.9s0-4-.5-5.9z" fill="#fff"/>
+                  <path d="M9.5 12.1V4.9l6.3 3.6-6.3 3.6z" fill="#ff0000"/>
+                </svg>
+              </div>
+              <div class="int-info">
+                <div class="int-name">YouTube Ads</div>
+                <div class="int-desc">Track performance from YouTube campaigns</div>
+              </div>
+              <div class="int-toggle"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="int-api-area">
+              <div class="api-input-wrap">
+                <input class="glass-input" placeholder="Paste your Google Ads ID..." onclick="event.stopPropagation()">
+                <div class="api-copy-btn" onclick="event.stopPropagation();showToast('📋 Copied!')">Copy</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Facebook Ads -->
+          <div class="int-card" id="int-facebook" onclick="toggleInt('int-facebook')">
+            <div class="int-header">
+              <div class="int-logo logo-facebook" style="border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 10 19" fill="none">
+                  <path d="M6.5 6.5V4.5c0-.83.67-1.5 1.5-1.5H9.5V0H7C4.79 0 3 1.79 3 4v2.5H0V9.5H3V19H6.5V9.5H9L9.5 6.5H6.5z" fill="#fff"/>
+                </svg>
+              </div>
+              <div class="int-info">
+                <div class="int-name">Facebook Ads</div>
+                <div class="int-desc">Connect your Facebook Ads pixel</div>
+              </div>
+              <div class="int-toggle"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="int-api-area">
+              <div class="api-input-wrap">
+                <input class="glass-input" placeholder="Paste your FB Pixel ID..." onclick="event.stopPropagation()">
+                <div class="api-copy-btn" onclick="event.stopPropagation();showToast('📋 Copied!')">Copy</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bark -->
+          <div class="int-card" id="int-bark" onclick="toggleInt('int-bark')">
+            <div class="int-header">
+              <div class="int-logo logo-bark" style="border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.2)"/>
+                  <path d="M8 14c1.1 1.2 2.5 2 4 2s2.9-.8 4-2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+                  <circle cx="9" cy="10" r="1.5" fill="#fff"/>
+                  <circle cx="15" cy="10" r="1.5" fill="#fff"/>
+                  <path d="M6 8c.5-2.5 2.8-4 6-4s5.5 1.5 6 4" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="int-info">
+                <div class="int-name">Bark</div>
+                <div class="int-desc">Automated customer engagement & chatbot</div>
+              </div>
+              <div class="int-toggle"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="int-api-area">
+              <div class="api-input-wrap">
+                <input class="glass-input" placeholder="Paste your Bark API key..." onclick="event.stopPropagation()">
+                <div class="api-copy-btn" onclick="event.stopPropagation();showToast('📋 Copied!')">Copy</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /integrations-grid -->
+      </div>
+    </div><!-- /page2 -->
+
+    <!-- ── PAGE 3: PRODUCTS ── -->
+    <div class="page" id="page3">
+      <div class="page-body">
+        <div class="q-header">
+          <div class="q-title" id="p3Title">Add your product</div>
+          <div class="q-sub" id="p3Sub">Fill in your product details below.</div>
+        </div>
+
+        <!-- Products grid (shown for multi-product plans) -->
+        <div id="prodGridWrap" style="display:none;">
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
+              <div class="card-label" style="padding:0;">Products</div>
+              <div style="background:rgba(0,122,255,0.10);border-radius:50px;padding:3px 12px;font-size:12px;font-weight:700;color:var(--blue);" id="prodBadge">0 / 6</div>
+            </div>
+            <div class="prod-grid cols-3" id="prodGrid" style="padding:0 14px 14px;"></div>
+            <div class="grid-note" id="gridNote" style="padding-bottom:14px;">Tap an empty slot to add a product</div>
+          </div>
+        </div>
+
+        <!-- Single product form (shown for plan 0) -->
+        <div id="singleProdWrap">
+          <div class="card">
+            <div class="card-label">Photos</div>
+            <div class="imgs-row" id="singleImgsRow"></div>
+            <input type="file" id="singleImgInput" accept="image/*" multiple style="display:none;" onchange="loadSingleImgs(this.files)">
+          </div>
+          <div class="card">
+            <div class="card-label">Product Info</div>
+            <div class="field-wrap">
+              <div class="field-label">Product Name *</div>
+              <input class="glass-input" id="sProdName" placeholder="e.g. Wireless Earbuds Pro..." maxlength="80"
+                oninput="updateChar('sProdName','sNameCount',80)">
+              <div class="char-count" id="sNameCount">0 / 80</div>
+            </div>
+            <div class="sep"></div>
+            <div class="field-wrap">
+              <div class="field-label">Description</div>
+              <textarea class="glass-input" id="sProdDesc" rows="3" placeholder="Describe what makes your product special..." maxlength="500"
+                oninput="updateChar('sProdDesc','sDescCount',500)" style="min-height:80px;"></textarea>
+              <div class="char-count" id="sDescCount">0 / 500</div>
+            </div>
+            <div class="sep"></div>
+            <div class="price-row">
+              <div>
+                <div class="field-label" style="margin-bottom:6px;">Price *</div>
+                <div class="price-icon">
+                  <input class="glass-input" id="sProdPrice" type="number" placeholder="0.00" min="0">
+                  <span class="price-sign">DA</span>
+                </div>
+              </div>
+              <div>
+                <div class="field-label" style="margin-bottom:6px;">Old Price</div>
+                <div class="price-icon">
+                  <input class="glass-input" id="sProdOldPrice" type="number" placeholder="0.00" min="0">
+                  <span class="price-sign">DA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-label">Store Info</div>
+            <div class="field-wrap">
+              <div class="field-label">Store Name *</div>
+              <input class="glass-input" id="sStoreName" placeholder="e.g. TechZone DZ...">
+            </div>
+            <div class="sep"></div>
+            <div class="field-wrap">
+              <div class="field-label">WhatsApp Number</div>
+              <input class="glass-input" id="sStorePhone" type="tel" placeholder="+213 6XX XXX XXX">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /page3 -->
+
+  </div><!-- /pages -->
+
+  <!-- ── BOTTOM BAR ── -->
+  <div class="bottom-bar">
+    <button class="next-btn" id="nextBtn" onclick="nextStep()">
+      <span id="nextBtnText">Choose Plan</span>
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
 </div>
 
-<div class="scroll-body">
+<!-- ══════════════════════════════════
+     ADD PRODUCT MODAL
+══════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-cancel" onclick="closeModal()">Cancel</div>
+      <div class="modal-title" id="modalTitleText">Add Product</div>
+      <div class="modal-save" onclick="saveProduct()">Save</div>
+    </div>
+    <div class="modal-body">
 
-  <!-- ── IMAGES ── -->
-  <div class="section-card">
-    <div class="section-label">Photos <span id="imgCountLabel" style="color:var(--blue);font-weight:700;">0/12</span></div>
-    <div class="images-wrap" id="imagesWrap"></div>
+      <div class="modal-section">
+        <div class="modal-sec-label">Photos <span id="mImgCount" style="color:var(--blue);font-weight:700;">0/8</span></div>
+        <div class="imgs-row" id="modalImgsRow"></div>
+        <input type="file" id="modalImgInput" accept="image/*" multiple style="display:none;" onchange="loadModalImgs(this.files)">
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-sec-label">Product Info</div>
+        <div class="mfield">
+          <div class="mfield-label">Product Name *</div>
+          <input class="glass-input" id="mProdName" placeholder="e.g. Nike Running Shoes..." maxlength="80">
+        </div>
+        <div class="sep"></div>
+        <div class="mfield">
+          <div class="mfield-label">Description</div>
+          <textarea class="glass-input" id="mProdDesc" rows="2" placeholder="Describe your product..." style="min-height:64px;"></textarea>
+        </div>
+        <div class="sep"></div>
+        <div class="mfield">
+          <div class="mfield-label">Price *</div>
+          <div class="m-price-row">
+            <div class="price-icon">
+              <input class="glass-input" id="mProdPrice" type="number" placeholder="0.00" min="0">
+              <span class="price-sign">DA</span>
+            </div>
+            <div class="price-icon">
+              <input class="glass-input" id="mProdOldPrice" type="number" placeholder="Old (opt.)">
+              <span class="price-sign">DA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div style="height:20px;"></div>
   </div>
-
-  <!-- ── PRODUCT INFO ── -->
-  <div class="section-card">
-    <div class="section-label">Product Info</div>
-    <div class="field-wrap">
-      <div class="field-label">Product Name *</div>
-      <input class="glass-input" id="prodName" placeholder="e.g. Vintage Leather Jacket" maxlength="80" oninput="updateChar('prodName','nameCount',80)">
-      <div class="char-count" id="nameCount">0 / 80</div>
-    </div>
-    <div class="field-wrap">
-      <div class="field-label">Description</div>
-      <textarea class="glass-input" id="prodDesc" placeholder="Describe your product in detail..." maxlength="500" rows="4" oninput="updateChar('prodDesc','descCount',500)"></textarea>
-      <div class="char-count" id="descCount">0 / 500</div>
-    </div>
-    <div class="field-wrap">
-      <div class="field-label">Brand / Maker</div>
-      <input class="glass-input" id="prodBrand" placeholder="e.g. Nike, Apple, Handmade...">
-    </div>
-  </div>
-
-  <!-- ── PRICING ── -->
-  <div class="section-card">
-    <div class="section-label">Pricing</div>
-    <div style="padding:0 16px 14px;display:flex;flex-direction:column;gap:12px;">
-      <div>
-        <div class="field-label" style="margin-bottom:6px;">Current Price *</div>
-        <div class="price-icon" style="position:relative;">
-          <span class="price-sign">$</span>
-          <input class="glass-input" id="prodPrice" type="number" placeholder="0.00" min="0" step="0.01" style="padding-left:32px;">
-        </div>
-      </div>
-    </div>
-    <!-- Old Price Toggle -->
-    <div class="toggle-row">
-      <div class="toggle-left">
-        <div class="toggle-title">Show Old Price</div>
-        <div class="toggle-sub">Display a crossed-out original price</div>
-      </div>
-      <div class="ios-toggle" id="oldPriceToggle" onclick="toggleFeature('oldPriceToggle','oldPriceContent')"></div>
-    </div>
-    <div class="toggle-content" id="oldPriceContent">
-      <div class="field-label" style="margin-bottom:6px;">Old Price</div>
-      <div class="price-icon" style="position:relative;">
-        <span class="price-sign" style="color:#ff3b30;text-decoration:line-through;">$</span>
-        <input class="glass-input" id="prodOldPrice" type="number" placeholder="0.00" min="0" step="0.01" style="padding-left:32px;border-color:rgba(255,59,48,0.20);">
-      </div>
-      <div style="margin-top:8px;display:flex;align-items:center;gap:6px;">
-        <i class="fas fa-tag" style="font-size:11px;color:var(--red);"></i>
-        <span style="font-size:12px;color:var(--sub);" id="discountLabel">Enter both prices to see discount</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── COLORS ── -->
-  <div class="section-card">
-    <div class="toggle-row" style="border-top:none;">
-      <div class="toggle-left">
-        <div class="toggle-title">Available Colors</div>
-        <div class="toggle-sub">Let buyers pick a color</div>
-      </div>
-      <div class="ios-toggle" id="colorsToggle" onclick="toggleFeature('colorsToggle','colorsContent')"></div>
-    </div>
-    <div class="toggle-content" id="colorsContent">
-      <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Tap + to add any color &middot; Tap a color circle to remove it</p>
-      <div class="colors-area" id="colorsArea">
-        <div class="add-color-btn" id="addColorBtn" onclick="document.getElementById('colorPickerInput').click()"><i class="fas fa-plus"></i></div>
-      </div>
-      <input type="color" id="colorPickerInput" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" onchange="addColor(this.value)">
-    </div>
-  </div>
-
-  <!-- ── DETAILS ── -->
-  <div class="section-card">
-    <div class="section-label">Details</div>
-    <div class="field-wrap">
-      <div class="field-label">Category</div>
-      <select class="glass-select" id="prodCat">
-        <option value="">Select category...</option>
-        <optgroup label="Fashion">
-          <option>Men's Clothing</option><option>Women's Clothing</option><option>Kids' Clothing</option>
-          <option>Shoes — Men</option><option>Shoes — Women</option><option>Shoes — Kids</option>
-          <option>Bags & Wallets</option><option>Watches</option><option>Jewelry</option>
-          <option>Sunglasses</option><option>Hats & Caps</option><option>Scarves & Gloves</option>
-        </optgroup>
-        <optgroup label="Electronics">
-          <option>Smartphones</option><option>Laptops & Computers</option><option>Tablets</option>
-          <option>Headphones & Speakers</option><option>Cameras</option><option>Gaming</option>
-          <option>Smartwatches & Wearables</option><option>TV & Audio</option><option>Accessories & Cables</option>
-        </optgroup>
-        <optgroup label="Home & Living">
-          <option>Furniture</option><option>Kitchen & Dining</option><option>Bedding & Bath</option>
-          <option>Decor & Lighting</option><option>Garden & Outdoor</option><option>Storage & Organisation</option>
-        </optgroup>
-        <optgroup label="Sports & Outdoors">
-          <option>Gym & Fitness</option><option>Team Sports</option><option>Outdoor & Camping</option>
-          <option>Cycling</option><option>Water Sports</option><option>Racket Sports</option>
-        </optgroup>
-        <optgroup label="Beauty & Care">
-          <option>Skincare</option><option>Makeup & Cosmetics</option><option>Hair Care</option>
-          <option>Fragrances</option><option>Personal Care</option>
-        </optgroup>
-        <optgroup label="Books & Media">
-          <option>Books</option><option>Textbooks & Study</option><option>Music & Vinyl</option>
-          <option>Movies & DVDs</option><option>Video Games</option>
-        </optgroup>
-        <optgroup label="Other">
-          <option>Toys & Collectibles</option><option>Art & Crafts</option><option>Food & Beverages</option>
-          <option>Health & Wellness</option><option>Stationery</option><option>Pet Supplies</option>
-          <option>Other</option>
-        </optgroup>
-      </select>
-    </div>
-    <div class="field-wrap">
-      <div class="field-label">Condition</div>
-      <div class="condition-selector" id="conditionSelector">
-        <div class="cond-tab active" data-val="New" onclick="selectCondition(this)">
-          <div class="cond-name">New</div>
-          <div class="cond-desc">Never used, original packaging</div>
-        </div>
-        <div class="cond-tab" data-val="Like New" onclick="selectCondition(this)">
-          <div class="cond-name">Like New</div>
-          <div class="cond-desc">Used once or twice, no defects</div>
-        </div>
-        <div class="cond-tab" data-val="Good" onclick="selectCondition(this)">
-          <div class="cond-name">Good</div>
-          <div class="cond-desc">Minor signs of use, fully functional</div>
-        </div>
-        <div class="cond-tab" data-val="Fair" onclick="selectCondition(this)">
-          <div class="cond-name">Fair</div>
-          <div class="cond-desc">Visible wear, works properly</div>
-        </div>
-      </div>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-left">
-        <div class="toggle-title">Stock Quantity</div>
-        <div class="toggle-sub">Specify how many you have</div>
-      </div>
-      <div class="ios-toggle" id="qtyToggle" onclick="toggleFeature('qtyToggle','qtyContent')"></div>
-    </div>
-    <div class="toggle-content" id="qtyContent">
-      <input class="glass-input" id="prodQty" type="number" placeholder="How many in stock?" min="1" step="1">
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-left">
-        <div class="toggle-title">SKU / Product Code</div>
-        <div class="toggle-sub">Internal reference code</div>
-      </div>
-      <div class="ios-toggle" id="skuToggle" onclick="toggleFeature('skuToggle','skuContent')"></div>
-    </div>
-    <div class="toggle-content" id="skuContent">
-      <input class="glass-input" id="prodSKU" placeholder="e.g. SHIRT-BLU-M-001">
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-left">
-        <div class="toggle-title">Size / Variants</div>
-        <div class="toggle-sub">Let buyers choose a size</div>
-      </div>
-      <div class="ios-toggle" id="sizeToggle" onclick="toggleFeature('sizeToggle','sizeContent')"></div>
-    </div>
-    <div class="toggle-content" id="sizeContent" style="max-height:none;">
-      <div class="chips-row" id="sizeChips">
-        <div class="chip" data-val="XXS">XXS</div>
-        <div class="chip" data-val="XS">XS</div>
-        <div class="chip" data-val="S">S</div>
-        <div class="chip" data-val="M">M</div>
-        <div class="chip" data-val="L">L</div>
-        <div class="chip" data-val="XL">XL</div>
-        <div class="chip" data-val="XXL">XXL</div>
-        <div class="chip" data-val="3XL">3XL</div>
-        <div class="chip" data-val="4XL">4XL</div>
-        <div class="chip" data-val="36">36</div>
-        <div class="chip" data-val="37">37</div>
-        <div class="chip" data-val="38">38</div>
-        <div class="chip" data-val="39">39</div>
-        <div class="chip" data-val="40">40</div>
-        <div class="chip" data-val="41">41</div>
-        <div class="chip" data-val="42">42</div>
-        <div class="chip" data-val="43">43</div>
-        <div class="chip" data-val="44">44</div>
-        <div class="chip" data-val="45">45</div>
-        <div class="chip" data-val="One Size">One Size</div>
-      </div>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-left">
-        <div class="toggle-title">Tags</div>
-        <div class="toggle-sub">Keywords to help buyers find your product</div>
-      </div>
-      <div class="ios-toggle" id="tagsToggle" onclick="toggleFeature('tagsToggle','tagsContent')"></div>
-    </div>
-    <div class="toggle-content" id="tagsContent">
-      <div class="field-hint" style="margin-bottom:8px;">Think: material, style, occasion, or color. Example: <em>leather, handmade, gift, minimalist</em></div>
-      <input class="glass-input" id="prodTags" placeholder="leather, handmade, gift, minimalist...">
-    </div>
-  </div>
-
-  <!-- ── WEIGHT & DIMENSIONS ── -->
-  <div class="section-card">
-    <div class="section-label">Weight &amp; Dimensions <span style="color:var(--red);font-weight:700;font-size:11px;">Required</span></div>
-    <div style="padding:0 16px 6px;">
-      <div class="field-hint" style="margin-bottom:12px;">Accurate measurements help buyers know what they're getting and allow correct shipping cost calculation.</div>
-      <div class="field-label" style="margin-bottom:8px;">Weight</div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <div style="position:relative;flex:1;">
-          <input class="glass-input" id="prodWeight" type="number" placeholder="0.0" min="0" step="0.1" style="padding-right:52px;">
-          <div class="unit-toggle" id="weightUnitToggle" onclick="toggleWeightUnit()"><span id="weightUnit">kg</span></div>
-        </div>
-      </div>
-      <div class="field-label" style="margin-top:14px;margin-bottom:8px;">Dimensions (L × W × H)</div>
-      <div class="field-hint" style="margin-bottom:8px;">Enter the product's outer size — useful for clothing, boxes, electronics, furniture.</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-        <div style="position:relative;">
-          <input class="glass-input" id="dimL" type="number" placeholder="Length" min="0" step="0.1" style="padding-right:36px;font-size:14px;">
-          <span class="dim-unit">cm</span>
-        </div>
-        <div style="position:relative;">
-          <input class="glass-input" id="dimW" type="number" placeholder="Width" min="0" step="0.1" style="padding-right:36px;font-size:14px;">
-          <span class="dim-unit">cm</span>
-        </div>
-        <div style="position:relative;">
-          <input class="glass-input" id="dimH" type="number" placeholder="Height" min="0" step="0.1" style="padding-right:36px;font-size:14px;">
-          <span class="dim-unit">cm</span>
-        </div>
-      </div>
-      <div id="dimPreview" class="dim-preview" style="display:none;"></div>
-    </div>
-    <div style="height:14px;"></div>
-  </div>
-
-  <!-- ── VIDEO LINKS ── -->
-  <div class="section-card">
-    <div class="toggle-row" style="border-top:none;">
-      <div class="toggle-left">
-        <div class="toggle-title">Product Video</div>
-        <div class="toggle-sub">Add a video link to showcase your product</div>
-      </div>
-      <div class="ios-toggle" id="videoToggle" onclick="toggleFeature('videoToggle','videoContent')"></div>
-    </div>
-    <div class="toggle-content" id="videoContent">
-      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Paste a link from any platform below. Each one is optional.</p>
-      <!-- YouTube -->
-      <div class="video-link-row">
-        <div class="video-platform-icon yt"><i class="fab fa-youtube"></i></div>
-        <div style="flex:1;">
-          <input class="glass-input video-url-input" id="urlYT" placeholder="YouTube video URL..." oninput="validateVideoUrl('urlYT','ytStatus')">
-        </div>
-        <div class="url-status" id="ytStatus"></div>
-      </div>
-      <!-- TikTok -->
-      <div class="video-link-row" style="margin-top:10px;">
-        <div class="video-platform-icon tt"><i class="fab fa-tiktok"></i></div>
-        <div style="flex:1;">
-          <input class="glass-input video-url-input" id="urlTT" placeholder="TikTok video URL..." oninput="validateVideoUrl('urlTT','ttStatus')">
-        </div>
-        <div class="url-status" id="ttStatus"></div>
-      </div>
-      <!-- Instagram -->
-      <div class="video-link-row" style="margin-top:10px;">
-        <div class="video-platform-icon ig"><i class="fab fa-instagram"></i></div>
-        <div style="flex:1;">
-          <input class="glass-input video-url-input" id="urlIG" placeholder="Instagram Reel URL..." oninput="validateVideoUrl('urlIG','igStatus')">
-        </div>
-        <div class="url-status" id="igStatus"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── FREE CAMPUS DELIVERY ── -->
-  <div class="delivery-toggle-card" id="campusCard">
-    <div class="delivery-inner">
-      <div class="delivery-icon-wrap">
-        <div class="delivery-icon">🎓</div>
-        <div class="delivery-badge">FREE</div>
-      </div>
-      <div class="delivery-text">
-        <div class="delivery-title">Free Campus Delivery</div>
-        <div class="delivery-sub">Deliver for free to university students on campus</div>
-      </div>
-      <div class="ios-toggle" id="campusToggle" onclick="toggleCampus()"></div>
-    </div>
-  </div>
-
-  <!-- ── RETURN & NOTES ── -->
-  <div class="section-card">
-    <div class="section-label">Policies & Notes</div>
-    <div class="toggle-row" style="border-top:none;">
-      <div class="toggle-left">
-        <div class="toggle-title">Accepts Returns</div>
-        <div class="toggle-sub">Buyers can return within 7 days</div>
-      </div>
-      <div class="ios-toggle" id="returnToggle" onclick="toggleFeature('returnToggle','returnContent')"></div>
-    </div>
-    <div class="toggle-content" id="returnContent">
-      <div class="field-label" style="margin-bottom:6px;">Return Window</div>
-      <select class="glass-select" id="returnDays">
-        <option>7 days</option><option>14 days</option><option>30 days</option>
-      </select>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-left">
-        <div class="toggle-title">Negotiable Price</div>
-        <div class="toggle-sub">Allow buyers to make offers</div>
-      </div>
-      <div class="ios-toggle" id="negotiateToggle" onclick="toggleSimple('negotiateToggle')"></div>
-    </div>
-  </div>
-
-</div><!-- end scroll-body -->
-
-<!-- BOTTOM BAR -->
-<div class="bottom-bar">
-  <button class="publish-btn" onclick="handlePublish()">
-    <i class="fas fa-paper-plane"></i> Publish Product
-  </button>
 </div>
-
-</div><!-- shell -->
 
 <script>
-/* ── IMAGE SLOTS ── */
-const MAX_IMGS=12;
-let imgData=[];
-
-function buildSlots(){
-  const wrap=document.getElementById('imagesWrap'); wrap.innerHTML='';
-  imgData.forEach((src,i)=>{
-    const d=document.createElement('div'); d.className='img-slot has-img';
-    d.innerHTML=`<img src="${src}"><div class="img-del" onclick="removeImg(${i})"><i class="fas fa-xmark"></i></div>`;
-    wrap.appendChild(d);
-  });
-  if(imgData.length<MAX_IMGS){
-    const add=document.createElement('div'); add.className='img-slot';
-    add.innerHTML='<i class="fas fa-plus"></i><span>Add Photo</span>';
-    add.onclick=()=>{ const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.multiple=true;inp.onchange=e=>loadImgs(e.target.files);inp.click(); };
-    wrap.appendChild(add);
-  }
-  document.getElementById('imgCountLabel').innerText=imgData.length+'/'+MAX_IMGS;
-}
-function loadImgs(files){
-  const remaining=MAX_IMGS-imgData.length;
-  const toLoad=[...files].slice(0,remaining);
-  toLoad.forEach(f=>{
-    const r=new FileReader(); r.onload=e=>{imgData.push(e.target.result);buildSlots();};r.readAsDataURL(f);
-  });
-  if(files.length>remaining) showToast('Max 12 photos allowed');
-}
-function removeImg(i){imgData.splice(i,1);buildSlots();}
-buildSlots();
-
-/* ── TOGGLE ── */
-function toggleFeature(toggleId,contentId){
-  const t=document.getElementById(toggleId),c=document.getElementById(contentId);
-  const on=!t.classList.contains('on'); t.classList.toggle('on',on); c.classList.toggle('open',on);
-}
-function toggleSimple(id){document.getElementById(id).classList.toggle('on');}
-
-/* ── CAMPUS DELIVERY ── */
-function toggleCampus(){
-  const t=document.getElementById('campusToggle'),card=document.getElementById('campusCard');
-  const on=!t.classList.contains('on'); t.classList.toggle('on',on); card.classList.toggle('on',on);
-  if(on) showToast('🎓 Free campus delivery enabled!');
-}
-
-/* ── COLORS ── */
-let colors=[];
-function addColor(hex){
-  if(colors.includes(hex)){showToast('Color already added');return;}
-  colors.push(hex); renderColors();
-}
-function removeColor(i){ colors.splice(i,1); renderColors(); }
-function renderColors(){
-  const area=document.getElementById('colorsArea'); area.innerHTML='';
-  colors.forEach((c,i)=>{
-    const el=document.createElement('div'); el.className='color-circle'; el.style.background=c;
-    const isWhite=c.toLowerCase()==='#ffffff'||c.toLowerCase()==='#fff';
-    el.style.border=isWhite?'2px solid #e5e5ea':'2px solid transparent';
-    el.title='Tap to remove';
-    el.onclick=()=>removeColor(i);
-    area.appendChild(el);
-  });
-  const addBtn=document.createElement('div'); addBtn.className='add-color-btn'; addBtn.id='addColorBtn';
-  addBtn.innerHTML='<i class="fas fa-plus"></i>';
-  addBtn.onclick=()=>document.getElementById('colorPickerInput').click();
-  area.appendChild(addBtn);
-}
-renderColors();
-
-/* ── CONDITION ── */
-function selectCondition(el){
-  document.querySelectorAll('.cond-tab').forEach(x=>x.classList.remove('active'));
-  el.classList.add('active');
-}
-
-/* ── SIZE CHIPS (multi) ── */
-document.querySelectorAll('#sizeChips .chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('active')));
-
-/* ── WEIGHT UNIT ── */
-let weightUnitKg=true;
-function toggleWeightUnit(){
-  weightUnitKg=!weightUnitKg;
-  document.getElementById('weightUnit').innerText=weightUnitKg?'kg':'lb';
-}
-
-/* ── DIMENSIONS PREVIEW ── */
-['dimL','dimW','dimH'].forEach(id=>{
-  document.getElementById(id)?.addEventListener('input',updateDimPreview);
-});
-function updateDimPreview(){
-  const l=document.getElementById('dimL').value;
-  const w=document.getElementById('dimW').value;
-  const h=document.getElementById('dimH').value;
-  const prev=document.getElementById('dimPreview');
-  if(l&&w&&h){
-    prev.style.display='block';
-    prev.innerText=`📦 ${l} × ${w} × ${h} cm`;
-  } else {
-    prev.style.display='none';
-  }
-}
-
-/* ── VIDEO URL VALIDATION ── */
-function validateVideoUrl(inputId,statusId){
-  const val=document.getElementById(inputId).value.trim();
-  const el=document.getElementById(statusId);
-  if(!val){el.innerText='';return;}
-  const isValid=/^https?:\/\/.+\..+/.test(val);
-  el.innerText=isValid?'✅':'❌';
-}
-
-
-document.getElementById('prodPrice')?.addEventListener('input',updateDiscount);
-document.getElementById('prodOldPrice')?.addEventListener('input',updateDiscount);
-function updateDiscount(){
-  const p=parseFloat(document.getElementById('prodPrice').value);
-  const op=parseFloat(document.getElementById('prodOldPrice').value);
-  const lbl=document.getElementById('discountLabel');
-  if(!lbl) return;
-  if(p>0&&op>0&&op>p){
-    const pct=Math.round(((op-p)/op)*100);
-    lbl.innerHTML=`<span style="color:var(--red);font-weight:700;">Save ${pct}%</span> off original price`;
-  } else {
-    lbl.innerText='Enter both prices to see discount';
-  }
-}
-
-/* ── CHAR COUNT ── */
-function updateChar(inputId,labelId,max){
-  const v=document.getElementById(inputId).value.length;
-  const l=document.getElementById(labelId); l.innerText=v+' / '+max;
-  l.style.color=v>max*0.9?'#ff3b30':'var(--muted)';
-}
-
-/* ── TOAST ── */
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+let currentStep = 1;
+let selectedPlan = -1; // 0=single,1=six,2=twelve
+let products = [];
+let editingIdx = null;
+let modalImgs = [];
+let singleImgs = [];
 let _tt;
-function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2200);}
 
-/* ── PUBLISH ── */
-function handlePublish(){
-  const name=document.getElementById('prodName').value.trim();
-  const price=document.getElementById('prodPrice').value;
-  if(!name){showToast('⚠️ Product name is required');document.getElementById('prodName').focus();return;}
-  if(!price){showToast('⚠️ Price is required');document.getElementById('prodPrice').focus();return;}
-  showToast('🚀 Product published successfully!');
+const planMaxProds = [1, 6, 12];
+const planCols     = [1, 2, 3];
+
+const STEPS = {
+  1: { title:'Create Store',  label1:'Plan',     label2:'Features', label3:'Products', pct:16,  btn:'Choose Plan'     },
+  2: { title:'Integrations',  pct:55,  btn:'Continue to Products' },
+  3: { title:'Add Products',  pct:100, btn:'Publish Store'         }
+};
+
+/* ══════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════ */
+function updateUI(){
+  const s = STEPS[currentStep];
+  document.getElementById('barTitle').textContent = s.title;
+  document.getElementById('barStep').textContent  = currentStep + ' / 3';
+  document.getElementById('progressFill').style.width = s.pct + '%';
+  document.getElementById('progressPct').textContent  = s.pct + '%';
+  document.getElementById('nextBtnText').textContent  = s.btn;
+
+  // dots
+  [1,2,3].forEach(i => {
+    const d = document.getElementById('dot'+i);
+    d.classList.toggle('active', i === currentStep);
+  });
+  // label highlights
+  [1,2,3].forEach(i => {
+    document.getElementById('pl'+i).classList.toggle('active', i === currentStep);
+  });
+  // pages
+  ['page1','page2','page3'].forEach((id,idx) => {
+    const el = document.getElementById(id);
+    const step = idx + 1;
+    el.classList.remove('active','exit-left');
+    if(step === currentStep) el.classList.add('active');
+    else if(step < currentStep) el.classList.add('exit-left');
+  });
 }
+
+function nextStep(){
+  if(currentStep === 1){
+    if(selectedPlan < 0){ showToast('⚠️ Please select a plan'); return; }
+    currentStep = 2;
+  } else if(currentStep === 2){
+    currentStep = 3;
+    setupPage3();
+  } else if(currentStep === 3){
+    handlePublish();
+    return;
+  }
+  updateUI();
+}
+
+function goBack(){
+  if(currentStep === 1){ showToast('← Already at first step'); return; }
+  currentStep--;
+  updateUI();
+}
+
+/* ══════════════════════════════════════
+   PLAN SELECTION
+══════════════════════════════════════ */
+function selectPlan(idx){
+  selectedPlan = idx;
+  [0,1,2].forEach(i => document.getElementById('plan-'+i).classList.toggle('selected', i===idx));
+}
+
+/* ══════════════════════════════════════
+   INTEGRATIONS
+══════════════════════════════════════ */
+function toggleInt(id){
+  const card = document.getElementById(id);
+  const on   = !card.classList.contains('selected');
+  card.classList.toggle('selected', on);
+  const icon = card.querySelector('.int-toggle i');
+  icon.className = on ? 'fas fa-check' : 'fas fa-plus';
+  if(on) setTimeout(() => card.querySelector('.glass-input').focus(), 360);
+}
+
+/* ══════════════════════════════════════
+   PAGE 3 SETUP
+══════════════════════════════════════ */
+function setupPage3(){
+  const max = planMaxProds[selectedPlan];
+  const single = (selectedPlan === 0);
+
+  document.getElementById('singleProdWrap').style.display = single ? 'block' : 'none';
+  document.getElementById('prodGridWrap').style.display   = single ? 'none'  : 'block';
+
+  if(single){
+    document.getElementById('p3Title').textContent = 'Add your product';
+    document.getElementById('p3Sub').textContent   = 'Fill in your product details below.';
+    buildSingleImgs();
+  } else {
+    document.getElementById('p3Title').textContent = `Add up to ${max} products`;
+    document.getElementById('p3Sub').textContent   = `Tap any slot to add a product.`;
+    const cols = planCols[selectedPlan];
+    const grid = document.getElementById('prodGrid');
+    grid.className = `prod-grid cols-${cols}`;
+    document.getElementById('prodBadge').textContent = `0 / ${max}`;
+    buildProdGrid();
+  }
+}
+
+/* ══════════════════════════════════════
+   PRODUCT GRID (multi-plan)
+══════════════════════════════════════ */
+function buildProdGrid(){
+  const max  = planMaxProds[selectedPlan];
+  const grid = document.getElementById('prodGrid');
+  grid.innerHTML = '';
+  document.getElementById('prodBadge').textContent = products.length + ' / ' + max;
+
+  for(let i=0; i<max; i++){
+    const slot = document.createElement('div');
+    if(i < products.length){
+      const p = products[i];
+      slot.className = 'prod-slot filled';
+      const hasImg = p.imgs && p.imgs.length > 0;
+      slot.innerHTML = `
+        <div class="prod-num">${i+1}</div>
+        <div class="prod-del" onclick="delProd(${i},event)"><i class="fas fa-xmark"></i></div>
+        ${hasImg
+          ? `<img class="prod-img" src="${p.imgs[0]}" style="aspect-ratio:1;object-fit:cover;width:100%;">`
+          : `<div class="prod-img-ph"><i class="fas fa-image"></i></div>`}
+        <div class="prod-info">
+          <div class="prod-name-sm">${p.name||'No name'}</div>
+          <div class="prod-price-sm">${p.price?p.price+' DA':'—'}</div>
+        </div>`;
+      slot.onclick = ()=>openModal(i);
+    } else {
+      slot.className = 'prod-slot empty';
+      const isNext = (i === products.length);
+      slot.innerHTML = isNext
+        ? `<i class="fas fa-plus"></i><span>Add Product</span>`
+        : `<i class="fas fa-plus" style="opacity:.2;"></i>`;
+      if(isNext) slot.onclick = ()=>openModal(null);
+    }
+    grid.appendChild(slot);
+  }
+}
+
+function delProd(idx, e){
+  e.stopPropagation();
+  products.splice(idx,1);
+  buildProdGrid();
+  showToast('🗑️ Product removed');
+}
+
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
+function openModal(idx){
+  editingIdx = idx;
+  modalImgs  = [];
+  document.getElementById('mProdName').value     = '';
+  document.getElementById('mProdDesc').value     = '';
+  document.getElementById('mProdPrice').value    = '';
+  document.getElementById('mProdOldPrice').value = '';
+
+  if(idx !== null && idx < products.length){
+    const p = products[idx];
+    document.getElementById('mProdName').value     = p.name     || '';
+    document.getElementById('mProdDesc').value     = p.desc     || '';
+    document.getElementById('mProdPrice').value    = p.price    || '';
+    document.getElementById('mProdOldPrice').value = p.oldPrice || '';
+    modalImgs = [...(p.imgs||[])];
+    document.getElementById('modalTitleText').textContent = 'Edit Product';
+  } else {
+    document.getElementById('modalTitleText').textContent = 'Add Product';
+  }
+  buildModalImgSlots();
+  document.getElementById('modalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e){
+  if(e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function buildModalImgSlots(){
+  const row = document.getElementById('modalImgsRow');
+  row.innerHTML = '';
+  modalImgs.forEach((src,i)=>{
+    const s = document.createElement('div');
+    s.className = 'img-slot has-img';
+    s.innerHTML = `<img src="${src}"><div class="img-del" onclick="removeModalImg(${i})"><i class="fas fa-xmark"></i></div>`;
+    row.appendChild(s);
+  });
+  if(modalImgs.length < 8){
+    const add = document.createElement('div');
+    add.className = 'img-slot';
+    add.innerHTML = '<i class="fas fa-plus"></i><span>Photo</span>';
+    add.onclick = ()=>document.getElementById('modalImgInput').click();
+    row.appendChild(add);
+  }
+  document.getElementById('mImgCount').textContent = modalImgs.length+'/8';
+}
+
+function loadModalImgs(files){
+  const rem = 8 - modalImgs.length;
+  [...files].slice(0,rem).forEach(f=>{
+    const r = new FileReader();
+    r.onload = e=>{ modalImgs.push(e.target.result); buildModalImgSlots(); };
+    r.readAsDataURL(f);
+  });
+  if(files.length>rem) showToast('Max 8 photos');
+  document.getElementById('modalImgInput').value='';
+}
+
+function removeModalImg(i){ modalImgs.splice(i,1); buildModalImgSlots(); }
+
+function saveProduct(){
+  const name  = document.getElementById('mProdName').value.trim();
+  const price = document.getElementById('mProdPrice').value.trim();
+  if(!name)  { showToast('⚠️ Product name required'); return; }
+  if(!price) { showToast('⚠️ Price required'); return; }
+
+  const prod = {
+    name, price,
+    oldPrice: document.getElementById('mProdOldPrice').value.trim(),
+    desc:     document.getElementById('mProdDesc').value.trim(),
+    imgs:     [...modalImgs]
+  };
+
+  const max = planMaxProds[selectedPlan];
+  if(editingIdx !== null && editingIdx < products.length){
+    products[editingIdx] = prod;
+    showToast('✅ Product updated');
+  } else {
+    if(products.length >= max){ showToast(`Max ${max} products`); return; }
+    products.push(prod);
+    showToast('✅ Product added');
+  }
+  buildProdGrid();
+  closeModal();
+}
+
+/* ══════════════════════════════════════
+   SINGLE PRODUCT IMAGES
+══════════════════════════════════════ */
+function buildSingleImgs(){
+  const row = document.getElementById('singleImgsRow');
+  row.innerHTML = '';
+  singleImgs.forEach((src,i)=>{
+    const s = document.createElement('div');
+    s.className = 'img-slot has-img';
+    s.innerHTML = `<img src="${src}"><div class="img-del" onclick="removeSingleImg(${i})"><i class="fas fa-xmark"></i></div>`;
+    row.appendChild(s);
+  });
+  if(singleImgs.length < 8){
+    const add = document.createElement('div');
+    add.className = 'img-slot';
+    add.innerHTML = '<i class="fas fa-plus"></i><span>Photo</span>';
+    add.onclick = ()=>document.getElementById('singleImgInput').click();
+    row.appendChild(add);
+  }
+}
+
+function loadSingleImgs(files){
+  const rem = 8 - singleImgs.length;
+  [...files].slice(0,rem).forEach(f=>{
+    const r = new FileReader();
+    r.onload = e=>{ singleImgs.push(e.target.result); buildSingleImgs(); };
+    r.readAsDataURL(f);
+  });
+  document.getElementById('singleImgInput').value='';
+}
+
+function removeSingleImg(i){ singleImgs.splice(i,1); buildSingleImgs(); }
+
+/* ══════════════════════════════════════
+   PUBLISH
+══════════════════════════════════════ */
+function handlePublish(){
+  if(selectedPlan === 0){
+    const name  = document.getElementById('sProdName').value.trim();
+    const price = document.getElementById('sProdPrice').value.trim();
+    const store = document.getElementById('sStoreName').value.trim();
+    if(!name)  { showToast('⚠️ Product name required'); return; }
+    if(!price) { showToast('⚠️ Price required'); return; }
+    if(!store) { showToast('⚠️ Store name required'); return; }
+  } else {
+    if(products.length === 0){ showToast('⚠️ Add at least one product'); return; }
+  }
+  showToast('🚀 Store published successfully!');
+}
+
+/* ══════════════════════════════════════
+   UTILS
+══════════════════════════════════════ */
+function updateChar(inputId, labelId, max){
+  const v = document.getElementById(inputId).value.length;
+  const l = document.getElementById(labelId);
+  l.textContent = v + ' / ' + max;
+  l.style.color = v > max*0.9 ? 'var(--red)' : 'var(--muted)';
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(_tt);
+  _tt = setTimeout(()=>t.classList.remove('show'), 2300);
+}
+
+/* init */
+updateUI();
+buildSingleImgs();
 </script>
 </body>
 </html>
