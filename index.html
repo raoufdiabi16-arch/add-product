@@ -24,18 +24,28 @@ body { background:#f2f2f7; overflow:hidden; }
 @keyframes fadeSlide { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
 
 /* ===== Top Bar ===== */
-.top-bar { padding:14px 20px 10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:6px; }
+.top-bar {
+  padding:14px 20px 10px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; margin-top:6px;
+}
 .center-dropdown {
   display:flex; align-items:center; gap:9px;
   background:linear-gradient(135deg,rgba(0,122,255,0.10),rgba(0,122,255,0.06));
-  backdrop-filter:blur(12px); padding:9px 22px; border-radius:60px; cursor:pointer;
+  backdrop-filter:blur(12px);
+  padding:9px 22px; border-radius:60px; cursor:pointer;
   transition:all 0.25s cubic-bezier(0.34,1.2,0.64,1);
   border:1px solid rgba(0,122,255,0.18);
   box-shadow:0 2px 12px rgba(0,122,255,0.10), inset 0 1px 0 rgba(255,255,255,0.7);
 }
 .center-dropdown:active { transform:scale(0.96); }
 .dropdown-title { font-size:17px; font-weight:650; color:#007aff; letter-spacing:-0.3px; }
-.dropdown-icon-wrap { width:22px; height:22px; border-radius:50%; background:rgba(0,122,255,0.12); display:flex; align-items:center; justify-content:center; }
+.dropdown-icon-wrap {
+  width:22px; height:22px; border-radius:50%;
+  background:rgba(0,122,255,0.12);
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.28s cubic-bezier(0.34,1.2,0.64,1);
+}
 .dropdown-icon { width:11px; height:11px; stroke:#007aff; stroke-width:2.8; transition:transform 0.28s cubic-bezier(0.34,1.2,0.64,1); }
 .center-dropdown.open .dropdown-icon { transform:rotate(180deg); }
 
@@ -43,10 +53,12 @@ body { background:#f2f2f7; overflow:hidden; }
 .bottom-sheet {
   position:fixed; bottom:0; left:50%; transform:translateX(-50%) translateY(100%);
   width:100%; max-width:430px;
+  overflow:hidden;
   background:rgba(255,255,255,0.98); backdrop-filter:blur(32px) saturate(180%);
   border-top-left-radius:32px; border-top-right-radius:32px;
   box-shadow:0 -12px 40px rgba(0,0,0,0.08);
-  transition:transform 0.38s cubic-bezier(0.2,0.9,0.3,1.1); z-index:200; overflow:hidden;
+  transition:transform 0.38s cubic-bezier(0.2,0.9,0.3,1.1);
+  z-index:200; overflow:hidden;
 }
 .bottom-sheet.open { transform:translateX(-50%) translateY(0); }
 .sheet-handle { width:42px; height:4px; background:#c6c6c8; border-radius:4px; margin:14px auto 10px; }
@@ -59,16 +71,22 @@ body { background:#f2f2f7; overflow:hidden; }
 .sheet-item-title { font-size:16px; font-weight:590; color:#1c1c1e; }
 .sheet-item-sub { font-size:12px; color:#8e8e93; margin-top:2px; }
 
-/* ===== Section Divider Header ===== */
+/* ===== Divider Header (Orders / Niches) ===== */
 .section-header { padding:20px 20px 8px; }
 .divider { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-.divider-line { flex:1; height:1px; background:rgba(0,122,255,0.22); border-radius:2px; }
-.divider-icon { width:26px; height:26px; stroke:#007aff; stroke-width:1.7; fill:none; flex-shrink:0; }
-.divider-text { font-size:13px; font-weight:600; color:#007aff; letter-spacing:0.1px; }
+.divider-line { flex:1; height:1px; background:rgba(0,122,255,0.25); border-radius:2px; }
+.divider-icon { width:28px; height:28px; stroke:#007aff; stroke-width:1.6; fill:none; }
+.divider-text { font-size:13px; font-weight:500; color:#007aff; letter-spacing:-0.2px; }
 
 /* ===== Product Cards ===== */
 .products-list { padding:0 16px 100px; display:flex; flex-direction:column; gap:12px; }
-.product-card { display:flex; align-items:center; gap:14px; background:#f9f9fb; border:0.5px solid rgba(0,0,0,0.06); border-radius:20px; padding:14px 16px; cursor:pointer; transition:all 0.18s cubic-bezier(0.34,1.2,0.64,1); }
+.product-card {
+  display:flex; align-items:center; gap:14px;
+  background:#f9f9fb; border:0.5px solid rgba(0,0,0,0.06);
+  border-radius:20px; padding:14px 16px;
+  cursor:pointer; transition:transform 0.15s ease, background 0.15s ease;
+  touch-action:manipulation;
+}
 .product-card:active { transform:scale(0.97); background:#f2f2f7; }
 .product-thumb { width:56px; height:56px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:26px; }
 .product-info { flex:1; min-width:0; }
@@ -83,147 +101,186 @@ body { background:#f2f2f7; overflow:hidden; }
 .delivery-label.delivered { color:#2e7d32; }
 .delivery-label.waiting   { color:#c97400; }
 
-/* ===== PURCHASES — Glassmorphism Segmented Tabs ===== */
-.purchases-header { padding:18px 16px 0; }
-.pur-tabs-glass {
-  display:flex; align-items:center;
-  background:rgba(118,118,128,0.12);
-  backdrop-filter:blur(20px) saturate(200%);
-  -webkit-backdrop-filter:blur(20px) saturate(200%);
-  border-radius:22px; padding:4px; border:0.5px solid rgba(255,255,255,0.6);
-  box-shadow:0 1px 8px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.5);
-  margin-bottom:16px; position:relative; overflow:hidden;
+
+/* ===================================================
+   UNIFIED GLASS SEGMENTED TABS — used everywhere
+   =================================================== */
+.seg-tabs-wrap {
+  padding:14px 16px 12px;
+  position:sticky; top:0; z-index:10;
+  background:linear-gradient(to bottom,rgba(255,255,255,1) 82%,rgba(255,255,255,0));
+  flex-shrink:0;
 }
-.pur-pill {
-  position:absolute; top:4px; bottom:4px;
-  width:calc(50% - 4px);
+/* variant used inside detail pages (no sticky needed) */
+.seg-tabs-wrap.inline {
+  position:relative; padding:12px 16px 0;
   background:#fff;
-  border-radius:18px;
-  box-shadow:0 2px 14px rgba(0,0,0,0.09), 0 1px 3px rgba(0,0,0,0.06);
-  transition:left 0.3s cubic-bezier(0.34,1.2,0.64,1);
-  left:4px; z-index:0; pointer-events:none;
+  border-bottom:1px solid rgba(0,0,0,0.05);
 }
-.pur-pill.right { left:calc(50%); }
-.pur-tab-glass {
-  flex:1; text-align:center; padding:9px 0;
-  font-size:13.5px; font-weight:600; color:#6e6e73;
-  cursor:pointer; position:relative; z-index:1;
-  transition:color 0.22s ease; border-radius:18px;
-  letter-spacing:-0.1px; display:flex; align-items:center; justify-content:center; gap:6px;
-  user-select:none;
+.seg-tabs-glass {
+  display:flex; position:relative;
+  background:rgba(118,118,128,0.10);
+  border-radius:11px; padding:3px; gap:0;
 }
-.pur-tab-glass svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.2; flex-shrink:0; }
-.pur-tab-glass.active { color:#1c1c1e; font-weight:700; }
-.pur-tab-glass:active { opacity:0.75; }
-.pur-content { padding:0 16px 20px; }
+.seg-slider {
+  position:absolute; top:3px; left:3px;
+  height:calc(100% - 6px);
+  background:#fff; border-radius:8px;
+  box-shadow:0 1px 6px rgba(0,0,0,0.09), 0 0.5px 2px rgba(0,0,0,0.06);
+  transition:left 0.26s cubic-bezier(0.34,1.3,0.64,1),
+             width 0.26s cubic-bezier(0.34,1.3,0.64,1);
+  pointer-events:none; z-index:0;
+}
+.seg-tab {
+  flex:1; display:flex; align-items:center; justify-content:center;
+  gap:6px; padding:8px 4px;
+  font-size:13.5px; font-weight:590; color:#8e8e93;
+  background:transparent; border-radius:8px;
+  cursor:pointer; border:none; position:relative; z-index:1;
+  letter-spacing:-0.1px; user-select:none;
+  transition:color 0.2s ease;
+  white-space:nowrap;
+}
+.seg-tab svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; flex-shrink:0; transition:stroke 0.2s; }
+.seg-tab.active { color:#1c1c1e; font-weight:660; }
+.seg-tab:active { opacity:0.65; }
 
-/* ===== NICHES ===== */
-.niches-header { padding:20px 20px 8px; }
-.niches-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:0 16px 100px; }
+/* Legacy aliases so old code still works */
+.pur-tabs-wrap  { padding:14px 16px 12px; position:sticky; top:0; z-index:10; background:linear-gradient(to bottom,rgba(255,255,255,1) 82%,rgba(255,255,255,0)); flex-shrink:0; }
+.pur-tabs-glass { display:flex; position:relative; background:rgba(118,118,128,0.10); border-radius:11px; padding:3px; gap:0; }
+.pur-tab-slider { position:absolute; top:3px; left:3px; height:calc(100% - 6px); background:#fff; border-radius:8px; box-shadow:0 1px 6px rgba(0,0,0,0.09),0 0.5px 2px rgba(0,0,0,0.06); transition:left 0.26s cubic-bezier(0.34,1.3,0.64,1),width 0.26s cubic-bezier(0.34,1.3,0.64,1); pointer-events:none; z-index:0; }
+.pur-tab { flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:8px 4px; font-size:13.5px; font-weight:590; color:#8e8e93; background:transparent; border-radius:8px; cursor:pointer; border:none; position:relative; z-index:1; letter-spacing:-0.1px; user-select:none; transition:color 0.2s ease; }
+.pur-tab.active { color:#1c1c1e; font-weight:660; }
+.pur-tab:active { opacity:0.65; }
+.pur-content { padding:0 16px 16px; }
+
+/* ===== Niches Page ===== */
+.niches-list { padding:0 16px 100px; display:flex; flex-direction:column; gap:14px; }
 .niche-card {
-  border:0.5px solid rgba(0,0,0,0.07); border-radius:22px; padding:18px 14px 16px;
+  display:flex; align-items:center; gap:14px;
+  background:linear-gradient(135deg,#f9f9fb,#f2f2f7);
+  border:0.5px solid rgba(0,0,0,0.07);
+  border-radius:22px; padding:16px;
   cursor:pointer; transition:all 0.2s cubic-bezier(0.34,1.2,0.64,1);
-  display:flex; flex-direction:column; align-items:flex-start; gap:8px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+  position:relative; overflow:hidden;
 }
-.niche-card:active { transform:scale(0.95); }
-.niche-card-emoji { font-size:30px; line-height:1; }
-.niche-card-name { font-size:14px; font-weight:720; color:#1c1c1e; letter-spacing:-0.2px; line-height:1.3; }
-.niche-card-count { font-size:11.5px; font-weight:550; color:#8e8e93; }
-.niche-card-arrow {
-  align-self:flex-end; margin-top:4px;
-  width:28px; height:28px; border-radius:50%;
-  background:rgba(0,122,255,0.10);
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+.niche-card::before {
+  content:''; position:absolute; top:0; right:0;
+  width:80px; height:80px; border-radius:50%;
+  background:radial-gradient(circle, rgba(0,122,255,0.06) 0%, transparent 70%);
+  transform:translate(20px,-20px);
 }
-.niche-card-arrow svg { width:13px; height:13px; stroke:#007aff; stroke-width:2.5; fill:none; }
+.niche-card:active { transform:scale(0.97); }
+.niche-thumb {
+  width:58px; height:58px; border-radius:18px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px; flex-shrink:0;
+  box-shadow:0 4px 14px rgba(0,0,0,0.10);
+}
+.niche-info { flex:1; min-width:0; }
+.niche-name { font-size:16px; font-weight:680; color:#1c1c1e; margin-bottom:3px; letter-spacing:-0.2px; }
+.niche-count { font-size:12px; color:#8e8e93; display:flex; align-items:center; gap:4px; }
+.niche-count-dot { width:5px; height:5px; border-radius:50%; background:#007aff; opacity:0.6; }
+.niche-arrow { width:22px; height:22px; flex-shrink:0; stroke:#c7c7cc; stroke-width:2; fill:none; }
 
-/* ===== NICHE DETAIL PAGE ===== */
-#page-niche-detail {
-  position:fixed; inset:0; z-index:150;
-  background:#fff; max-width:430px; margin:0 auto;
+/* ===== ALL FIXED OVERLAY PAGES — hidden by default, visible only when .open ===== */
+#page-niche,
+#page-detail,
+#page-purchase-detail,
+#page-chat {
+  position:fixed;
+  left:50%; transform:translateX(-50%) translateX(430px);
+  width:100%; max-width:430px;
+  top:0; bottom:0;
   display:flex; flex-direction:column;
-  transform:translateX(100%);
-  transition:transform 0.32s cubic-bezier(0.32,0.72,0,1);
-  border-radius:32px 32px 0 0; overflow:hidden;
-}
-#page-niche-detail.open { transform:translateX(0); }
-.niche-detail-banner { padding:16px 16px 14px; flex-shrink:0; border-bottom:0.5px solid rgba(0,0,0,0.06); }
-.niche-banner-top { display:flex; align-items:center; gap:12px; }
-.niche-banner-emoji { font-size:38px; line-height:1; }
-.niche-banner-info { flex:1; }
-.niche-banner-title { font-size:20px; font-weight:760; color:#1c1c1e; letter-spacing:-0.5px; }
-.niche-banner-sub { font-size:12.5px; color:#8e8e93; margin-top:3px; }
-.niche-products-list { flex:1; overflow-y:auto; padding:16px 16px 100px; display:flex; flex-direction:column; gap:12px; }
-.niche-products-list::-webkit-scrollbar { display:none; }
-
-/* ===== NICHE PRODUCT DETAIL (inline style controlled) ===== */
-#page-niche-product-detail {
-  position:fixed; inset:0; z-index:175;
-  background:#fff; max-width:430px; margin:0 auto;
-  display:flex; flex-direction:column;
-  transform:translateX(100%);
-  visibility:hidden; pointer-events:none;
-  transition:transform 0.32s cubic-bezier(0.32,0.72,0,1), visibility 0s linear 0.32s;
-  border-radius:32px 32px 0 0; overflow:hidden;
-}
-#page-niche-product-detail.open {
-  transform:translateX(0);
-  visibility:visible; pointer-events:auto;
-  transition:transform 0.32s cubic-bezier(0.32,0.72,0,1), visibility 0s linear 0s;
+  visibility:hidden;
+  pointer-events:none;
+  transition:transform 0.28s cubic-bezier(0.4,0,0.2,1),
+             visibility 0s linear 0.28s;
+  border-radius:32px 32px 0 0;
+  overflow:hidden;
+  will-change:transform;
+  -webkit-overflow-scrolling:touch;
 }
 
-/* ===== All Detail Pages Base ===== */
-#page-detail, #page-purchase-detail {
-  position:fixed; inset:0; background:#fff; max-width:430px; margin:0 auto;
-  display:flex; flex-direction:column;
-  transform:translateX(100%);
-  transition:transform 0.32s cubic-bezier(0.32,0.72,0,1);
-  border-radius:32px 32px 0 0; overflow:hidden;
-}
-#page-detail { z-index:160; }
-#page-purchase-detail { z-index:155; }
-#page-detail.open, #page-purchase-detail.open { transform:translateX(0); }
+#page-niche          { z-index:145; background:#fff; }
+#page-detail         { z-index:150; background:#fff; }
+#page-purchase-detail{ z-index:155; background:#fff; }
+#page-chat           { z-index:300; background:#f2f2f7; border-radius:0; }
 
-/* ===== Detail Topbar ===== */
+#page-niche.open,
+#page-detail.open,
+#page-purchase-detail.open,
+#page-chat.open {
+  transform:translateX(-50%) translateX(0);
+  visibility:visible;
+  pointer-events:auto;
+  transition:transform 0.28s cubic-bezier(0.4,0,0.2,1),
+             visibility 0s linear 0s;
+}
+
+/* ===== Shared Detail Topbar ===== */
 .detail-topbar {
   display:flex; align-items:center; gap:12px;
   padding:14px 16px 12px; flex-shrink:0;
-  background:#fff; border-bottom:0.5px solid rgba(0,0,0,0.06);
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,0.06);
 }
 
-/* ===== Back Button ===== */
+/* ===== Elegant Back Button ===== */
 .back-btn {
-  display:flex; align-items:center; gap:6px;
-  background:linear-gradient(135deg,rgba(0,122,255,0.09),rgba(0,122,255,0.05));
-  border:1px solid rgba(0,122,255,0.15); border-radius:50px;
-  padding:7px 14px 7px 10px; cursor:pointer;
-  transition:all 0.2s cubic-bezier(0.34,1.2,0.64,1);
-  box-shadow:0 2px 8px rgba(0,122,255,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
-  white-space:nowrap; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,rgba(0,122,255,0.10),rgba(0,122,255,0.06));
+  border:1px solid rgba(0,122,255,0.18);
+  border-radius:50%;
+  width:36px; height:36px;
+  cursor:pointer;
+  transition:transform 0.15s cubic-bezier(0.34,1.2,0.64,1), background 0.15s;
+  color:#007aff;
+  box-shadow:0 2px 8px rgba(0,122,255,0.10), inset 0 1px 0 rgba(255,255,255,0.7);
+  flex-shrink:0;
 }
-.back-btn:active { transform:scale(0.93); }
-.back-btn svg { width:16px; height:16px; stroke:#007aff; stroke-width:2.5; fill:none; }
-.back-btn-label { font-size:14px; font-weight:640; color:#007aff; letter-spacing:-0.2px; }
+.back-btn:active { transform:scale(0.88); background:rgba(0,122,255,0.15); }
+.back-btn svg { width:18px; height:18px; stroke:#007aff; stroke-width:2.5; fill:none; }
+.back-btn-label { display:none; }
 
-.detail-title { font-size:16px; font-weight:650; color:#1c1c1e; letter-spacing:-0.3px; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; margin-right:70px; }
+.detail-title {
+  font-size:16px; font-weight:650; color:#1c1c1e;
+  letter-spacing:-0.3px; flex:1;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  text-align:center; margin-right:70px;
+}
 
-/* ===== Detail Tabs ===== */
-.detail-tabs { display:flex; align-items:center; padding:12px 14px 0; flex-shrink:0; gap:6px; background:#fff; border-bottom:0.5px solid rgba(0,0,0,0.06); }
-.detail-tab { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 0 12px; font-size:13.5px; font-weight:580; color:#aeaeb2; cursor:pointer; border:none; background:transparent; border-bottom:2.5px solid transparent; transition:all 0.22s cubic-bezier(0.34,1.2,0.64,1); }
-.detail-tab svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2; flex-shrink:0; }
-.detail-tab.active { color:#007aff; border-bottom-color:#007aff; font-weight:660; }
+/* ===== Detail Tabs — now uses .seg-tabs-wrap.inline ===== */
+.detail-tabs {
+  display:flex; align-items:center; padding:10px 16px 10px;
+  flex-shrink:0; background:#fff;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+}
+/* hidden for niche products */
+.detail-tabs.hidden { display:none !important; }
+
 .detail-content { flex:1; overflow-y:auto; padding:20px 16px 100px; }
 .detail-content::-webkit-scrollbar { display:none; }
 
-/* ===== Order hero ===== */
-.order-hero { background:linear-gradient(135deg,rgba(0,122,255,0.06),rgba(0,122,255,0.02)); border:0.5px solid rgba(0,122,255,0.12); border-radius:22px; padding:20px; margin-bottom:16px; display:flex; align-items:center; gap:16px; }
+/* ===== Order Hero ===== */
+.order-hero {
+  background:linear-gradient(135deg,rgba(0,122,255,0.06),rgba(0,122,255,0.02));
+  border:0.5px solid rgba(0,122,255,0.12);
+  border-radius:22px; padding:20px; margin-bottom:16px;
+  display:flex; align-items:center; gap:16px;
+}
 .order-hero-thumb { width:70px; height:70px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:32px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); flex-shrink:0; }
 .order-hero-name { font-size:17px; font-weight:650; color:#1c1c1e; margin-bottom:4px; }
 .order-hero-price { font-size:16px; font-weight:620; color:#007aff; margin-bottom:6px; }
 
-/* ===== Customer row ===== */
-.customer-row { display:flex; align-items:center; gap:12px; background:#f9f9fb; border:0.5px solid rgba(0,0,0,0.06); border-radius:16px; padding:12px 14px; margin-bottom:20px; cursor:pointer; transition:all 0.18s ease; }
+/* ===== Customer Row ===== */
+.customer-row {
+  display:flex; align-items:center; gap:12px;
+  background:#f9f9fb; border:0.5px solid rgba(0,0,0,0.06);
+  border-radius:16px; padding:12px 14px; margin-bottom:20px;
+  cursor:pointer; transition:all 0.18s ease;
+}
 .customer-row:active { transform:scale(0.98); background:#f2f2f7; }
 .customer-row-avatar { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,#007aff,#5ac8fa); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .customer-row-avatar svg { width:20px; height:20px; stroke:#fff; fill:none; stroke-width:2; }
@@ -233,7 +290,11 @@ body { background:#f2f2f7; overflow:hidden; }
 .customer-row-arrow { width:16px; height:16px; stroke:#c7c7cc; stroke-width:2; fill:none; }
 
 /* ===== Messages list ===== */
-.msg-contact-row { display:flex; align-items:center; gap:12px; padding:13px 0; border-bottom:0.5px solid rgba(0,0,0,0.06); cursor:pointer; transition:background 0.15s; }
+.msg-contact-row {
+  display:flex; align-items:center; gap:12px;
+  padding:13px 0; border-bottom:0.5px solid rgba(0,0,0,0.06);
+  cursor:pointer; transition:background 0.15s;
+}
 .msg-contact-row:last-child { border-bottom:none; }
 .msg-contact-row:active { background:rgba(0,0,0,0.02); border-radius:12px; }
 .msg-avatar { width:46px; height:46px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; color:#fff; }
@@ -242,33 +303,33 @@ body { background:#f2f2f7; overflow:hidden; }
 .msg-contact-preview { font-size:13px; color:#8e8e93; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .msg-contact-time { font-size:11.5px; color:#aeaeb2; flex-shrink:0; }
 
-/* ===== Chat Page — FIXED ===== */
-#page-chat {
-  position:fixed; inset:0; z-index:300;
-  background:#f2f2f7; max-width:430px; margin:0 auto;
-  display:flex; flex-direction:column;
-  transform:translateX(100%);
-  visibility:hidden; pointer-events:none;
-  transition:transform 0.32s cubic-bezier(0.32,0.72,0,1), visibility 0s linear 0.32s;
+/* ===== Chat Topbar ===== */
+.chat-topbar {
+  display:flex; align-items:center; gap:10px;
+  padding:14px 16px 12px; flex-shrink:0;
+  background:#fff; border-bottom:0.5px solid rgba(0,0,0,0.07);
 }
-#page-chat.open {
-  transform:translateX(0);
-  visibility:visible; pointer-events:auto;
-  transition:transform 0.32s cubic-bezier(0.32,0.72,0,1), visibility 0s linear 0s;
-}
-.chat-topbar { display:flex; align-items:center; gap:10px; padding:14px 16px 12px; flex-shrink:0; background:#fff; border-bottom:0.5px solid rgba(0,0,0,0.07); }
 .chat-avatar { width:36px; height:36px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#fff; }
 .chat-contact-info { flex:1; }
 .chat-name { font-size:15px; font-weight:640; color:#1c1c1e; }
 .chat-status { font-size:11px; color:#34c759; font-weight:500; }
-.chat-messages { flex:1; overflow-y:auto; padding:16px 14px 8px; display:flex; flex-direction:column; gap:4px; }
+
+.chat-messages {
+  flex:1; overflow-y:auto; padding:16px 14px 8px;
+  display:flex; flex-direction:column; gap:4px;
+}
 .chat-messages::-webkit-scrollbar { display:none; }
 .chat-date-sep { text-align:center; margin:8px 0; }
 .chat-date-sep span { font-size:11px; color:#8e8e93; background:#e5e5ea; padding:3px 10px; border-radius:20px; }
+
 .msg-bubble-wrap { display:flex; flex-direction:column; margin-bottom:2px; }
 .msg-bubble-wrap.me { align-items:flex-end; }
 .msg-bubble-wrap.them { align-items:flex-start; }
-.msg-bubble { max-width:72%; padding:10px 14px; border-radius:18px; font-size:14.5px; line-height:1.42; position:relative; word-break:break-word; cursor:pointer; transition:filter 0.15s; user-select:none; }
+.msg-bubble {
+  max-width:72%; padding:10px 14px;
+  border-radius:18px; font-size:14.5px; line-height:1.42;
+  word-break:break-word; cursor:pointer; transition:filter 0.15s; user-select:none;
+}
 .msg-bubble-wrap.me   .msg-bubble { background:#007aff; color:#fff; border-bottom-right-radius:5px; }
 .msg-bubble-wrap.them .msg-bubble { background:#fff; color:#1c1c1e; border-bottom-left-radius:5px; box-shadow:0 1px 4px rgba(0,0,0,0.07); }
 .msg-bubble-wrap.me   .msg-bubble.green { background:#34c759; }
@@ -276,11 +337,23 @@ body { background:#f2f2f7; overflow:hidden; }
 .msg-bubble:active { filter:brightness(0.93); }
 .msg-time { font-size:10.5px; color:#aeaeb2; margin-top:3px; padding:0 4px; }
 .msg-bubble-wrap.me .msg-time { text-align:right; }
-.reply-preview { background:rgba(255,255,255,0.22); border-left:3px solid rgba(255,255,255,0.7); border-radius:8px; padding:5px 9px; margin-bottom:7px; font-size:12px; opacity:0.9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.reply-preview {
+  background:rgba(255,255,255,0.22); border-left:3px solid rgba(255,255,255,0.7);
+  border-radius:8px; padding:5px 9px; margin-bottom:7px; font-size:12px;
+  opacity:0.9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
 .msg-bubble-wrap.them .reply-preview { background:rgba(0,0,0,0.05); border-left-color:#007aff; }
 
-/* ===== Context menu ===== */
-.ctx-menu { position:fixed; z-index:600; background:rgba(255,255,255,0.96); backdrop-filter:blur(20px); border-radius:14px; padding:4px 0; box-shadow:0 8px 32px rgba(0,0,0,0.14); min-width:170px; animation:popIn 0.16s cubic-bezier(0.34,1.56,0.64,1); }
+/* ===== Context Menu ===== */
+.ctx-menu {
+  position:fixed; z-index:600;
+  background:rgba(255,255,255,0.96); backdrop-filter:blur(20px);
+  border-radius:14px; padding:4px 0;
+  box-shadow:0 8px 32px rgba(0,0,0,0.14); min-width:160px;
+  transform-origin:top left;
+  animation:popIn 0.16s cubic-bezier(0.34,1.56,0.64,1);
+}
 @keyframes popIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
 .ctx-item { display:flex; align-items:center; gap:10px; padding:11px 16px; font-size:14px; color:#1c1c1e; cursor:pointer; transition:background 0.12s; }
 .ctx-item:active { background:rgba(0,0,0,0.05); }
@@ -289,7 +362,7 @@ body { background:#f2f2f7; overflow:hidden; }
 .ctx-item.danger { color:#ff3b30; }
 .ctx-sep { height:0.5px; background:#e5e5ea; margin:2px 0; }
 
-/* ===== Reply bar ===== */
+/* ===== Reply Bar ===== */
 .reply-bar { display:none; align-items:center; gap:10px; background:#f2f2f7; padding:8px 14px; border-top:0.5px solid rgba(0,0,0,0.07); animation:slideUp 0.18s ease; }
 .reply-bar.visible { display:flex; }
 @keyframes slideUp { from{transform:translateY(10px);opacity:0} to{transform:translateY(0);opacity:1} }
@@ -298,19 +371,48 @@ body { background:#f2f2f7; overflow:hidden; }
 .reply-bar-text { font-size:12px; color:#3a3a3c; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .reply-cancel { width:24px; height:24px; border:none; background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; }
 .reply-cancel svg { width:18px; height:18px; stroke:#8e8e93; stroke-width:2; fill:none; }
-.chat-input-bar { display:flex; align-items:center; gap:10px; padding:10px 14px 20px; background:#fff; border-top:0.5px solid rgba(0,0,0,0.07); flex-shrink:0; }
-.chat-input { flex:1; background:#f2f2f7; border:none; border-radius:22px; padding:10px 16px; font-size:15px; color:#1c1c1e; outline:none; resize:none; font-family:inherit; line-height:1.3; max-height:100px; overflow-y:auto; }
-.chat-send { width:38px; height:38px; border-radius:50%; border:none; background:#007aff; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; transition:all 0.18s ease; }
+
+/* ===== Chat Input Bar ===== */
+.chat-input-bar {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 14px 20px; background:#fff;
+  border-top:0.5px solid rgba(0,0,0,0.07); flex-shrink:0;
+}
+.chat-input {
+  flex:1; background:#f2f2f7; border:none; border-radius:22px;
+  padding:10px 16px; font-size:15px; color:#1c1c1e;
+  outline:none; resize:none; font-family:inherit; line-height:1.3;
+  max-height:100px; overflow-y:auto;
+}
+.chat-send {
+  width:38px; height:38px; border-radius:50%; border:none;
+  background:#007aff; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; flex-shrink:0; transition:all 0.18s ease;
+}
 .chat-send:active { transform:scale(0.9); }
 .chat-send svg { width:18px; height:18px; stroke:#fff; stroke-width:2.2; fill:none; }
 
 /* ===== Customer Overlay ===== */
-#customer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,0.38); backdrop-filter:blur(6px); display:flex; align-items:flex-end; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.28s ease; max-width:430px; margin:0 auto; }
+#customer-overlay {
+  position:fixed; z-index:400;
+  top:0; bottom:0;
+  left:50%; transform:translateX(-50%);
+  width:100%; max-width:430px;
+  background:rgba(0,0,0,0.38); backdrop-filter:blur(6px);
+  display:flex; align-items:flex-end; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity 0.28s ease;
+  overflow:hidden;
+}
 #customer-overlay.open { opacity:1; pointer-events:auto; }
 .customer-sheet { width:100%; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:0 0 32px; transform:translateY(100%); transition:transform 0.34s cubic-bezier(0.32,0.72,0,1); box-shadow:0 -16px 48px rgba(0,0,0,0.12); overflow:hidden; }
 #customer-overlay.open .customer-sheet { transform:translateY(0); }
 .cs-handle { width:42px; height:4px; background:#d1d1d6; border-radius:4px; margin:14px auto 0; }
-.paper-card { margin:18px 20px 0; background:#fff; border:1px solid #e8e8ed; border-radius:20px; padding:24px 22px 20px; position:relative; box-shadow:0 1px 0 #e8e8ed,0 4px 16px rgba(0,0,0,0.04); }
+
+.paper-card {
+  margin:18px 20px 0; background:#fff; border:1px solid #e8e8ed;
+  border-radius:20px; padding:24px 22px 20px; position:relative;
+  box-shadow:0 1px 0 #e8e8ed, 0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+}
 .paper-card::before { content:''; position:absolute; inset:0; border-radius:20px; background:repeating-linear-gradient(to bottom,transparent,transparent 27px,rgba(0,0,0,0.022) 27px,rgba(0,0,0,0.022) 28px); pointer-events:none; }
 .paper-card::after { content:''; position:absolute; top:-1px; left:50%; transform:translateX(-50%); width:40px; height:6px; background:#f2f2f7; border-bottom-left-radius:8px; border-bottom-right-radius:8px; border:1px solid #e8e8ed; border-top:none; }
 .paper-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; position:relative; }
@@ -326,7 +428,6 @@ body { background:#f2f2f7; overflow:hidden; }
 .pf-value { font-size:14px; font-weight:520; color:#1c1c1e; }
 .paper-qr-section { margin-top:22px; padding-top:18px; border-top:1px dashed #d1d1d6; display:flex; align-items:center; gap:14px; position:relative; }
 .paper-qr-box { width:72px; height:72px; flex-shrink:0; background:#fff; border:1px solid #e8e8ed; border-radius:10px; display:flex; align-items:center; justify-content:center; padding:4px; }
-.paper-qr-box canvas { border-radius:6px; }
 .paper-qr-title { font-size:12px; font-weight:630; color:#1c1c1e; margin-bottom:3px; }
 .paper-qr-sub { font-size:11px; color:#8e8e93; line-height:1.4; }
 .cs-actions { display:flex; gap:10px; padding:16px 20px 0; }
@@ -336,21 +437,24 @@ body { background:#f2f2f7; overflow:hidden; }
 .cs-btn-download { background:#007aff; color:#fff; box-shadow:0 4px 14px rgba(0,122,255,0.25); }
 .cs-btn-print    { background:#f2f2f7; color:#3a3a3c; }
 
-/* ===== Purchase card ===== */
-.purchase-card { display:flex; align-items:center; gap:14px; background:#f9f9fb; border:0.5px solid rgba(0,0,0,0.06); border-radius:20px; padding:14px 16px; margin-bottom:12px; cursor:pointer; transition:all 0.18s cubic-bezier(0.34,1.2,0.64,1); }
+/* ===== Empty state ===== */
+.empty-mini { display:flex; flex-direction:column; align-items:center; padding:40px 20px; text-align:center; }
+.empty-mini-icon { width:56px; height:56px; background:rgba(0,122,255,0.08); border-radius:20px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+.empty-mini-icon svg { width:28px; height:28px; stroke:#007aff; fill:none; }
+.empty-mini-title { font-size:15px; font-weight:590; color:#1c1c1e; margin-bottom:4px; }
+.empty-mini-sub { font-size:12px; color:#8e8e93; }
+
+/* ===== Purchase product card ===== */
+.purchase-card {
+  display:flex; align-items:center; gap:14px;
+  background:#f9f9fb; border:0.5px solid rgba(0,0,0,0.06);
+  border-radius:20px; padding:14px 16px; margin-bottom:12px;
+  cursor:pointer; transition:all 0.18s cubic-bezier(0.34,1.2,0.64,1);
+}
 .purchase-card:active { transform:scale(0.97); background:#f2f2f7; }
 
-/* ===== Info rows ===== */
-.info-block { background:#f9f9fb; border:0.5px solid rgba(0,0,0,0.06); border-radius:16px; padding:16px; margin-bottom:12px; }
-.info-block-label { font-size:11px; color:#aeaeb2; margin-bottom:10px; font-weight:600; letter-spacing:0.8px; text-transform:uppercase; }
-.info-row { display:flex; justify-content:space-between; margin-bottom:8px; }
-.info-row:last-child { margin-bottom:0; }
-.info-row-key { font-size:13px; color:#8e8e93; }
-.info-row-val { font-size:13px; font-weight:560; color:#1c1c1e; }
-.info-row-val.blue { color:#007aff; font-weight:700; }
-
 /* ===== Bottom Nav ===== */
-.bottom-nav-wrap { position:absolute; bottom:0; left:0; right:0; max-width:430px; height:90px; display:flex; align-items:flex-start; justify-content:center; padding-top:10px; background:linear-gradient(to top,rgba(255,255,255,0.94),rgba(255,255,255,0.5) 55%,rgba(255,255,255,0)); pointer-events:none; z-index:100; }
+.bottom-nav-wrap { position:absolute; bottom:0; left:0; right:0; height:90px; display:flex; align-items:flex-start; justify-content:center; padding-top:10px; background:linear-gradient(to top,rgba(255,255,255,0.94),rgba(255,255,255,0.5) 55%,rgba(255,255,255,0)); pointer-events:none; z-index:100; }
 .bottom-nav { pointer-events:auto; width:calc(100% - 48px); max-width:320px; height:58px; position:relative; background:rgba(255,255,255,0.52); backdrop-filter:blur(40px) saturate(220%); border:0.6px solid rgba(255,255,255,0.75); border-radius:36px; box-shadow:0 6px 24px rgba(0,0,0,0.05),inset 0 1px 0 rgba(255,255,255,0.9); display:flex; align-items:center; padding:4px 6px; }
 .nav-droplet { position:absolute; top:50%; transform:translateY(-50%); width:70px; height:46px; border-radius:30px; background:rgba(255,255,255,0.65); border:0.6px solid rgba(255,255,255,0.9); box-shadow:0 3px 12px rgba(0,0,0,0.04),inset 0 1px 0 rgba(255,255,255,0.95); transition:left 0.32s cubic-bezier(0.34,1.56,0.64,1); pointer-events:auto; z-index:1; }
 .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; background:transparent; border:none; cursor:pointer; gap:2px; padding:7px 0; border-radius:28px; color:#aeaeb2; position:relative; z-index:2; transition:color 0.2s; user-select:none; }
@@ -367,6 +471,7 @@ body { background:#f2f2f7; overflow:hidden; }
 <div class="app-shell">
   <div class="toast" id="toast"></div>
 
+  <!-- Top Bar -->
   <div class="top-bar">
     <div class="center-dropdown" id="centerDropdown">
       <span class="dropdown-title" id="selectedTabTitle">Orders</span>
@@ -376,61 +481,70 @@ body { background:#f2f2f7; overflow:hidden; }
     </div>
   </div>
 
+  <!-- Main Pages -->
   <div class="pages-container">
-    <div class="page active-page" id="page-flow"><div id="flowContent"></div></div>
+    <div class="page active-page" id="page-flow">
+      <div id="flowContent"></div>
+    </div>
   </div>
 
-  <!-- Orders Detail -->
+  <!-- Niche Inner Page -->
+  <div id="page-niche">
+    <div class="detail-topbar">
+      <button class="back-btn" id="nicheBackBtn">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        <span class="back-btn-label">Niches</span>
+      </button>
+      <span class="detail-title" id="nicheTitleBar"></span>
+    </div>
+    <div class="detail-content" id="nicheContent"></div>
+  </div>
+
+  <!-- Product Detail Page (Orders / Niche) -->
   <div id="page-detail">
     <div class="detail-topbar">
-      <button class="back-btn" id="backBtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span class="back-btn-label">Back</span></button>
+      <button class="back-btn" id="backBtn">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        <span class="back-btn-label" id="backBtnLabel">Back</span>
+      </button>
       <span class="detail-title" id="detailTitle">Order Details</span>
     </div>
-    <div class="detail-tabs">
-      <button class="detail-tab active" id="dtab-orders" onclick="switchDetailTab('orders')">
-        <svg viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M21 10.498V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l.98-.559"/><path d="M3.29 7 12 12l8.71-5"/><circle cx="18.5" cy="16.5" r="2.5"/></svg>
-        Orders
-      </button>
-      <button class="detail-tab" id="dtab-messages" onclick="switchDetailTab('messages')">
-        <svg viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M7 11h10"/><path d="M7 15h6"/></svg>
-        Messages
-      </button>
+    <!-- Unified glass tabs for Orders / Messages inside product detail -->
+    <div class="detail-tabs hidden" id="detailTabsBar">
+      <div class="seg-tabs-glass" id="detailSegGlass" style="flex:1">
+        <div class="seg-slider" id="detailSegSlider"></div>
+        <button class="seg-tab active" id="dtab-orders" data-dtab="orders" onclick="switchDetailTab('orders')">
+          <svg viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M20.27 18.27 22 20"/><path d="M21 10.498V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l.98-.559"/><path d="M3.29 7 12 12l8.71-5"/><path d="m7.5 4.27 8.997 5.148"/><circle cx="18.5" cy="16.5" r="2.5"/></svg>
+          Orders
+        </button>
+        <button class="seg-tab" id="dtab-messages" data-dtab="messages" onclick="switchDetailTab('messages')">
+          <svg viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M7 11h10"/><path d="M7 15h6"/></svg>
+          Messages
+        </button>
+      </div>
     </div>
     <div class="detail-content" id="detailContent"></div>
   </div>
 
-  <!-- Purchase Detail -->
+  <!-- Purchase Detail Page -->
   <div id="page-purchase-detail">
     <div class="detail-topbar">
-      <button class="back-btn" id="purchaseBackBtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span class="back-btn-label">Purchases</span></button>
+      <button class="back-btn" id="purchaseBackBtn">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        <span class="back-btn-label">Purchases</span>
+      </button>
       <span class="detail-title" id="purchaseDetailTitle">Product Details</span>
     </div>
     <div class="detail-content" id="purchaseDetailContent"></div>
   </div>
 
-  <!-- Niche Detail -->
-  <div id="page-niche-detail">
-    <div class="detail-topbar">
-      <button class="back-btn" id="nicheBackBtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span class="back-btn-label">Niches</span></button>
-      <span class="detail-title" id="nicheDetailTitle">Niche</span>
-    </div>
-    <div class="niche-detail-banner" id="nicheBanner"></div>
-    <div class="niche-products-list" id="nicheProductsList"></div>
-  </div>
-
-  <!-- Niche Product Detail -->
-  <div id="page-niche-product-detail">
-    <div class="detail-topbar">
-      <button class="back-btn" id="nicheProductBackBtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span class="back-btn-label">Back</span></button>
-      <span class="detail-title" id="nicheProductDetailTitle">Product</span>
-    </div>
-    <div class="detail-content" id="nicheProductDetailContent"></div>
-  </div>
-
-  <!-- Chat -->
+  <!-- Chat Page — FIXED: starts hidden -->
   <div id="page-chat">
     <div class="chat-topbar">
-      <button class="back-btn" id="chatBackBtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span class="back-btn-label">Back</span></button>
+      <button class="back-btn" id="chatBackBtn">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        <span class="back-btn-label" id="chatBackLabel">Back</span>
+      </button>
       <div class="chat-avatar" id="chatAvatar"></div>
       <div class="chat-contact-info">
         <div class="chat-name" id="chatName"></div>
@@ -443,11 +557,15 @@ body { background:#f2f2f7; overflow:hidden; }
         <div class="reply-bar-name" id="replyBarName"></div>
         <div class="reply-bar-text" id="replyBarText"></div>
       </div>
-      <button class="reply-cancel" onclick="cancelReply()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <button class="reply-cancel" onclick="cancelReply()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
     <div class="chat-input-bar">
       <textarea class="chat-input" id="chatInput" placeholder="Message..." rows="1"></textarea>
-      <button class="chat-send" id="chatSendBtn"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      <button class="chat-send" id="chatSendBtn">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
     </div>
   </div>
 
@@ -455,7 +573,7 @@ body { background:#f2f2f7; overflow:hidden; }
   <div id="customer-overlay" onclick="closeCustomerOverlay(event)">
     <div class="customer-sheet">
       <div class="cs-handle"></div>
-      <div class="paper-card">
+      <div class="paper-card" id="paperCard">
         <div class="paper-header">
           <div><div class="paper-brand">Flow</div><div class="paper-doc-label" id="paperDocLabel">Delivery Document</div></div>
           <div class="paper-stamp" id="paperStamp">Shipped</div>
@@ -473,8 +591,12 @@ body { background:#f2f2f7; overflow:hidden; }
         </div>
       </div>
       <div class="cs-actions">
-        <button class="cs-btn cs-btn-download" onclick="downloadCard()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save Image</button>
-        <button class="cs-btn cs-btn-print" onclick="printCard()"><svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print</button>
+        <button class="cs-btn cs-btn-download" onclick="downloadCard()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save Image
+        </button>
+        <button class="cs-btn cs-btn-print" onclick="printCard()">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print
+        </button>
       </div>
     </div>
   </div>
@@ -494,109 +616,191 @@ body { background:#f2f2f7; overflow:hidden; }
     </div>
   </div>
 </div>
+
+<!-- Context menu (outside app-shell) -->
 <div class="ctx-menu" id="ctxMenu" style="display:none"></div>
 
 <script>
-const packageIcon  = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M21 10.498V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l.98-.559"/><path d="M3.29 7 12 12l8.71-5"/><circle cx="18.5" cy="16.5" r="2.5"/></svg>`;
+// ===== SVG Icons =====
+const packageIcon  = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M20.27 18.27 22 20"/><path d="M21 10.498V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l.98-.559"/><path d="M3.29 7 12 12l8.71-5"/><path d="m7.5 4.27 8.997 5.148"/><circle cx="18.5" cy="16.5" r="2.5"/></svg>`;
 const shoppingIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>`;
 const blocksIcon   = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg>`;
+const nicheSVG     = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg>`;
 
-/* DATA */
+// ===== Orders Data =====
 const products = [
-  { id:1,emoji:'👟',bg:'#fff3e0',name:'Air Max Running Shoes',variant:'Size 42 — White',price:'12,500 DA',delivered:true,
-    customer:{name:'Youcef Benali',location:'Algiers, Bab Ezzouar',phone:'+213 555 123 456',carrier:'Yalidine Express'},
-    contact:{name:'Youcef Benali',color:'#007aff',initials:'YB',messages:[
-      {id:1,from:'them',text:'Hello, I placed an order for the shoes.',time:'10:02 AM'},
-      {id:2,from:'me',text:'Hi! Your order has been confirmed and will be shipped today.',time:'10:05 AM'},
-      {id:3,from:'them',text:'Great, thank you! What is the tracking number?',time:'10:06 AM'},
-      {id:4,from:'me',text:'Your tracking number is YD-4492837. You can track via Yalidine.',time:'10:08 AM'},
-      {id:5,from:'them',text:'Perfect, I appreciate it!',time:'10:09 AM'},
-    ]}},
-  { id:2,emoji:'🎧',bg:'#e8f5e9',name:'Wireless Headphones Pro',variant:'Color: Midnight Black',price:'8,900 DA',delivered:false,
-    customer:{name:'Amira Khelifi',location:'Oran, Bir El Djir',phone:'+213 550 987 654',carrier:'Zaki Delivery'},
-    contact:{name:'Amira Khelifi',color:'#ff6b6b',initials:'AK',messages:[
-      {id:1,from:'them',text:'When will my headphones be delivered?',time:'2:15 PM'},
-      {id:2,from:'me',text:'Your order is being processed. Expected delivery within 2-3 days.',time:'2:18 PM'},
-      {id:3,from:'them',text:'Okay, can you update me once it ships?',time:'2:19 PM'},
-      {id:4,from:'me',text:'Absolutely! We will notify you via SMS once it is handed to the courier.',time:'2:21 PM'},
-    ]}},
-  { id:3,emoji:'⌚',bg:'#e3f2fd',name:'Smart Watch Series 7',variant:'Band: Silver / 44mm',price:'21,000 DA',delivered:true,
-    customer:{name:'Karim Ouahrani',location:'Constantine, Ain Abid',phone:'+213 561 444 222',carrier:'Guepex'},
-    contact:{name:'Karim Ouahrani',color:'#34c759',initials:'KO',messages:[
-      {id:1,from:'them',text:'I received the watch. It looks great!',time:'Yesterday'},
-      {id:2,from:'me',text:'Glad to hear that! Please leave us a review.',time:'Yesterday'},
-      {id:3,from:'them',text:'Will do. The packaging was also very nice.',time:'Yesterday'},
-    ]}}
+  { id:1, emoji:'👟', bg:'#fff3e0', name:'Air Max Running Shoes', variant:'Size 42 — White', price:'12,500 DA', delivered:true,
+    customer:{ name:'Youcef Benali', location:'Algiers, Bab Ezzouar', phone:'+213 555 123 456', carrier:'Yalidine Express' },
+    contact:{ name:'Youcef Benali', color:'#007aff', initials:'YB',
+      messages:[
+        { id:1, from:'them', text:'Hello, I placed an order for the shoes.', time:'10:02 AM' },
+        { id:2, from:'me',   text:'Hi! Your order has been confirmed and will be shipped today.', time:'10:05 AM' },
+        { id:3, from:'them', text:'Great, thank you! What is the tracking number?', time:'10:06 AM' },
+        { id:4, from:'me',   text:'Your tracking number is YD-4492837. You can track via Yalidine.', time:'10:08 AM' },
+        { id:5, from:'them', text:'Perfect, I appreciate it!', time:'10:09 AM' },
+      ]}},
+  { id:2, emoji:'🎧', bg:'#e8f5e9', name:'Wireless Headphones Pro', variant:'Color: Midnight Black', price:'8,900 DA', delivered:false,
+    customer:{ name:'Amira Khelifi', location:'Oran, Bir El Djir', phone:'+213 550 987 654', carrier:'Zaki Delivery' },
+    contact:{ name:'Amira Khelifi', color:'#ff6b6b', initials:'AK',
+      messages:[
+        { id:1, from:'them', text:'When will my headphones be delivered?', time:'2:15 PM' },
+        { id:2, from:'me',   text:'Your order is being processed. Expected delivery within 2-3 days.', time:'2:18 PM' },
+        { id:3, from:'them', text:'Okay, can you update me once it ships?', time:'2:19 PM' },
+        { id:4, from:'me',   text:'Absolutely! We will notify you via SMS once it is handed to the courier.', time:'2:21 PM' },
+      ]}},
+  { id:3, emoji:'⌚', bg:'#e3f2fd', name:'Smart Watch Series 7', variant:'Band: Silver / 44mm', price:'21,000 DA', delivered:true,
+    customer:{ name:'Karim Ouahrani', location:'Constantine, Ain Abid', phone:'+213 561 444 222', carrier:'Guepex' },
+    contact:{ name:'Karim Ouahrani', color:'#34c759', initials:'KO',
+      messages:[
+        { id:1, from:'them', text:'I received the watch. It looks great!', time:'Yesterday' },
+        { id:2, from:'me',   text:'Glad to hear that! Please leave us a review.', time:'Yesterday' },
+        { id:3, from:'them', text:'Will do. The packaging was also very nice.', time:'Yesterday' },
+      ]}}
 ];
-const purchaseProducts = [
-  { id:101,emoji:'💻',bg:'#ede7f6',name:'MacBook Pro 14" M3',variant:'Space Grey / 16GB RAM',price:'289,000 DA',orderDate:'Apr 20, 2026',status:'Delivered',
-    seller:{name:'TechStore DZ',location:'Algiers, Hussein Dey',phone:'+213 21 334 455',carrier:'Yalidine Express'}},
-  { id:102,emoji:'📷',bg:'#fce4ec',name:'Sony Alpha A7 III',variant:'Body Only — Black',price:'195,500 DA',orderDate:'May 1, 2026',status:'In Transit',
-    seller:{name:'PhotoPro Algeria',location:'Oran, Centre',phone:'+213 41 778 899',carrier:'Zaki Delivery'}}
-];
-const purchaseContacts = [
-  { id:201,name:'TechStore DZ',initials:'TD',color:'#5856d6',messages:[
-      {id:1,from:'them',text:'Hello! Your MacBook has been dispatched.',time:'Apr 22'},
-      {id:2,from:'me',text:'Thank you! When will it arrive?',time:'Apr 22'},
-      {id:3,from:'them',text:'Expected delivery in 2 business days.',time:'Apr 22'},
-      {id:4,from:'me',text:'Great, I will be home on Friday.',time:'Apr 22'},
-      {id:5,from:'them',text:'Perfect, our courier will call before delivery.',time:'Apr 23'},
-  ]},
-  { id:202,name:'PhotoPro Algeria',initials:'PA',color:'#ff9500',messages:[
-      {id:1,from:'me',text:'Hi, I ordered the Sony A7 III. Any updates?',time:'May 2'},
-      {id:2,from:'them',text:'Hello! Your camera is being packed now.',time:'May 2'},
-      {id:3,from:'me',text:'Is it the original box with all accessories?',time:'May 2'},
-      {id:4,from:'them',text:'Yes, full retail box with battery, charger and strap.',time:'May 3'},
-  ]}
-];
+
+// ===== Niches Data =====
 const niches = [
-  { id:'fashion',emoji:'👗',name:'Fashion & Style',color:'#ff6b9d',bg:'#fff0f5',description:'Trending clothing & accessories',
+  {
+    id:'niche1', emoji:'👗', bg:'linear-gradient(135deg,#fce4ec,#f8bbd0)',
+    name:'Fashion & Style', count:4,
     products:[
-      {id:'n1',emoji:'👗',bg:'#fff0f5',name:'Summer Floral Dress',variant:'Size M — Pink',price:'4,500 DA',delivered:true,customer:{name:'Sara Benadouda',location:'Algiers, Kouba',phone:'+213 555 001 122',carrier:'Yalidine Express'}},
-      {id:'n2',emoji:'👒',bg:'#fffde7',name:'Straw Sun Hat',variant:'One Size — Beige',price:'1,800 DA',delivered:false,customer:{name:'Nadia Hamidi',location:'Blida, Centre',phone:'+213 556 333 444',carrier:'Zaki Delivery'}},
-      {id:'n3',emoji:'👜',bg:'#fce4ec',name:'Leather Tote Bag',variant:'Color: Caramel',price:'7,200 DA',delivered:true,customer:{name:'Lina Bouzid',location:'Sétif, Centre',phone:'+213 561 555 666',carrier:'Guepex'}},
-      {id:'n4',emoji:'🕶️',bg:'#e8f5e9',name:'Aviator Sunglasses',variant:'Gold Frame / Dark Lens',price:'2,300 DA',delivered:false,customer:{name:'Yasmine Mellah',location:'Annaba, Seraidi',phone:'+213 555 777 888',carrier:'Yalidine Express'}},
+      { id:'n1p1', emoji:'👗', bg:'#fce4ec', name:'Linen Summer Dress', variant:'Size M — Beige', price:'4,200 DA', delivered:true,
+        customer:{ name:'Sara Mansouri', location:'Algiers, El Biar', phone:'+213 555 010 203', carrier:'Yalidine Express' },
+        contact:{ name:'Sara Mansouri', color:'#ff6b6b', initials:'SM',
+          messages:[
+            { id:1, from:'them', text:'Hello, I ordered the dress, when will it arrive?', time:'9:10 AM' },
+            { id:2, from:'me',   text:'Hi Sara! Your order was shipped today via Yalidine.', time:'9:14 AM' },
+            { id:3, from:'them', text:'Perfect, thank you!', time:'9:15 AM' },
+          ]}},
+      { id:'n1p2', emoji:'👠', bg:'#f3e5f5', name:'Heeled Leather Sandals', variant:'Size 38 — Nude', price:'3,800 DA', delivered:false,
+        customer:{ name:'Nadia Hamdi', location:'Blida, Centre', phone:'+213 25 411 222', carrier:'Zaki Delivery' },
+        contact:{ name:'Nadia Hamdi', color:'#af52de', initials:'NH',
+          messages:[
+            { id:1, from:'them', text:'Do you have size 39 available?', time:'11:30 AM' },
+            { id:2, from:'me',   text:'Currently only size 38 is available. We will restock soon.', time:'11:35 AM' },
+          ]}},
+      { id:'n1p3', emoji:'🧣', bg:'#e8eaf6', name:'Cashmere Scarf', variant:'Color: Camel', price:'2,500 DA', delivered:true,
+        customer:{ name:'Rim Boukhalfa', location:'Oran, Bir El Djir', phone:'+213 41 889 001', carrier:'Guepex' },
+        contact:{ name:'Rim Boukhalfa', color:'#34c759', initials:'RB',
+          messages:[
+            { id:1, from:'them', text:'I received the scarf, it is beautiful!', time:'Yesterday' },
+            { id:2, from:'me',   text:'So happy to hear that! Enjoy it.', time:'Yesterday' },
+          ]}},
+      { id:'n1p4', emoji:'👜', bg:'#fff8e1', name:'Mini Leather Bag', variant:'Color: Black', price:'5,900 DA', delivered:false,
+        customer:{ name:'Asma Talbi', location:'Annaba, Centre', phone:'+213 38 556 789', carrier:'Yalidine Express' },
+        contact:{ name:'Asma Talbi', color:'#ff9500', initials:'AT',
+          messages:[
+            { id:1, from:'them', text:'Is the bag genuine leather?', time:'3:00 PM' },
+            { id:2, from:'me',   text:'Yes, 100% genuine leather. High quality.', time:'3:05 PM' },
+            { id:3, from:'them', text:'Great, I will place an order!', time:'3:06 PM' },
+          ]}},
+    ]
+  },
+  {
+    id:'niche2', emoji:'⚡', bg:'linear-gradient(135deg,#e3f2fd,#bbdefb)',
+    name:'Tech & Gadgets', count:4,
+    products:[
+      { id:'n2p1', emoji:'🖥️', bg:'#e3f2fd', name:'4K USB-C Monitor', variant:'27" — Space Grey', price:'62,000 DA', delivered:true,
+        customer:{ name:'Walid Bensalem', location:'Algiers, Kouba', phone:'+213 21 332 001', carrier:'Yalidine Express' },
+        contact:{ name:'Walid Bensalem', color:'#007aff', initials:'WB',
+          messages:[
+            { id:1, from:'them', text:'Does the monitor support 144Hz?', time:'10:00 AM' },
+            { id:2, from:'me',   text:'Yes, it supports up to 144Hz via DisplayPort.', time:'10:03 AM' },
+            { id:3, from:'them', text:'Perfect, just what I needed. Thanks!', time:'10:04 AM' },
+          ]}},
+      { id:'n2p2', emoji:'🖱️', bg:'#e8f5e9', name:'Wireless Ergonomic Mouse', variant:'Color: White', price:'3,200 DA', delivered:true,
+        customer:{ name:'Omar Ferhat', location:'Setif, Centre', phone:'+213 36 991 112', carrier:'Zaki Delivery' },
+        contact:{ name:'Omar Ferhat', color:'#34c759', initials:'OF',
+          messages:[
+            { id:1, from:'them', text:'Is the mouse compatible with Mac?', time:'1:20 PM' },
+            { id:2, from:'me',   text:'Yes, fully compatible with Mac and Windows.', time:'1:25 PM' },
+          ]}},
+      { id:'n2p3', emoji:'🔋', bg:'#fff3e0', name:'MagSafe Power Bank 10K', variant:'Color: Midnight', price:'7,500 DA', delivered:false,
+        customer:{ name:'Ilyes Khaldi', location:'Constantine, Ain Nahas', phone:'+213 31 002 334', carrier:'Guepex' },
+        contact:{ name:'Ilyes Khaldi', color:'#ff9500', initials:'IK',
+          messages:[
+            { id:1, from:'them', text:'When will it be delivered?', time:'8:50 AM' },
+            { id:2, from:'me',   text:'Expected delivery in 2-3 business days.', time:'8:55 AM' },
+          ]}},
+      { id:'n2p4', emoji:'🎮', bg:'#f3e5f5', name:'Mechanical Keyboard TKL', variant:'Red Switches — Black', price:'14,800 DA', delivered:false,
+        customer:{ name:'Hamza Rezki', location:'Tizi Ouzou, Centre', phone:'+213 26 778 990', carrier:'Yalidine Express' },
+        contact:{ name:'Hamza Rezki', color:'#af52de', initials:'HR',
+          messages:[
+            { id:1, from:'them', text:'Are the switches hot-swappable?', time:'5:10 PM' },
+            { id:2, from:'me',   text:'Yes, fully hot-swappable PCB included.', time:'5:14 PM' },
+            { id:3, from:'them', text:'Awesome, placing the order now!', time:'5:15 PM' },
+          ]}},
+    ]
+  }
+];
+
+// ===== Purchases Data =====
+const purchaseProducts = [
+  { id:101, emoji:'💻', bg:'#ede7f6', name:'MacBook Pro 14" M3', variant:'Space Grey / 16GB RAM', price:'289,000 DA', orderDate:'Apr 20, 2026', status:'Delivered',
+    seller:{ name:'TechStore DZ', location:'Algiers, Hussein Dey', phone:'+213 21 334 455', carrier:'Yalidine Express' }},
+  { id:102, emoji:'📷', bg:'#fce4ec', name:'Sony Alpha A7 III', variant:'Body Only — Black', price:'195,500 DA', orderDate:'May 1, 2026', status:'In Transit',
+    seller:{ name:'PhotoPro Algeria', location:'Oran, Centre', phone:'+213 41 778 899', carrier:'Zaki Delivery' }}
+];
+
+const purchaseContacts = [
+  { id:201, name:'TechStore DZ', initials:'TD', color:'#5856d6',
+    messages:[
+      { id:1, from:'them', text:'Hello! Your MacBook has been dispatched.', time:'Apr 22' },
+      { id:2, from:'me',   text:'Thank you! When will it arrive?', time:'Apr 22' },
+      { id:3, from:'them', text:'Expected delivery in 2 business days.', time:'Apr 22' },
+      { id:4, from:'me',   text:'Great, I will be home on Friday.', time:'Apr 22' },
+      { id:5, from:'them', text:'Perfect, our courier will call before delivery.', time:'Apr 23' },
     ]},
-  { id:'tech',emoji:'💡',name:'Tech & Gadgets',color:'#007aff',bg:'#e8f0ff',description:'Smart devices & accessories',
-    products:[
-      {id:'n5',emoji:'🖱️',bg:'#e8f0ff',name:'Wireless Mouse Pro',variant:'Silent Click — White',price:'3,200 DA',delivered:true,customer:{name:'Hamza Kaci',location:'Tizi Ouzou, Centre',phone:'+213 555 900 100',carrier:'Guepex'}},
-      {id:'n6',emoji:'🔌',bg:'#e8f5e9',name:'65W GaN Charger',variant:'USB-C — Black',price:'2,700 DA',delivered:false,customer:{name:'Yacine Bensalem',location:'Béjaïa, Centre',phone:'+213 556 200 300',carrier:'Zaki Delivery'}},
-      {id:'n7',emoji:'🎮',bg:'#fce4ec',name:'Bluetooth Gamepad',variant:'Android / iOS Compatible',price:'5,500 DA',delivered:true,customer:{name:'Sofiane Amar',location:'Constantine, Centre',phone:'+213 561 400 500',carrier:'Yalidine Express'}},
-      {id:'n8',emoji:'💡',bg:'#fff9c4',name:'Smart LED Strip 5m',variant:'RGB — App Controlled',price:'4,100 DA',delivered:false,customer:{name:'Rania Cherif',location:'Oran, Sidi El Houari',phone:'+213 555 600 700',carrier:'Guepex'}},
+  { id:202, name:'PhotoPro Algeria', initials:'PA', color:'#ff9500',
+    messages:[
+      { id:1, from:'me',   text:'Hi, I ordered the Sony A7 III. Any updates?', time:'May 2' },
+      { id:2, from:'them', text:'Hello! Your camera is being packed now.', time:'May 2' },
+      { id:3, from:'me',   text:'Is it the original box with all accessories?', time:'May 2' },
+      { id:4, from:'them', text:'Yes, full retail box with battery, charger and strap.', time:'May 3' },
     ]}
 ];
+
 const tabs = [
-  {id:'orders',title:'Orders',subtitle:'Track your product orders',icon:packageIcon},
-  {id:'purchases',title:'Purchases',subtitle:'View your buying history',icon:shoppingIcon},
-  {id:'niches',title:'Niches',subtitle:'Curated collections',icon:blocksIcon}
+  { id:'orders',    title:'Orders',    subtitle:'Track your product orders', icon:packageIcon  },
+  { id:'purchases', title:'Purchases', subtitle:'View your buying history',  icon:shoppingIcon },
+  { id:'niches',    title:'Niches',    subtitle:'Curated collections',       icon:blocksIcon   }
 ];
 
-/* STATE */
-let currentTab='orders', isSheetOpen=false, purchasesSubTab='items';
-let currentProduct=null, detailTab='orders';
-let currentContact=null, chatMessages=[], replyTarget=null;
-let longPressTimer=null, greenBubbles=new Set();
-let currentPurchase=null, currentNiche=null, currentNicheProduct=null;
-let chatSource='orders';
+// ===== State =====
+let currentTab       = 'orders';
+let isSheetOpen      = false;
+let purchasesSubTab  = 'items';
+let currentProduct   = null;       // for orders / niche product
+let detailTab        = 'orders';
+let currentContact   = null;
+let chatMessages     = [];
+let replyTarget      = null;
+let longPressTimer   = null;
+let greenBubbles     = new Set();
+let currentPurchase  = null;
+let currentNiche     = null;
+let chatSource       = 'orders';   // 'orders' | 'purchases'
+let detailSource     = 'orders';   // 'orders' | 'niche'
 
-/* DOM */
-const sheet=document.getElementById('bottomSheet');
-const dropdown=document.getElementById('centerDropdown');
-const flowContent=document.getElementById('flowContent');
-const sheetItemsContainer=document.getElementById('sheetItemsContainer');
-const pageDetail=document.getElementById('page-detail');
-const detailContent=document.getElementById('detailContent');
-const pageChat=document.getElementById('page-chat');
-const pagePurchaseDetail=document.getElementById('page-purchase-detail');
-const purchaseDetailContent=document.getElementById('purchaseDetailContent');
-const pageNicheDetail=document.getElementById('page-niche-detail');
-const pageNicheProductDetail=document.getElementById('page-niche-product-detail');
+// ===== DOM refs =====
+const sheet                 = document.getElementById('bottomSheet');
+const dropdown              = document.getElementById('centerDropdown');
+const flowContent           = document.getElementById('flowContent');
+const sheetItemsContainer   = document.getElementById('sheetItemsContainer');
+const pageDetail            = document.getElementById('page-detail');
+const detailContent         = document.getElementById('detailContent');
+const pageChat              = document.getElementById('page-chat');
+const pagePurchaseDetail    = document.getElementById('page-purchase-detail');
+const purchaseDetailContent = document.getElementById('purchaseDetailContent');
+const pageNiche             = document.getElementById('page-niche');
+const nicheContent          = document.getElementById('nicheContent');
 
-/* ---- ORDERS ---- */
-function renderOrders(){
-  const cards=products.map(p=>{
-    const dc=p.delivered?'delivered':'waiting', dl=p.delivered?'Delivered':'Awaiting delivery';
-    return`<div class="product-card" onclick="openProductDetail(${p.id})">
+// ===== RENDER ORDERS =====
+function renderOrders() {
+  const cards = products.map(p => {
+    const dc = p.delivered ? 'delivered' : 'waiting';
+    const dl = p.delivered ? 'Delivered' : 'Awaiting delivery';
+    return `<div class="product-card" onclick="openProductDetail(${p.id},'orders')">
       <div class="product-thumb" style="background:${p.bg}">${p.emoji}</div>
       <div class="product-info">
         <div class="product-name">${p.name}</div>
@@ -606,339 +810,482 @@ function renderOrders(){
       <svg class="card-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
     </div>`;
   }).join('');
-  flowContent.innerHTML=`
+
+  flowContent.innerHTML = `
     <div class="section-header">
       <div class="divider">
         <div class="divider-line"></div>
-        <svg class="divider-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M21 10.498V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l.98-.559"/><path d="M3.29 7 12 12l8.71-5"/><circle cx="18.5" cy="16.5" r="2.5"/></svg>
+        <svg class="divider-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22V12"/><path d="M20.27 18.27 22 20"/>
+          <path d="M21 10.498V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l.98-.559"/>
+          <path d="M3.29 7 12 12l8.71-5"/><path d="m7.5 4.27 8.997 5.148"/>
+          <circle cx="18.5" cy="16.5" r="2.5"/>
+        </svg>
         <div class="divider-text">My Orders</div>
         <div class="divider-line"></div>
       </div>
     </div>
     <div class="products-list">${cards}</div>`;
 }
-function openProductDetail(id){
-  currentProduct=products.find(p=>p.id===id); if(!currentProduct)return;
-  document.getElementById('detailTitle').textContent=currentProduct.name;
-  detailTab='orders'; setDetailTab('orders'); renderDetailContent();
-  pageDetail.classList.add('open');
-}
-function closeProductDetail(){ pageDetail.classList.remove('open'); }
-function switchDetailTab(tab){ detailTab=tab; setDetailTab(tab); renderDetailContent(); }
-function setDetailTab(tab){
-  document.querySelectorAll('.detail-tab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('dtab-'+tab).classList.add('active');
-}
-function renderDetailContent(){
-  if(detailTab==='orders'){
-    const p=currentProduct, dc=p.delivered?'delivered':'waiting', dl=p.delivered?'Delivered':'Awaiting delivery';
-    detailContent.innerHTML=`
-      <div class="order-hero"><div class="order-hero-thumb">${p.emoji}</div><div>
-        <div class="order-hero-name">${p.name}</div><div class="order-hero-price">${p.price}</div>
-        <div class="product-delivery"><div class="delivery-dot ${dc}"></div><span class="delivery-label ${dc}">${dl}</span></div>
-      </div></div>
-      <div class="customer-row" onclick="openCustomerOverlay('order')">
-        <div class="customer-row-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <div class="customer-row-info"><div class="customer-row-name">${p.customer.name}</div><div class="customer-row-label">${p.customer.location} &middot; ${p.customer.carrier}</div></div>
-        <svg class="customer-row-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>`;
-  } else {
-    const p=currentProduct, c=p.contact, lm=c.messages[c.messages.length-1];
-    detailContent.innerHTML=`<div style="padding-top:4px">
-      <div class="msg-contact-row" onclick="openChat('orders',${p.id})">
-        <div class="msg-avatar" style="background:${c.color}">${c.initials}</div>
-        <div class="msg-contact-info"><div class="msg-contact-name">${c.name}</div><div class="msg-contact-preview">${lm.from==='me'?'You: ':''}${lm.text}</div></div>
-        <div class="msg-contact-time">${lm.time}</div>
-      </div></div>`;
-  }
-}
 
-/* ---- PURCHASES ---- */
-function renderPurchases(){
-  const isR=purchasesSubTab==='messages';
-  flowContent.innerHTML=`
-    <div class="purchases-header">
-      <div class="pur-tabs-glass" id="purTabsGlass">
-        <div class="pur-pill${isR?' right':''}" id="purPill"></div>
-        <div class="pur-tab-glass${purchasesSubTab==='items'?' active':''}" data-subtab="items">
-          <svg viewBox="0 0 24 24"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
-          My Products
-        </div>
-        <div class="pur-tab-glass${purchasesSubTab==='messages'?' active':''}" data-subtab="messages">
-          <svg viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M7 11h10"/><path d="M7 15h6"/></svg>
-          Messages
-        </div>
+// ===== RENDER NICHES =====
+function renderNiches() {
+  const cards = niches.map(n => `
+    <div class="niche-card" onclick="openNiche('${n.id}')">
+      <div class="niche-thumb" style="background:${n.bg}">${n.emoji}</div>
+      <div class="niche-info">
+        <div class="niche-name">${n.name}</div>
+        <div class="niche-count"><div class="niche-count-dot"></div>${n.count} Products</div>
       </div>
-    </div>
-    <div class="pur-content" id="purSubContent"></div>`;
-  renderPurSub();
-  document.querySelectorAll('.pur-tab-glass').forEach(t=>t.addEventListener('click',()=>{ purchasesSubTab=t.dataset.subtab; renderPurchases(); }));
-}
-function renderPurSub(){
-  const el=document.getElementById('purSubContent'); if(!el)return;
-  if(purchasesSubTab==='items'){
-    const cards=purchaseProducts.map(p=>{
-      const dc=p.status==='Delivered'?'delivered':'waiting';
-      return`<div class="purchase-card" onclick="openPurchaseDetail(${p.id})">
-        <div class="product-thumb" style="background:${p.bg}">${p.emoji}</div>
-        <div class="product-info"><div class="product-name">${p.name}</div><div class="product-meta">${p.variant} &bull; ${p.price}</div>
-          <div class="product-delivery"><div class="delivery-dot ${dc}"></div><span class="delivery-label ${dc}">${p.status}</span></div>
-        </div>
-        <svg class="card-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>`;
-    }).join('');
-    el.innerHTML=`<div style="padding-bottom:80px">${cards}</div>`;
-  } else {
-    const rows=purchaseContacts.map(c=>{
-      const lm=c.messages[c.messages.length-1];
-      return`<div class="msg-contact-row" onclick="openChat('purchases',${c.id})">
-        <div class="msg-avatar" style="background:${c.color}">${c.initials}</div>
-        <div class="msg-contact-info"><div class="msg-contact-name">${c.name}</div><div class="msg-contact-preview">${lm.from==='me'?'You: ':''}${lm.text}</div></div>
-        <div class="msg-contact-time">${lm.time}</div>
-      </div>`;
-    }).join('');
-    el.innerHTML=`<div style="padding-bottom:80px">${rows}</div>`;
-  }
-}
-function openPurchaseDetail(id){
-  currentPurchase=purchaseProducts.find(p=>p.id===id); if(!currentPurchase)return;
-  document.getElementById('purchaseDetailTitle').textContent=currentPurchase.name;
-  const p=currentPurchase, isD=p.status==='Delivered';
-  purchaseDetailContent.innerHTML=`
-    <div class="order-hero"><div class="order-hero-thumb">${p.emoji}</div><div>
-      <div class="order-hero-name">${p.name}</div><div class="order-hero-price">${p.price}</div>
-      <div class="product-delivery"><div class="delivery-dot ${isD?'delivered':'waiting'}"></div><span class="delivery-label ${isD?'delivered':'waiting'}">${p.status}</span></div>
-    </div></div>
-    <div class="customer-row" onclick="openCustomerOverlay('purchase')" style="background:linear-gradient(135deg,rgba(88,86,214,0.05),rgba(88,86,214,0.02));border-color:rgba(88,86,214,0.12)">
-      <div class="customer-row-avatar" style="background:linear-gradient(135deg,#5856d6,#af52de)">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </div>
-      <div class="customer-row-info"><div class="customer-row-name">${p.seller.name}</div><div class="customer-row-label">${p.seller.location} &middot; ${p.seller.carrier}</div></div>
-      <svg class="customer-row-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-    </div>
-    <div class="info-block">
-      <div class="info-block-label">Order Details</div>
-      <div class="info-row"><span class="info-row-key">Variant</span><span class="info-row-val">${p.variant}</span></div>
-      <div class="info-row"><span class="info-row-key">Order Date</span><span class="info-row-val">${p.orderDate}</span></div>
-      <div class="info-row"><span class="info-row-key">Total Paid</span><span class="info-row-val blue">${p.price}</span></div>
-    </div>`;
-  pagePurchaseDetail.classList.add('open');
-}
-function closePurchaseDetail(){ pagePurchaseDetail.classList.remove('open'); }
-
-/* ---- NICHES ---- */
-function renderNiches(){
-  const cards=niches.map(n=>`
-    <div class="niche-card" onclick="openNicheDetail('${n.id}')" style="background:linear-gradient(145deg,${n.bg},#f2f2f7);">
-      <div class="niche-card-emoji">${n.emoji}</div>
-      <div class="niche-card-name">${n.name}</div>
-      <div class="niche-card-count">${n.products.length} products</div>
-      <div class="niche-card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <svg class="niche-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
     </div>`).join('');
-  flowContent.innerHTML=`
-    <div class="niches-header">
+
+  flowContent.innerHTML = `
+    <div class="section-header">
       <div class="divider">
         <div class="divider-line"></div>
-        <svg class="divider-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg>
+        ${nicheSVG.replace('<svg ', '<svg class="divider-icon" ')}
         <div class="divider-text">My Niches</div>
         <div class="divider-line"></div>
       </div>
     </div>
-    <div class="niches-grid">${cards}</div>`;
+    <div class="niches-list">${cards}</div>`;
 }
-function openNicheDetail(id){
-  currentNiche=niches.find(n=>n.id===id); if(!currentNiche)return;
-  document.getElementById('nicheDetailTitle').textContent=currentNiche.name;
-  document.getElementById('nicheBanner').innerHTML=`
-    <div class="niche-banner-top">
-      <div class="niche-banner-emoji">${currentNiche.emoji}</div>
-      <div class="niche-banner-info">
-        <div class="niche-banner-title">${currentNiche.name}</div>
-        <div class="niche-banner-sub">${currentNiche.description} &bull; ${currentNiche.products.length} products</div>
-      </div>
-    </div>`;
-  document.getElementById('nicheProductsList').innerHTML=currentNiche.products.map(p=>{
-    const dc=p.delivered?'delivered':'waiting', dl=p.delivered?'Delivered':'Awaiting delivery';
-    return`<div class="product-card" onclick="openNicheProductDetail('${p.id}')">
+
+function openNiche(id) {
+  currentNiche = niches.find(n => n.id === id);
+  if (!currentNiche) return;
+  document.getElementById('nicheTitleBar').textContent = currentNiche.name;
+
+  const cards = currentNiche.products.map(p => {
+    const dc = p.delivered ? 'delivered' : 'waiting';
+    const dl = p.delivered ? 'Delivered' : 'Awaiting delivery';
+    return `<div class="product-card" onclick="openProductDetail('${p.id}','niche')">
       <div class="product-thumb" style="background:${p.bg}">${p.emoji}</div>
-      <div class="product-info"><div class="product-name">${p.name}</div><div class="product-meta">${p.variant} &bull; ${p.price}</div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-meta">${p.variant} &bull; ${p.price}</div>
         <div class="product-delivery"><div class="delivery-dot ${dc}"></div><span class="delivery-label ${dc}">${dl}</span></div>
       </div>
       <svg class="card-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
     </div>`;
   }).join('');
-  pageNicheDetail.classList.add('open');
+
+  nicheContent.innerHTML = `<div class="products-list" style="padding-top:8px">${cards}</div>`;
+  pageNiche.classList.add('open');
 }
-function closeNicheDetail(){ pageNicheDetail.classList.remove('open'); }
-function openNicheProductDetail(pid){
-  if(!currentNiche)return;
-  currentNicheProduct=currentNiche.products.find(p=>p.id===pid); if(!currentNicheProduct)return;
-  const p=currentNicheProduct, dc=p.delivered?'delivered':'waiting', dl=p.delivered?'Delivered':'Awaiting delivery';
-  document.getElementById('nicheProductDetailTitle').textContent=p.name;
-  document.getElementById('nicheProductDetailContent').innerHTML=`
-    <div class="order-hero"><div class="order-hero-thumb">${p.emoji}</div><div>
-      <div class="order-hero-name">${p.name}</div><div class="order-hero-price">${p.price}</div>
-      <div class="product-delivery"><div class="delivery-dot ${dc}"></div><span class="delivery-label ${dc}">${dl}</span></div>
-    </div></div>
-    <div class="customer-row" onclick="openCustomerOverlay('niche')">
-      <div class="customer-row-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-      <div class="customer-row-info"><div class="customer-row-name">${p.customer.name}</div><div class="customer-row-label">${p.customer.location} &middot; ${p.customer.carrier}</div></div>
+function closeNiche() { pageNiche.classList.remove('open'); }
+
+// ===== PRODUCT DETAIL =====
+function openProductDetail(id, source) {
+  detailSource = source || 'orders';
+  let p;
+  if (source === 'niche') {
+    p = currentNiche.products.find(x => x.id == id);
+  } else {
+    p = products.find(x => x.id == id);
+  }
+  if (!p) return;
+  currentProduct = p;
+
+  document.getElementById('detailTitle').textContent = p.name;
+
+  // Show/hide tabs — niche products have NO messages tab
+  const tabsBar = document.getElementById('detailTabsBar');
+  tabsBar.style.display = '';
+  tabsBar.classList.remove('hidden');
+  detailTab = 'orders';
+  setDetailTab('orders');
+  setTimeout(snapDetailSlider, 30);
+
+  // Back button label
+  document.getElementById('backBtnLabel').textContent = source === 'niche' ? currentNiche.name : 'Back';
+
+  renderDetailContent();
+  pageDetail.classList.add('open');
+}
+
+function closeProductDetail() { pageDetail.classList.remove('open'); }
+
+function switchDetailTab(tab) { detailTab = tab; setDetailTab(tab); renderDetailContent(); }
+function setDetailTab(tab) {
+  document.querySelectorAll('.seg-tab[data-dtab]').forEach(b => b.classList.remove('active'));
+  const active = document.getElementById('dtab-' + tab);
+  if (active) active.classList.add('active');
+  snapDetailSlider();
+}
+function snapDetailSlider() {
+  const slider = document.getElementById('detailSegSlider');
+  const glass  = document.getElementById('detailSegGlass');
+  const active = glass ? glass.querySelector('.seg-tab.active') : null;
+  if (!slider || !glass || !active) return;
+  const gr = glass.getBoundingClientRect();
+  const ar = active.getBoundingClientRect();
+  slider.style.left  = (ar.left - gr.left) + 'px';
+  slider.style.width = ar.width + 'px';
+}
+
+function renderDetailContent() {
+  const p = currentProduct;
+  const dc = p.delivered ? 'delivered' : 'waiting';
+  const dl = p.delivered ? 'Delivered' : 'Awaiting delivery';
+
+  if (detailTab === 'orders') {
+    detailContent.innerHTML = `
+      <div class="order-hero">
+        <div class="order-hero-thumb">${p.emoji}</div>
+        <div>
+          <div class="order-hero-name">${p.name}</div>
+          <div class="order-hero-price">${p.price}</div>
+          <div class="product-delivery"><div class="delivery-dot ${dc}"></div><span class="delivery-label ${dc}">${dl}</span></div>
+        </div>
+      </div>
+      <div class="customer-row" onclick="openCustomerOverlayFor(currentProduct.customer, currentProduct.delivered, 'Delivery Document')">
+        <div class="customer-row-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="customer-row-info">
+          <div class="customer-row-name">${p.customer.name}</div>
+          <div class="customer-row-label">${p.customer.location} &middot; ${p.customer.carrier}</div>
+        </div>
+        <svg class="customer-row-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>`;
+  } else {
+    // Messages tab
+    if (!p.contact) {
+      detailContent.innerHTML = `<div class="empty-mini"><div class="empty-mini-icon"><svg viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M7 11h10"/><path d="M7 15h6"/></svg></div><div class="empty-mini-title">No messages yet</div><div class="empty-mini-sub">Customer messages will appear here</div></div>`;
+      return;
+    }
+    const c = p.contact;
+    const lastMsg = c.messages[c.messages.length - 1];
+    detailContent.innerHTML = `
+      <div style="padding-top:4px">
+        <div class="msg-contact-row" onclick="openChat('${detailSource}', '${p.id}')">
+          <div class="msg-avatar" style="background:${c.color}">${c.initials}</div>
+          <div class="msg-contact-info">
+            <div class="msg-contact-name">${c.name}</div>
+            <div class="msg-contact-preview">${lastMsg.from === 'me' ? 'You: ' : ''}${lastMsg.text}</div>
+          </div>
+          <div class="msg-contact-time">${lastMsg.time}</div>
+        </div>
+      </div>`;
+  }
+}
+
+// ===== PURCHASE DETAIL =====
+function openPurchaseDetail(id) {
+  currentPurchase = purchaseProducts.find(p => p.id === id);
+  if (!currentPurchase) return;
+  document.getElementById('purchaseDetailTitle').textContent = currentPurchase.name;
+  renderPurchaseDetailContent();
+  pagePurchaseDetail.classList.add('open');
+}
+function closePurchaseDetail() { pagePurchaseDetail.classList.remove('open'); }
+
+function renderPurchaseDetailContent() {
+  const p = currentPurchase;
+  const isDelivered = p.status === 'Delivered';
+  const dc = isDelivered ? 'delivered' : 'waiting';
+  purchaseDetailContent.innerHTML = `
+    <div class="order-hero">
+      <div class="order-hero-thumb">${p.emoji}</div>
+      <div>
+        <div class="order-hero-name">${p.name}</div>
+        <div class="order-hero-price">${p.price}</div>
+        <div class="product-delivery"><div class="delivery-dot ${dc}"></div><span class="delivery-label ${dc}">${p.status}</span></div>
+      </div>
+    </div>
+    <div class="customer-row" onclick="openPurchaseSellerOverlay()">
+      <div class="customer-row-avatar" style="background:linear-gradient(135deg,#5856d6,#af52de)">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div class="customer-row-info">
+        <div class="customer-row-name">${p.seller.name}</div>
+        <div class="customer-row-label">${p.seller.location} &middot; ${p.seller.carrier}</div>
+      </div>
       <svg class="customer-row-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
     </div>
-    <div class="info-block">
-      <div class="info-block-label">Product Info</div>
-      <div class="info-row"><span class="info-row-key">Variant</span><span class="info-row-val">${p.variant}</span></div>
-      <div class="info-row"><span class="info-row-key">Price</span><span class="info-row-val blue">${p.price}</span></div>
+    <div style="background:#f9f9fb;border:0.5px solid rgba(0,0,0,0.06);border-radius:16px;padding:16px;margin-bottom:12px;">
+      <div style="font-size:12px;color:#8e8e93;margin-bottom:10px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;">Order Info</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:13px;color:#8e8e93;">Variant</span><span style="font-size:13px;font-weight:560;color:#1c1c1e;">${p.variant}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:13px;color:#8e8e93;">Order Date</span><span style="font-size:13px;font-weight:560;color:#1c1c1e;">${p.orderDate}</span></div>
+      <div style="display:flex;justify-content:space-between;"><span style="font-size:13px;color:#8e8e93;">Total Paid</span><span style="font-size:13px;font-weight:700;color:#007aff;">${p.price}</span></div>
     </div>`;
-  pageNicheProductDetail.classList.add('open');
 }
-function closeNicheProductDetail(){ pageNicheProductDetail.classList.remove('open'); }
 
-/* ---- CUSTOMER OVERLAY ---- */
-function openCustomerOverlay(src){
-  let name,loc,phone,carrier,isD;
-  if(src==='order'){const p=currentProduct;name=p.customer.name;loc=p.customer.location;phone=p.customer.phone;carrier=p.customer.carrier;isD=p.delivered;document.getElementById('paperDocLabel').textContent='Delivery Document';}
-  else if(src==='purchase'){const p=currentPurchase;name=p.seller.name;loc=p.seller.location;phone=p.seller.phone;carrier=p.seller.carrier;isD=(p.status==='Delivered');document.getElementById('paperDocLabel').textContent='Purchase Document';}
-  else{const p=currentNicheProduct;name=p.customer.name;loc=p.customer.location;phone=p.customer.phone;carrier=p.customer.carrier;isD=p.delivered;document.getElementById('paperDocLabel').textContent='Delivery Document';}
-  document.getElementById('paperName').textContent=name;
-  document.getElementById('paperLocation').textContent=loc;
-  document.getElementById('paperPhone').textContent=phone;
-  document.getElementById('paperCarrier').textContent=carrier;
-  const stamp=document.getElementById('paperStamp');
-  stamp.textContent=isD?'Delivered':'Pending';
-  stamp.className='paper-stamp'+(isD?'':' pending');
-  const ctx=document.getElementById('qrCanvas').getContext('2d');
-  ctx.clearRect(0,0,64,64); drawQR(ctx,64);
+// ===== CUSTOMER OVERLAY =====
+function openCustomerOverlayFor(customer, delivered, docLabel) {
+  document.getElementById('paperName').textContent     = customer.name;
+  document.getElementById('paperLocation').textContent = customer.location;
+  document.getElementById('paperPhone').textContent    = customer.phone;
+  document.getElementById('paperCarrier').textContent  = customer.carrier;
+  document.getElementById('paperDocLabel').textContent = docLabel || 'Delivery Document';
+  const stamp = document.getElementById('paperStamp');
+  stamp.textContent = delivered ? 'Delivered' : 'Pending';
+  stamp.className   = 'paper-stamp' + (delivered ? '' : ' pending');
+  const canvas = document.getElementById('qrCanvas');
+  drawPlaceholderQR(canvas.getContext('2d'), 64);
   document.getElementById('customer-overlay').classList.add('open');
 }
-function closeCustomerOverlay(e){if(e&&e.target!==document.getElementById('customer-overlay'))return;document.getElementById('customer-overlay').classList.remove('open');}
-function drawQR(ctx,s){ctx.fillStyle='#fff';ctx.fillRect(0,0,s,s);const c=s/11;ctx.fillStyle='#1c1c1e';const p=[[1,1,1,1,1,1,1,0,1,0,1],[1,0,0,0,0,0,1,0,0,1,1],[1,0,1,1,1,0,1,0,1,0,0],[1,0,1,1,1,0,1,0,0,1,1],[1,0,1,1,1,0,1,0,1,0,1],[1,0,0,0,0,0,1,0,1,1,0],[1,1,1,1,1,1,1,0,1,0,1],[0,0,0,0,0,0,0,0,0,1,0],[1,0,1,1,0,1,1,1,1,0,1],[0,1,0,0,1,0,0,1,0,1,1],[1,1,1,0,1,1,1,0,1,0,1]];p.forEach((r,ri)=>r.forEach((v,ci)=>{if(v)ctx.fillRect(ci*c,ri*c,c-0.5,c-0.5);}));}
-function downloadCard(){showToast('Image saved to gallery');}
-function printCard(){showToast('Sending to printer...');setTimeout(()=>window.print(),400);}
+function openPurchaseSellerOverlay() {
+  const p = currentPurchase;
+  openCustomerOverlayFor(p.seller, p.status === 'Delivered', 'Purchase Document');
+}
+function closeCustomerOverlay(e) {
+  if (e && e.target !== document.getElementById('customer-overlay')) return;
+  document.getElementById('customer-overlay').classList.remove('open');
+}
+function drawPlaceholderQR(ctx, size) {
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,size,size);
+  const cell=size/11; ctx.fillStyle='#1c1c1e';
+  const p=[[1,1,1,1,1,1,1,0,1,0,1],[1,0,0,0,0,0,1,0,0,1,1],[1,0,1,1,1,0,1,0,1,0,0],[1,0,1,1,1,0,1,0,0,1,1],[1,0,1,1,1,0,1,0,1,0,1],[1,0,0,0,0,0,1,0,1,1,0],[1,1,1,1,1,1,1,0,1,0,1],[0,0,0,0,0,0,0,0,0,1,0],[1,0,1,1,0,1,1,1,1,0,1],[0,1,0,0,1,0,0,1,0,1,1],[1,1,1,0,1,1,1,0,1,0,1]];
+  p.forEach((row,r)=>row.forEach((v,c)=>{if(v)ctx.fillRect(c*cell,r*cell,cell-0.5,cell-0.5);}));
+}
+function downloadCard() { showToast('Image saved to gallery'); }
+function printCard()    { showToast('Sending to printer...'); setTimeout(()=>window.print(),400); }
 
-/* ---- CHAT ---- */
-function openChat(source,id){
-  chatSource=source;
+// ===== PURCHASES =====
+function renderPurchases() {
+  flowContent.innerHTML = `
+    <div class="pur-tabs-wrap">
+      <div class="pur-tabs-glass" id="purTabsGlass">
+        <div class="pur-tab-slider" id="purTabSlider"></div>
+        <div class="pur-tab ${purchasesSubTab==='items'?'active':''}" data-subtab="items">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+          My Products
+        </div>
+        <div class="pur-tab ${purchasesSubTab==='messages'?'active':''}" data-subtab="messages">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M7 11h10"/><path d="M7 15h6"/></svg>
+          Messages
+        </div>
+      </div>
+    </div>
+    <div class="pur-content" id="purSubContent"></div>`;
+
+  setTimeout(updatePurTabSlider, 20);
+  renderPurSub();
+
+  document.querySelectorAll('.pur-tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.pur-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    purchasesSubTab = t.dataset.subtab;
+    updatePurTabSlider();
+    renderPurSub();
+  }));
+}
+
+function updatePurTabSlider() {
+  const slider = document.getElementById('purTabSlider');
+  const glass  = document.getElementById('purTabsGlass');
+  const active = glass ? glass.querySelector('.pur-tab.active') : null;
+  if (!slider || !glass || !active) return;
+  const gr = glass.getBoundingClientRect();
+  const ar = active.getBoundingClientRect();
+  slider.style.left  = (ar.left - gr.left) + 'px';
+  slider.style.width = ar.width + 'px';
+}
+
+function renderPurSub() {
+  const el = document.getElementById('purSubContent');
+  if (!el) return;
+  if (purchasesSubTab === 'items') {
+    const cards = purchaseProducts.map(p => {
+      const dc = p.status === 'Delivered' ? 'delivered' : 'waiting';
+      return `<div class="purchase-card" onclick="openPurchaseDetail(${p.id})">
+        <div class="product-thumb" style="background:${p.bg}">${p.emoji}</div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-meta">${p.variant} &bull; ${p.price}</div>
+          <div class="product-delivery"><div class="delivery-dot ${dc}"></div><span class="delivery-label ${dc}">${p.status}</span></div>
+        </div>
+        <svg class="card-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>`;
+    }).join('');
+    el.innerHTML = `<div style="padding-bottom:80px">${cards}</div>`;
+  } else {
+    const rows = purchaseContacts.map(c => {
+      const lastMsg = c.messages[c.messages.length - 1];
+      return `<div class="msg-contact-row" onclick="openChat('purchases', ${c.id})">
+        <div class="msg-avatar" style="background:${c.color}">${c.initials}</div>
+        <div class="msg-contact-info">
+          <div class="msg-contact-name">${c.name}</div>
+          <div class="msg-contact-preview">${lastMsg.from==='me'?'You: ':''}${lastMsg.text}</div>
+        </div>
+        <div class="msg-contact-time">${lastMsg.time}</div>
+      </div>`;
+    }).join('');
+    el.innerHTML = `<div style="padding-bottom:80px">${rows}</div>`;
+  }
+}
+
+function renderCurrentTab() {
+  if (currentTab==='orders')    renderOrders();
+  else if (currentTab==='purchases') renderPurchases();
+  else renderNiches();
+}
+function updateTopBarTitle() {
+  const t = tabs.find(t=>t.id===currentTab);
+  if (t) document.getElementById('selectedTabTitle').innerText = t.title;
+}
+function buildSheetMenu() {
+  sheetItemsContainer.innerHTML = '';
+  tabs.forEach(tab => {
+    if (tab.id===currentTab) return;
+    const item = document.createElement('div');
+    item.className = 'sheet-item';
+    item.innerHTML = `<div class="sheet-item-icon">${tab.icon}</div><div class="sheet-item-info"><div class="sheet-item-title">${tab.title}</div><div class="sheet-item-sub">${tab.subtitle}</div></div>`;
+    item.addEventListener('click', e => { e.stopPropagation(); switchToTab(tab.id); closeSheet(); });
+    sheetItemsContainer.appendChild(item);
+  });
+}
+function switchToTab(tabId) {
+  if (currentTab===tabId) return;
+  currentTab = tabId;
+  if (tabId==='purchases') purchasesSubTab = 'items';
+  updateTopBarTitle(); renderCurrentTab(); buildSheetMenu();
+}
+function toggleSheet() { isSheetOpen ? closeSheet() : openSheet(); }
+function openSheet()   { sheet.classList.add('open'); dropdown.classList.add('open'); isSheetOpen=true; }
+function closeSheet()  { sheet.classList.remove('open'); dropdown.classList.remove('open'); isSheetOpen=false; }
+
+// ===== CHAT =====
+function openChat(source, id) {
+  chatSource = source;
   let contact;
-  if(source==='orders'){const p=products.find(x=>x.id===id);if(!p)return;contact=p.contact;}
-  else{contact=purchaseContacts.find(c=>c.id===id);if(!contact)return;}
-  currentContact=contact;
-  chatMessages=contact.messages.map(m=>({...m,green:false}));
-  greenBubbles=new Set(); replyTarget=null;
-  document.getElementById('chatAvatar').textContent=contact.initials;
-  document.getElementById('chatAvatar').style.background=contact.color;
-  document.getElementById('chatName').textContent=contact.name;
-  document.getElementById('chatBackBtn').querySelector('.back-btn-label').textContent=source==='orders'?'Order':'Messages';
-  cancelReply(); renderChatMessages();
+  if (source === 'niche') {
+    const p = currentNiche && currentNiche.products.find(x => x.id == id);
+    if (!p || !p.contact) return;
+    contact = p.contact;
+  } else if (source === 'orders') {
+    const p = products.find(x => x.id == id);
+    if (!p) return;
+    contact = p.contact;
+  } else {
+    contact = purchaseContacts.find(c => c.id == id);
+    if (!contact) return;
+  }
+  currentContact = contact;
+  chatMessages   = contact.messages.map(m => ({...m, green:false}));
+  greenBubbles   = new Set();
+  replyTarget    = null;
+
+  document.getElementById('chatAvatar').textContent      = contact.initials;
+  document.getElementById('chatAvatar').style.background = contact.color;
+  document.getElementById('chatName').textContent        = contact.name;
+  document.getElementById('chatBackLabel').textContent   = 'Back';
+
+  cancelReply();
+  renderChatMessages();
   pageChat.classList.add('open');
-  setTimeout(scrollChatBottom,60);
+  setTimeout(scrollChatBottom, 60);
 }
-function closeChat(){pageChat.classList.remove('open');}
-function renderChatMessages(){
-  const container=document.getElementById('chatMessages');
-  container.innerHTML=`<div class="chat-date-sep"><span>Today</span></div>`;
-  chatMessages.forEach(msg=>{
-    const isMe=msg.from==='me', gc=(msg.green||greenBubbles.has(msg.id))?'green':'';
-    const rp=msg.replyTo?`<div class="reply-preview">${msg.replyTo}</div>`:'';
-    container.innerHTML+=`<div class="msg-bubble-wrap ${isMe?'me':'them'}" data-id="${msg.id}">
-      <div class="msg-bubble ${gc}" data-id="${msg.id}" oncontextmenu="return false">${rp}${msg.text}</div>
-      <div class="msg-time">${msg.time}</div></div>`;
+function closeChat() { pageChat.classList.remove('open'); }
+
+function renderChatMessages() {
+  const container = document.getElementById('chatMessages');
+  container.innerHTML = `<div class="chat-date-sep"><span>Today</span></div>`;
+  chatMessages.forEach(msg => {
+    const isMe = msg.from==='me';
+    const gc   = (msg.green || greenBubbles.has(msg.id)) ? 'green' : '';
+    const rH   = msg.replyTo ? `<div class="reply-preview">${msg.replyTo}</div>` : '';
+    container.innerHTML += `
+      <div class="msg-bubble-wrap ${isMe?'me':'them'}" data-id="${msg.id}">
+        <div class="msg-bubble ${gc}" data-id="${msg.id}" oncontextmenu="return false">${rH}${msg.text}</div>
+        <div class="msg-time">${msg.time}</div>
+      </div>`;
   });
-  container.querySelectorAll('.msg-bubble').forEach(el=>{
-    el.addEventListener('mousedown',e=>startLP(e,el));
-    el.addEventListener('touchstart',e=>startLP(e,el),{passive:true});
-    el.addEventListener('mouseup',()=>cancelLP());
-    el.addEventListener('touchend',()=>cancelLP());
-    el.addEventListener('mouseleave',()=>cancelLP());
+  container.querySelectorAll('.msg-bubble').forEach(el => {
+    el.addEventListener('mousedown',  e=>startLongPress(e,el));
+    el.addEventListener('touchstart', e=>startLongPress(e,el),{passive:true});
+    el.addEventListener('mouseup',    ()=>cancelLongPressTimer());
+    el.addEventListener('touchend',   ()=>cancelLongPressTimer());
+    el.addEventListener('mouseleave', ()=>cancelLongPressTimer());
   });
 }
-function scrollChatBottom(){const c=document.getElementById('chatMessages');c.scrollTop=c.scrollHeight;}
-function sendMessage(){
-  const input=document.getElementById('chatInput');
-  const text=input.value.trim(); if(!text)return;
+function scrollChatBottom() {
+  const c=document.getElementById('chatMessages'); c.scrollTop=c.scrollHeight;
+}
+function sendMessage() {
+  const input=document.getElementById('chatInput'), text=input.value.trim(); if(!text)return;
   const now=new Date(), time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   chatMessages.push({id:Date.now(),from:'me',text,time,green:false,replyTo:replyTarget?replyTarget.text:null});
   input.value=''; input.style.height='auto'; cancelReply(); renderChatMessages(); setTimeout(scrollChatBottom,30);
 }
-function startLP(e,el){cancelLP();longPressTimer=setTimeout(()=>{e.preventDefault();showCtxMenu(e,el);},480);}
-function cancelLP(){clearTimeout(longPressTimer);}
-function showCtxMenu(e,el){
-  const msgId=parseInt(el.dataset.id), msg=chatMessages.find(m=>m.id===msgId); if(!msg)return;
-  const menu=document.getElementById('ctxMenu'), isG=greenBubbles.has(msgId)||msg.green;
+
+// ===== Long Press & Context Menu =====
+function startLongPress(e,el) {
+  cancelLongPressTimer();
+  longPressTimer=setTimeout(()=>{e.preventDefault();showContextMenu(e,el);},480);
+}
+function cancelLongPressTimer() { clearTimeout(longPressTimer); }
+function showContextMenu(e,bubbleEl) {
+  const msgId=parseInt(bubbleEl.dataset.id), msg=chatMessages.find(m=>m.id===msgId); if(!msg)return;
+  const menu=document.getElementById('ctxMenu'), isGreen=greenBubbles.has(msgId)||msg.green;
   menu.innerHTML=`
     <div class="ctx-item" onclick="replyToMsg(${msgId})"><svg viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>Reply</div>
     <div class="ctx-sep"></div>
-    <div class="ctx-item green-tint" onclick="toggleGreen(${msgId})"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>${isG?'Remove highlight':'Highlight green'}</div>
+    <div class="ctx-item green-tint" onclick="toggleGreen(${msgId})"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>${isGreen?'Remove highlight':'Highlight green'}</div>
     <div class="ctx-sep"></div>
     <div class="ctx-item danger" onclick="deleteMsg(${msgId})"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>Delete</div>`;
-  const cx=e.clientX||(e.touches?.[0]?.clientX)||200, cy=e.clientY||(e.touches?.[0]?.clientY)||300;
+  const cx=e.clientX||(e.touches&&e.touches[0]?e.touches[0].clientX:200);
+  const cy=e.clientY||(e.touches&&e.touches[0]?e.touches[0].clientY:300);
   menu.style.display='block';
-  menu.style.left=Math.min(cx,window.innerWidth-185)+'px';
-  menu.style.top=Math.min(cy,window.innerHeight-150)+'px';
-  setTimeout(()=>document.addEventListener('click',dismissCtx,{once:true}),50);
+  const mw=180,mh=140,vw=window.innerWidth,vh=window.innerHeight;
+  menu.style.left=Math.min(cx,vw-mw-10)+'px'; menu.style.top=Math.min(cy,vh-mh-10)+'px';
+  setTimeout(()=>document.addEventListener('click',dismissCtxMenu,{once:true}),50);
 }
-function dismissCtx(){document.getElementById('ctxMenu').style.display='none';}
-function replyToMsg(msgId){
-  dismissCtx(); const msg=chatMessages.find(m=>m.id===msgId); if(!msg)return;
+function dismissCtxMenu() { document.getElementById('ctxMenu').style.display='none'; }
+function replyToMsg(msgId) {
+  dismissCtxMenu();
+  const msg=chatMessages.find(m=>m.id===msgId); if(!msg)return;
   replyTarget=msg;
   document.getElementById('replyBarName').textContent=msg.from==='me'?'You':currentContact.name;
   document.getElementById('replyBarText').textContent=msg.text;
   document.getElementById('replyBar').classList.add('visible');
   document.getElementById('chatInput').focus();
 }
-function cancelReply(){replyTarget=null;document.getElementById('replyBar').classList.remove('visible');}
-function toggleGreen(msgId){
-  dismissCtx(); const msg=chatMessages.find(m=>m.id===msgId); if(!msg)return;
+function cancelReply() {
+  replyTarget=null; document.getElementById('replyBar').classList.remove('visible');
+}
+function toggleGreen(msgId) {
+  dismissCtxMenu();
+  const msg=chatMessages.find(m=>m.id===msgId); if(!msg)return;
   if(greenBubbles.has(msgId)){greenBubbles.delete(msgId);msg.green=false;}
   else{greenBubbles.add(msgId);msg.green=true;}
   renderChatMessages(); setTimeout(scrollChatBottom,30);
 }
-function deleteMsg(msgId){dismissCtx();chatMessages=chatMessages.filter(m=>m.id!==msgId);renderChatMessages();}
-
-/* ---- NAV ---- */
-function renderCurrentTab(){if(currentTab==='orders')renderOrders();else if(currentTab==='purchases')renderPurchases();else renderNiches();}
-function updateTopBarTitle(){const t=tabs.find(t=>t.id===currentTab);if(t)document.getElementById('selectedTabTitle').innerText=t.title;}
-function buildSheetMenu(){
-  sheetItemsContainer.innerHTML='';
-  tabs.forEach(tab=>{
-    if(tab.id===currentTab)return;
-    const item=document.createElement('div');
-    item.className='sheet-item';
-    item.innerHTML=`<div class="sheet-item-icon">${tab.icon}</div><div class="sheet-item-info"><div class="sheet-item-title">${tab.title}</div><div class="sheet-item-sub">${tab.subtitle}</div></div>`;
-    item.addEventListener('click',e=>{e.stopPropagation();switchToTab(tab.id);closeSheet();});
-    sheetItemsContainer.appendChild(item);
-  });
+function deleteMsg(msgId) {
+  dismissCtxMenu();
+  chatMessages=chatMessages.filter(m=>m.id!==msgId); renderChatMessages();
 }
-function switchToTab(id){if(currentTab===id)return;currentTab=id;if(id==='purchases')purchasesSubTab='items';updateTopBarTitle();renderCurrentTab();buildSheetMenu();}
-function toggleSheet(){isSheetOpen?closeSheet():openSheet();}
-function openSheet(){sheet.classList.add('open');dropdown.classList.add('open');isSheetOpen=true;}
-function closeSheet(){sheet.classList.remove('open');dropdown.classList.remove('open');isSheetOpen=false;}
-function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2000);}
 
+function showToast(msg) {
+  const t=document.getElementById('toast'); t.innerText=msg; t.classList.add('show');
+  clearTimeout(window.toastTimeout); window.toastTimeout=setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ===== Nav =====
 const PAGES=['flow','settings'];
-function snapDroplet(pid){
+function snapDroplet(pageId) {
   const nav=document.getElementById('bottomNav'),d=document.getElementById('navDroplet');
   const btns=document.querySelectorAll('.nav-item');
-  const idx=PAGES.indexOf(pid);if(idx===-1)return;
-  const btn=btns[idx];if(!btn)return;
+  const idx=PAGES.indexOf(pageId); if(idx===-1)return;
+  const btn=btns[idx]; if(!btn)return;
   const nr=nav.getBoundingClientRect(),br=btn.getBoundingClientRect(),dw=70;
   let lp=(br.left-nr.left)+br.width/2-dw/2;
-  lp=Math.max(4,Math.min(lp,nr.width-dw-4));
-  d.style.left=lp+'px';
+  lp=Math.max(4,Math.min(lp,nr.width-dw-4)); d.style.left=lp+'px';
 }
-function switchPage(pid){
+function switchPage(pageId) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active-page'));
-  if(pid==='flow'){document.getElementById('page-flow').classList.add('active-page');renderCurrentTab();}
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===pid));
-  snapDroplet(pid);
-  if(pid==='settings')showToast('Settings');
+  if(pageId==='flow'){document.getElementById('page-flow').classList.add('active-page');renderCurrentTab();}
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===pageId));
+  snapDroplet(pageId);
+  if(pageId==='settings')showToast('Settings');
 }
-function initDraggableDroplet(){
+function initDraggableDroplet() {
   const d=document.getElementById('navDroplet'),nav=document.getElementById('bottomNav');
   let dragging=false,sx=0,sl=0,moved=false;
   const gl=()=>parseFloat(d.style.left)||0;
   const onD=cx=>cx-nav.getBoundingClientRect().left;
-  const isOn=cx=>{const rx=onD(cx),dl=gl();return rx>=dl-12&&rx<=dl+82;};
+  const isOn=cx=>{const rx=onD(cx),dl=gl(),dw=70;return rx>=dl-12&&rx<=dl+dw+12;};
   function start(cx){sx=cx;sl=gl();dragging=true;moved=false;}
   function move(cx){if(!dragging)return;const dx=cx-sx;if(Math.abs(dx)>5&&!moved)moved=true;if(!moved)return;d.style.left=Math.max(4,Math.min(sl+dx,nav.offsetWidth-70-4))+'px';}
   function end(){if(!dragging)return;dragging=false;if(!moved)return;const btns=document.querySelectorAll('.nav-item'),nr=nav.getBoundingClientRect(),cx=gl()+35;let ni=1,md=Infinity;btns.forEach((b,i)=>{const br=b.getBoundingClientRect(),c=(br.left-nr.left)+br.width/2,dist=Math.abs(cx-c);if(dist<md){md=dist;ni=i;}});switchPage(PAGES[ni]);snapDroplet(PAGES[ni]);}
@@ -950,22 +1297,33 @@ function initDraggableDroplet(){
   window.addEventListener('mouseup',()=>{if(dragging)end();});
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
-  currentTab='orders'; updateTopBarTitle(); renderCurrentTab(); buildSheetMenu();
-  dropdown.addEventListener('click',e=>{e.stopPropagation();toggleSheet();});
-  document.addEventListener('click',e=>{if(isSheetOpen&&!sheet.contains(e.target)&&!dropdown.contains(e.target))closeSheet();});
-  document.getElementById('backBtn').addEventListener('click',closeProductDetail);
-  document.getElementById('purchaseBackBtn').addEventListener('click',closePurchaseDetail);
-  document.getElementById('nicheBackBtn').addEventListener('click',closeNicheDetail);
-  document.getElementById('nicheProductBackBtn').addEventListener('click',closeNicheProductDetail);
-  document.getElementById('chatBackBtn').addEventListener('click',closeChat);
-  document.getElementById('settingsNavBtn').addEventListener('click',()=>switchPage('settings'));
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  currentTab='orders';
+  updateTopBarTitle(); renderCurrentTab(); buildSheetMenu();
+
+  dropdown.addEventListener('click', e=>{e.stopPropagation();toggleSheet();});
+  document.addEventListener('click', e=>{
+    if(isSheetOpen&&!sheet.contains(e.target)&&!dropdown.contains(e.target))closeSheet();
+  });
+
+  document.getElementById('backBtn').addEventListener('click', closeProductDetail);
+  document.getElementById('purchaseBackBtn').addEventListener('click', closePurchaseDetail);
+  document.getElementById('nicheBackBtn').addEventListener('click', closeNiche);
+  document.getElementById('chatBackBtn').addEventListener('click', closeChat);
+  document.getElementById('settingsNavBtn').addEventListener('click', ()=>switchPage('settings'));
   document.querySelectorAll('.nav-item[data-page="flow"]').forEach(b=>b.addEventListener('click',()=>switchPage('flow')));
-  document.getElementById('chatSendBtn').addEventListener('click',sendMessage);
-  document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
-  document.getElementById('chatInput').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';});
+
+  document.getElementById('chatSendBtn').addEventListener('click', sendMessage);
+  document.getElementById('chatInput').addEventListener('keydown', e=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+  });
+  document.getElementById('chatInput').addEventListener('input', function(){
+    this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,100)+'px';
+  });
+
   initDraggableDroplet(); snapDroplet('flow');
-  window.addEventListener('resize',()=>snapDroplet('flow'));
+  window.addEventListener('resize',()=>{ snapDroplet('flow'); snapDetailSlider(); updatePurTabSlider(); });
 });
 </script>
 </body>
