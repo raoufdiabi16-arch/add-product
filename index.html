@@ -647,6 +647,165 @@ body {
 .profile-row-label { flex: 1; font-size: 15px; font-weight: 500; color: var(--label); }
 .profile-row-chevron { color: #c7c7cc; font-size: 12px; }
 .profile-pad { height: max(var(--safe-bottom), 32px); }
+/* ═══════════════════════════════════════
+   ADS BANNER
+═══════════════════════════════════════ */
+.ads-section { margin-bottom: 6px; }
+.ads-track-wrap {
+  overflow: hidden; border-radius: 22px; margin: 0 0 10px;
+  cursor: grab; user-select: none;
+}
+.ads-track-wrap:active { cursor: grabbing; }
+.ads-track {
+  display: flex;
+  transition: transform 0.38s cubic-bezier(0.25,0.9,0.3,1);
+  will-change: transform;
+}
+.ad-slide {
+  min-width: 100%; height: 148px; border-radius: 22px;
+  position: relative; overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: flex-end;
+}
+.ad-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+}
+.ad-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.1) 100%);
+}
+.ad-content {
+  position: relative; z-index: 2;
+  padding: 16px 18px; width: 100%;
+  display: flex; align-items: flex-end; justify-content: space-between;
+}
+.ad-text-wrap { flex: 1; }
+.ad-label {
+  font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.7);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;
+}
+.ad-title { font-size: 20px; font-weight: 800; color: #fff; line-height: 1.2; }
+.ad-sub { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 3px; }
+.ad-browse-btn {
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: none; border-radius: 30px;
+  padding: 9px 18px; font-size: 13px; font-weight: 700;
+  color: #1c1c1e; cursor: pointer; white-space: nowrap;
+  transition: transform 0.15s, opacity 0.15s;
+  flex-shrink: 0; margin-left: 12px;
+}
+.ad-browse-btn:active { transform: scale(0.94); opacity: 0.85; }
+
+/* dots */
+.ads-dots {
+  display: flex; justify-content: center; gap: 5px;
+}
+.ads-dot {
+  width: 6px; height: 6px; border-radius: 3px;
+  background: rgba(0,0,0,0.18);
+  transition: width 0.25s, background 0.25s;
+}
+.ads-dot.active { width: 18px; background: var(--blue); }
+
+/* ═══════════════════════════════════════
+   FEATURED SECTION
+═══════════════════════════════════════ */
+.featured-section { margin-bottom: 10px; }
+.featured-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 10px; padding: 0 2px;
+}
+.featured-title { font-size: 18px; font-weight: 700; color: var(--label); }
+.featured-sub { font-size: 12px; color: var(--label3); font-weight: 500; }
+
+.featured-track-wrap {
+  overflow: hidden; cursor: grab; user-select: none;
+}
+.featured-track-wrap:active { cursor: grabbing; }
+.featured-track {
+  display: flex; gap: 12px;
+  transition: transform 0.36s cubic-bezier(0.25,0.9,0.3,1);
+  will-change: transform;
+}
+
+/* big featured card — 88% width so next card peeks */
+.feat-card {
+  min-width: calc(100% - 36px); width: calc(100% - 36px);
+  background: var(--surface); border-radius: 22px; overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+
+.feat-img-wrap {
+  width: 100%; height: 200px; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #e8e8f0, #f5f5fa);
+}
+.feat-img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+
+/* like + count top-right of feat image */
+.feat-like-wrap {
+  position: absolute; top: 11px; right: 11px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.feat-like-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%; border: 0.5px solid rgba(255,255,255,0.6);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform 0.15s;
+}
+.feat-like-btn:active { transform: scale(0.84); }
+.feat-like-btn i { font-size: 15px; pointer-events: none; }
+.feat-like-btn i.far { color: var(--label3); }
+.feat-like-btn i.fas { color: var(--red); }
+.feat-like-count {
+  font-size: 11px; font-weight: 700; color: #fff;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  padding: 3px 8px; border-radius: 20px; line-height: 1;
+}
+
+.feat-info { padding: 14px 14px 16px; }
+.feat-price { font-size: 24px; font-weight: 800; color: var(--label); letter-spacing: -0.5px; }
+.feat-name { font-size: 17px; font-weight: 700; color: var(--label); margin: 3px 0 1px; }
+.feat-cat {
+  font-size: 11px; font-weight: 700; color: var(--label3);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px;
+}
+.feat-desc {
+  font-size: 13px; color: var(--label2); line-height: 1.45;
+  margin-bottom: 13px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.feat-actions { display: flex; gap: 9px; }
+.feat-add-btn {
+  flex: 1; padding: 12px 0; border: none; border-radius: 13px;
+  background: #deeeff; color: var(--blue);
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: transform 0.14s, background 0.14s; font-family: inherit;
+}
+.feat-add-btn:active { transform: scale(0.96); background: #cce3ff; }
+.feat-add-btn.added { background: #d4f7e0; color: var(--green); }
+.feat-buy-btn {
+  flex: 1; padding: 12px 0; border: none; border-radius: 13px;
+  background: linear-gradient(135deg, #a8e6cf, #7dd3b0);
+  color: #1a5c42;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: transform 0.14s, opacity 0.14s; font-family: inherit;
+}
+.feat-buy-btn:active { transform: scale(0.96); opacity: 0.88; }
+
+/* section label above grid */
+.section-title-row { padding: 4px 2px 10px; }
+.section-title { font-size: 18px; font-weight: 700; color: var(--label); }
+
 </style>
 </head>
 <body>
@@ -691,6 +850,34 @@ body {
 
   <!-- ══ MAIN SCROLL ══ -->
   <div class="scroll-area" id="scrollArea">
+
+    <!-- ADS BANNER -->
+    <div class="ads-section">
+      <div class="ads-track-wrap">
+        <div class="ads-track" id="adsTrack">
+          <!-- injected by JS -->
+        </div>
+      </div>
+      <div class="ads-dots" id="adsDots"></div>
+    </div>
+
+    <!-- FEATURED (big horizontal swipe cards) -->
+    <div class="featured-section">
+      <div class="featured-header">
+        <span class="featured-title">Featured</span>
+        <span class="featured-sub">Swipe to explore</span>
+      </div>
+      <div class="featured-track-wrap">
+        <div class="featured-track" id="featuredTrack">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- REGULAR GRID -->
+    <div class="section-title-row">
+      <span class="section-title" id="gridSectionTitle">All Products</span>
+    </div>
     <div class="grid" id="productGrid"></div>
   </div>
 
@@ -911,6 +1098,11 @@ try {
 /* ═══════════════════════════════════════
    HELPERS
 ═══════════════════════════════════════ */
+// Search both PRODUCTS and FEATURED_PRODUCTS by id
+function findProduct(id) {
+  return PRODUCTS.find(p => p.id === id) || FEATURED_PRODUCTS.find(p => p.id === id) || null;
+}
+
 function fmtDA(n) {
   return n.toLocaleString('fr-DZ') + ' DA';
 }
@@ -1036,10 +1228,9 @@ function toggleLike(id) {
 function addToCart(id) {
   const ex = state.cart.find(i => i.productId === id);
   if (ex) { ex.qty++; } else { state.cart.push({ productId: id, qty: 1 }); }
-  const name = PRODUCTS.find(p => p.id === id).name;
-  showToast('Added: ' + name);
+  const p = findProduct(id);
+  showToast('Added: ' + (p ? p.name : ''));
   updateCartBadge();
-  // update add-btn everywhere
   document.querySelectorAll(`.add-btn[data-id="${id}"]`).forEach(btn => {
     btn.className = 'add-btn added';
     btn.innerHTML = '<i class="fas fa-check"></i> In Cart';
@@ -1076,7 +1267,10 @@ function removeFromCart(id) {
 }
 
 function cartTotal() {
-  return state.cart.reduce((s, i) => s + (PRODUCTS.find(p => p.id === i.productId)?.priceDA || 0) * i.qty, 0);
+  return state.cart.reduce((s, i) => {
+    const p = findProduct(i.productId);
+    return s + (p ? p.priceDA : 0) * i.qty;
+  }, 0);
 }
 
 function updateCartBadge() {
@@ -1422,7 +1616,7 @@ function renderCartSheet() {
 
   footer.style.display = 'block';
   state.cart.forEach(item => {
-    const p = PRODUCTS.find(x => x.id === item.productId);
+    const p = findProduct(item.productId);
     if (!p) return;
     const row = document.createElement('div');
     row.className = 'cart-item';
@@ -1492,6 +1686,304 @@ function initProfilePage() {
 }
 
 /* ═══════════════════════════════════════
+   ADS DATA
+═══════════════════════════════════════ */
+const ADS = [
+  {
+    label: 'Limited Offer',
+    title: 'Summer\nSale 50%',
+    sub: 'Shop the best deals today',
+    gradient: 'linear-gradient(135deg,#6a11cb,#2575fc)',
+    img: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=400&fit=crop',
+  },
+  {
+    label: 'New Arrival',
+    title: 'Tech\nEssentials',
+    sub: 'Latest gadgets just dropped',
+    gradient: 'linear-gradient(135deg,#f7971e,#ffd200)',
+    img: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800&h=400&fit=crop',
+  },
+  {
+    label: 'Flash Deal',
+    title: 'Style &\nComfort',
+    sub: 'Premium clothing at low prices',
+    gradient: 'linear-gradient(135deg,#f953c6,#b91d73)',
+    img: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&h=400&fit=crop',
+  },
+];
+
+const FEATURED_PRODUCTS = [
+  {
+    id: 101, name: 'NovaPad Air', priceDA: 94200, category: 'Electronics',
+    desc: 'Immerse yourself in a stunning 11-inch Retina display. Unleash your creativity with the integrated stylus. Performance that keeps up with you.',
+    likes: 482,
+    img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&h=500&fit=crop',
+  },
+  {
+    id: 102, name: 'Protective Case', priceDA: 94200, category: 'Accessories',
+    desc: 'Military-grade protection with a sleek slim profile. Fits perfectly for your device with precise cutouts for all ports.',
+    likes: 419,
+    img: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=500&fit=crop',
+  },
+  {
+    id: 103, name: 'Smart Keyboard', priceDA: 67300, category: 'Electronics',
+    desc: 'Transform your tablet into a productivity powerhouse. Ultra-thin, backlit keys with silent typing for any environment.',
+    likes: 341,
+    img: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&h=500&fit=crop',
+  },
+];
+
+/* ═══════════════════════════════════════
+   ADS BANNER INIT
+═══════════════════════════════════════ */
+function initAdsBanner() {
+  const track     = document.getElementById('adsTrack');
+  const dotsWrap  = document.getElementById('adsDots');
+  let currentAd   = 0;
+  let autoTimer   = null;
+
+  // build slides
+  ADS.forEach((ad, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'ad-slide';
+    slide.innerHTML = `
+      <div class="ad-bg" style="background-image:url('${ad.img}')"></div>
+      <div class="ad-overlay"></div>
+      <div class="ad-content">
+        <div class="ad-text-wrap">
+          <div class="ad-label">${ad.label}</div>
+          <div class="ad-title">${ad.title.replace('\n','<br>')}</div>
+          <div class="ad-sub">${ad.sub}</div>
+        </div>
+        <button class="ad-browse-btn" data-idx="${i}">Browse →</button>
+      </div>
+    `;
+    slide.querySelector('.ad-browse-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      showToast('Opening ' + ad.label + ' deals…');
+    });
+    track.appendChild(slide);
+  });
+
+  // build dots
+  ADS.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'ads-dot' + (i === 0 ? ' active' : '');
+    dotsWrap.appendChild(dot);
+  });
+
+  function goTo(idx) {
+    currentAd = (idx + ADS.length) % ADS.length;
+    track.style.transform = `translateX(-${currentAd * 100}%)`;
+    document.querySelectorAll('.ads-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === currentAd)
+    );
+  }
+
+  // auto-play
+  function startAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(currentAd + 1), 3500);
+  }
+  startAuto();
+
+  // drag / swipe
+  const wrap = track.parentElement;
+  let dStart = 0, dX = 0, isDragging = false;
+
+  function onStart(x) { dStart = x; dX = 0; isDragging = true; clearInterval(autoTimer); }
+  function onMove(x)  {
+    if (!isDragging) return;
+    dX = x - dStart;
+    track.style.transition = 'none';
+    track.style.transform = `translateX(calc(-${currentAd * 100}% + ${dX}px))`;
+  }
+  function onEnd() {
+    if (!isDragging) return; isDragging = false;
+    track.style.transition = '';
+    if (dX < -40)      goTo(currentAd + 1);
+    else if (dX > 40)  goTo(currentAd - 1);
+    else               goTo(currentAd);
+    startAuto();
+  }
+
+  wrap.addEventListener('touchstart', e => onStart(e.touches[0].clientX), { passive: true });
+  wrap.addEventListener('touchmove',  e => onMove(e.touches[0].clientX),  { passive: true });
+  wrap.addEventListener('touchend',   () => onEnd());
+  wrap.addEventListener('mousedown',  e => onStart(e.clientX));
+  window.addEventListener('mousemove', e => { if (isDragging) onMove(e.clientX); });
+  window.addEventListener('mouseup',   () => { if (isDragging) onEnd(); });
+}
+
+/* ═══════════════════════════════════════
+   FEATURED CAROUSEL INIT
+═══════════════════════════════════════ */
+function initFeatured() {
+  const track = document.getElementById('featuredTrack');
+  const wrap  = track.parentElement;
+
+  // init like counts
+  FEATURED_PRODUCTS.forEach(p => {
+    if (!state.likeCounts[p.id]) state.likeCounts[p.id] = p.likes;
+  });
+
+  let fIdx = 0;
+
+  function buildFeatCard(p) {
+    const liked  = state.likedIds.has(p.id);
+    const inCart = state.cart.some(i => i.productId === p.id);
+    const card   = document.createElement('div');
+    card.className = 'feat-card';
+    card.dataset.pid = p.id;
+    card.innerHTML = `
+      <div class="feat-img-wrap">
+        <img class="feat-img" src="${p.img}" alt="${p.name}" loading="lazy">
+        <div class="feat-like-wrap">
+          <button class="feat-like-btn" data-id="${p.id}" aria-label="Like">
+            <i class="${liked ? 'fas' : 'far'} fa-heart"></i>
+          </button>
+          <span class="feat-like-count" id="flc-${p.id}">${fmtLikes(state.likeCounts[p.id])}</span>
+        </div>
+      </div>
+      <div class="feat-info">
+        <div class="feat-price">${fmtDA(p.priceDA)}</div>
+        <div class="feat-name">${p.name}</div>
+        <div class="feat-cat">${p.category}</div>
+        <div class="feat-desc">${p.desc}</div>
+        <div class="feat-actions">
+          <button class="feat-add-btn${inCart ? ' added' : ''}" data-id="${p.id}">
+            ${inCart ? '<i class="fas fa-check"></i> In Cart' : '<i class="fas fa-plus"></i> Add to Cart'}
+          </button>
+          <button class="feat-buy-btn" data-id="${p.id}">Buy Now</button>
+        </div>
+      </div>
+    `;
+
+    card.querySelector('.feat-like-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const id = p.id;
+      if (state.likedIds.has(id)) { state.likedIds.delete(id); state.likeCounts[id]--; }
+      else { state.likedIds.add(id); state.likeCounts[id]++; }
+      // update icon in this card
+      card.querySelector('.feat-like-btn i').className = state.likedIds.has(id) ? 'fas fa-heart' : 'far fa-heart';
+      card.querySelector(`#flc-${id}`).textContent = fmtLikes(state.likeCounts[id]);
+      // also update in main grid if visible
+      document.querySelectorAll(`.like-btn[data-id="${id}"] i`).forEach(i => {
+        i.className = state.likedIds.has(id) ? 'fas fa-heart' : 'far fa-heart';
+      });
+      document.querySelectorAll(`#lc-${id}`).forEach(el => {
+        el.textContent = fmtLikes(state.likeCounts[id]);
+      });
+    });
+
+    card.querySelector('.feat-add-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const id = p.id;
+      const ex = state.cart.find(i => i.productId === id);
+      if (ex) { ex.qty++; } else { state.cart.push({ productId: id, qty: 1 }); }
+      showToast('Added: ' + p.name);
+      updateCartBadge();
+      // update button in this card
+      const btn = card.querySelector('.feat-add-btn');
+      btn.className = 'feat-add-btn added';
+      btn.innerHTML = '<i class="fas fa-check"></i> In Cart';
+      // update matching buttons in main grid
+      document.querySelectorAll(`.add-btn[data-id="${id}"]`).forEach(b => {
+        b.className = 'add-btn added';
+        b.innerHTML = '<i class="fas fa-check"></i> In Cart';
+      });
+    });
+
+    card.querySelector('.feat-buy-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const id = p.id;
+      const ex = state.cart.find(i => i.productId === id);
+      if (ex) { ex.qty++; } else { state.cart.push({ productId: id, qty: 1 }); }
+      updateCartBadge();
+      const btn = card.querySelector('.feat-add-btn');
+      btn.className = 'feat-add-btn added';
+      btn.innerHTML = '<i class="fas fa-check"></i> In Cart';
+      // open cart sheet
+      renderCartSheet();
+      document.getElementById('cartBackdrop').classList.add('open');
+    });
+
+    return card;
+  }
+
+  function renderFeatured() {
+    track.innerHTML = '';
+    fIdx = 0;
+    track.style.transform = 'translateX(0)';
+    FEATURED_PRODUCTS.forEach(p => track.appendChild(buildFeatCard(p)));
+  }
+  renderFeatured();
+
+  // ── DRAG / SWIPE ──
+  // card width = wrap width exactly (cards are 100% wide, gap handled by translateX step)
+  function getCardW() {
+    // card width = wrap - 36px peek, + 12px gap between cards
+    return wrap.offsetWidth - 36 + 12;
+  }
+
+  let fStart = 0, fX = 0, fDragging = false, fMoved = false;
+
+  function fGoTo(idx) {
+    fIdx = Math.max(0, Math.min(FEATURED_PRODUCTS.length - 1, idx));
+    track.style.transition = 'transform 0.36s cubic-bezier(0.25,0.9,0.3,1)';
+    track.style.transform  = `translateX(-${fIdx * getCardW()}px)`;
+  }
+
+  // Touch
+  wrap.addEventListener('touchstart', e => {
+    fStart = e.touches[0].clientX;
+    fX = 0; fDragging = true; fMoved = false;
+    track.style.transition = 'none';
+  }, { passive: true });
+
+  wrap.addEventListener('touchmove', e => {
+    if (!fDragging) return;
+    fX = e.touches[0].clientX - fStart;
+    fMoved = Math.abs(fX) > 5;
+    track.style.transform = `translateX(calc(-${fIdx * getCardW()}px + ${fX}px))`;
+  }, { passive: true });
+
+  wrap.addEventListener('touchend', () => {
+    if (!fDragging) return;
+    fDragging = false;
+    if (fX < -40)     fGoTo(fIdx + 1);
+    else if (fX > 40) fGoTo(fIdx - 1);
+    else              fGoTo(fIdx);
+  });
+
+  // Mouse
+  wrap.addEventListener('mousedown', e => {
+    // only drag if not clicking a button
+    if (e.target.closest('button')) return;
+    fStart = e.clientX; fX = 0; fDragging = true; fMoved = false;
+    track.style.transition = 'none';
+    e.preventDefault();
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (!fDragging) return;
+    fX = e.clientX - fStart;
+    fMoved = Math.abs(fX) > 5;
+    track.style.transform = `translateX(calc(-${fIdx * getCardW()}px + ${fX}px))`;
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!fDragging) return;
+    fDragging = false;
+    if (fX < -40)     fGoTo(fIdx + 1);
+    else if (fX > 40) fGoTo(fIdx - 1);
+    else              fGoTo(fIdx);
+  });
+
+  window._rerenderFeatured = renderFeatured;
+}
+
+/* ═══════════════════════════════════════
    BOOT
 ═══════════════════════════════════════ */
 (function init() {
@@ -1504,6 +1996,8 @@ function initProfilePage() {
   initCartSheet();
   initProfilePage();
   updateCartBadge();
+  initAdsBanner();
+  initFeatured();
 })();
 </script>
 </body>
