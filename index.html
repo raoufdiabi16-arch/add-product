@@ -43,6 +43,19 @@ body{
 .screen.offright{transform:translateX(110%);opacity:0;pointer-events:none}
 .screen.offleft{transform:translateX(-110%);opacity:0;pointer-events:none}
 
+/* Modal presentation — used for screens that sit "on top" of the
+   current context (locked/paywall screens) rather than being a
+   sibling step in the same flow. Slides up from the bottom like
+   an iOS presented sheet, with rounded top corners while active,
+   and sits above the regular screens via z-index. */
+.screen.modal{
+  z-index:30;border-radius:28px 28px 0 0;overflow:hidden;
+  transition:transform .46s cubic-bezier(.32,.9,.4,1),opacity .3s var(--ease),border-radius .3s;
+}
+.screen.modal.offdown{
+  transform:translateY(100%);opacity:1;pointer-events:none;border-radius:0;
+}
+
 /* ════ S1 SPLASH ════ */
 #s1{background:#fff;justify-content:center;align-items:center}
 .splash-inner{display:flex;flex-direction:column;align-items:center;animation:popIn .85s var(--spring) forwards;opacity:0}
@@ -59,7 +72,7 @@ body{
 .ob-eyebrow{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px}
 .ob-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--blue)}
 .ob-eyebrow span{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.1em;text-transform:uppercase}
-.ob-h1{font-size:clamp(23px,6.4vw,28px);font-weight:800;color:var(--text);text-align:center;line-height:1.22;letter-spacing:-.03em;margin-bottom:10px;max-width:300px}
+.ob-h1{font-size:clamp(25px,7vw,31px);font-weight:800;color:var(--text);text-align:center;line-height:1.25;letter-spacing:-.03em;margin:8px 0 26px;max-width:300px}
 .ob-h1 .accent{background:linear-gradient(95deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .ob-sub{font-size:14.5px;color:var(--mid);text-align:center;line-height:1.55;max-width:280px;margin-bottom:24px}
 .ob-cta{width:100%;display:flex;flex-direction:column;gap:11px}
@@ -86,11 +99,11 @@ body{
 
 /* ════ S3 AUTH ════ */
 #s3{background:#fff;justify-content:flex-start}
-.auth-hdr{width:100%;padding:calc(var(--sat) + 14px) 18px 12px;display:flex;align-items:center;position:relative;flex-shrink:0;background:#fff;border-bottom:1px solid #f0f3f9}
+.auth-hdr{width:100%;padding:calc(var(--sat) + 16px) 18px 16px;display:flex;align-items:center;position:relative;flex-shrink:0;background:#fff;border-bottom:1px solid #f0f3f9}
 .back-btn{width:34px;height:34px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);transition:transform .15s,background .15s;flex-shrink:0;position:relative;z-index:5}
 .back-btn:active{transform:scale(.88);background:#e9edf5}
 .hdr-logo-wrap{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.hdr-logo{width:38px;height:38px;background-size:contain;background-repeat:no-repeat;background-position:center;mix-blend-mode:multiply}
+.hdr-logo{width:54px;height:54px;background-size:contain;background-repeat:no-repeat;background-position:center;mix-blend-mode:multiply;filter:contrast(1.05) saturate(1.08)}
 .auth-body{width:100%;flex:1;display:flex;flex-direction:column;align-items:center;padding:30px 24px calc(20px + var(--sab));overflow-y:auto;-webkit-overflow-scrolling:touch}
 .auth-title{width:100%;margin-bottom:22px}
 .auth-title h1{font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.03em}
@@ -149,6 +162,11 @@ body{
 #s6{background:linear-gradient(170deg,#d8eaff 0%,#f0f7ff 38%,#fff 68%);justify-content:center;align-items:center}
 .load-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;animation:fadeUp .45s var(--ease) forwards;opacity:0}
 @keyframes fadeUp{0%{opacity:0;transform:translateY(16px)}100%{opacity:1;transform:none}}
+.load-logo-halo{
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,#fff 0%,#fff 52%,rgba(255,255,255,0) 78%);
+  display:flex;align-items:center;justify-content:center;
+}
 .load-logo{
   width:84px;height:84px;
   background-size:contain;background-repeat:no-repeat;background-position:center;
@@ -171,23 +189,39 @@ body{
 #s7{background:#f7f9fc;justify-content:flex-start}
 .mk-topbar{
   width:100%;flex-shrink:0;background:#fff;
-  padding:calc(var(--sat) + 12px) 18px 12px;
+  padding:calc(var(--sat) + 10px) 18px 10px;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   border-bottom:1px solid #f1f4f9;
 }
 .mk-logo{
-  height:22px;width:auto;background-size:contain;background-repeat:no-repeat;background-position:left center;
-  width:74px;flex-shrink:0;
+  height:42px;background-size:contain;background-repeat:no-repeat;background-position:left center;
+  width:132px;flex-shrink:0;
 }
 .mk-toggle{
+  position:relative;
   display:flex;align-items:center;background:#f0f3f9;border-radius:999px;padding:3px;flex-shrink:0;
+  touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.mk-toggle.dragging{
+  transform:scale(1.08);
+  cursor:grabbing;
+  box-shadow:0 6px 18px -4px rgba(15,30,60,.18);
 }
 .mk-toggle button{
+  position:relative;z-index:1;
   border:none;background:none;cursor:pointer;font-family:inherit;
   font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;
-  color:var(--muted);transition:all .2s;
+  color:var(--muted);transition:color .2s;
+  pointer-events:auto;
 }
-.mk-toggle button.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.mk-toggle button.active{color:var(--text)}
+.mk-pill{
+  position:absolute;top:3px;bottom:3px;left:3px;border-radius:999px;
+  background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.08);
+  transition:left .32s cubic-bezier(.34,1.56,.64,1),width .32s cubic-bezier(.34,1.56,.64,1);
+  z-index:0;
+}
 .mk-icons{display:flex;align-items:center;gap:14px;flex-shrink:0}
 .mk-icons button{border:none;background:none;cursor:pointer;color:var(--text);display:flex;padding:2px}
 
@@ -271,30 +305,243 @@ body{
 .pcard-rating svg{width:9px;height:9px}
 .pcard-rating span{font-size:9.5px;font-weight:600;color:var(--mid)}
 
-/* Bottom tab bar */
+/* ════════════════════════════════════
+   Bottom tab bar — Apple "Liquid Glass" (iOS 26) style.
+   Not 2021-style glassmorphism (no bright tinted panels,
+   no heavy borders). Instead: a thin true-glass slab with
+   deep blur + saturation boost, a soft inner specular rim
+   that reads as light refracting through glass, and a
+   liquid glow blob that morphs and glides beneath the
+   active icon rather than a flat pill.
+════════════════════════════════════ */
 .mk-tabbar{
   position:absolute;left:14px;right:14px;bottom:calc(12px + var(--sab));z-index:10;
-  background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
-  border-radius:26px;height:62px;
+  height:64px;border-radius:32px;
   display:flex;align-items:center;justify-content:space-around;
-  box-shadow:0 12px 32px -8px rgba(15,30,60,.18),0 0 0 1px rgba(15,30,60,.04);
+  background:rgba(255,255,255,.42);
+  -webkit-backdrop-filter:blur(28px) saturate(1.8);
+  backdrop-filter:blur(28px) saturate(1.8);
+  box-shadow:
+    0 18px 40px -12px rgba(15,30,60,.22),
+    0 1px 1px rgba(255,255,255,.6) inset,
+    0 -1px 1px rgba(15,30,60,.04) inset;
+  border:1px solid rgba(255,255,255,.55);
+  overflow:hidden;
 }
+/* Specular sweep across the top edge — reads as curved glass catching light */
+.mk-tabbar::before{
+  content:"";position:absolute;top:0;left:8%;right:8%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9) 35%,rgba(255,255,255,.9) 65%,transparent);
+  pointer-events:none;
+}
+/* Liquid glow: bigger, very transparent blob that glides under the
+   active tab. It enlarges briefly while moving, then settles back —
+   the glow itself never carries the color; only the icon/label do. */
+.tab-glow{
+  position:absolute;top:5px;bottom:5px;left:5px;
+  width:66px;border-radius:26px;
+  background:rgba(255,255,255,.16);
+  -webkit-backdrop-filter:blur(6px) saturate(1.4);
+  backdrop-filter:blur(6px) saturate(1.4);
+  box-shadow:
+    0 2px 12px rgba(255,255,255,.25) inset,
+    0 0 0 1px rgba(255,255,255,.28) inset;
+  transition:left .45s cubic-bezier(.34,1.56,.64,1),
+             width .45s cubic-bezier(.34,1.56,.64,1),
+             transform .45s cubic-bezier(.34,1.56,.64,1);
+  z-index:0;pointer-events:none;
+  transform:scale(1);
+}
+.tab-glow.morph{transform:scale(1.16)}
+.tab-glow.dragging{
+  background:rgba(255,255,255,.22);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+  transform:scale(1.2);
+}
+
 .tab-item{
+  position:relative;z-index:1;
   display:flex;flex-direction:column;align-items:center;gap:2px;
   border:none;background:none;cursor:pointer;font-family:inherit;
   color:var(--muted);flex:1;height:100%;justify-content:center;
+  transition:color .25s,transform .2s;
+  touch-action:none;
 }
-.tab-item svg{width:21px;height:21px}
-.tab-item span{font-size:9.5px;font-weight:600}
-.tab-item.active{color:var(--blue)}
+.tab-item:active{transform:scale(.92)}
+.tab-item svg{width:21px;height:21px;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.tab-item span{font-size:9.5px;font-weight:600;transition:opacity .25s,color .25s}
+/* Facebook blue for the active tab — applies to icon + label only */
+.tab-item.active{color:#1877f2}
+.tab-item.active svg{transform:translateY(-1px) scale(1.06)}
+
 .tab-fab{
-  width:46px;height:46px;border-radius:50%;
-  background:linear-gradient(180deg,#2a2a32,#0a0a0c);
+  position:relative;z-index:1;
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(165deg,#34343c 0%,#0a0a0c 100%);
   display:flex;align-items:center;justify-content:center;
   color:#fff;flex-shrink:0;cursor:pointer;
-  box-shadow:0 6px 16px -2px rgba(0,0,0,.35);
+  box-shadow:
+    0 8px 18px -2px rgba(0,0,0,.4),
+    0 1px 1px rgba(255,255,255,.25) inset;
   margin:0 2px;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
 }
+.tab-fab:active{transform:scale(.88)}
+
+/* ════════════════════════════════════
+   S8 — ORDERS
+   Clean header + modern 3-way liquid segmented
+   control (Products / Niche / Purchases) with a
+   sliding glass pill, same motion language as the
+   bottom tab bar's liquid glow.
+════════════════════════════════════ */
+#s8{background:#f7f9fc;justify-content:flex-start}
+.ord-hdr{
+  width:100%;flex-shrink:0;background:#fff;
+  padding:calc(var(--sat) + 18px) 20px 4px;
+}
+.ord-hdr h1{
+  font-size:26px;font-weight:800;color:var(--text);letter-spacing:-.035em;
+}
+
+/* Segmented control wrapper — same white surface as header, single
+   border at the very end so the whole block reads as one consistent
+   card, matching the marketplace topbar treatment. */
+.ord-seg-wrap{width:100%;background:#fff;padding:12px 20px 14px;flex-shrink:0;border-bottom:1px solid #f1f4f9}
+.ord-seg{
+  position:relative;display:flex;align-items:center;
+  background:#f0f3f9;border-radius:14px;padding:3px;height:38px;
+}
+.ord-seg-pill{
+  position:absolute;top:3px;bottom:3px;left:3px;
+  border-radius:11px;
+  background:rgba(255,255,255,.55);
+  -webkit-backdrop-filter:blur(10px) saturate(1.6);
+  backdrop-filter:blur(10px) saturate(1.6);
+  box-shadow:
+    0 3px 10px rgba(15,30,60,.12),
+    0 1px 1px rgba(255,255,255,.7) inset;
+  transition:left .38s cubic-bezier(.34,1.56,.64,1),
+             width .38s cubic-bezier(.34,1.56,.64,1),
+             transform .38s cubic-bezier(.34,1.56,.64,1);
+  z-index:0;
+}
+.ord-seg-pill.morph{transform:scaleY(1.1)}
+.ord-seg-btn{
+  position:relative;z-index:1;flex:1;height:100%;
+  border:none;background:none;cursor:pointer;font-family:inherit;
+  font-size:12.5px;font-weight:600;color:var(--muted);
+  transition:color .25s;
+}
+.ord-seg-btn.active{color:#1877f2}
+
+.ord-body{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 20px calc(100px + var(--sab))}
+.ord-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:60px 20px;color:var(--muted);
+}
+.ord-empty .ic{
+  width:64px;height:64px;border-radius:32px;
+  background:linear-gradient(135deg,#eef4ff,#dce8ff);
+  display:flex;align-items:center;justify-content:center;color:var(--blue);
+  margin-bottom:16px;
+}
+.ord-empty h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px}
+.ord-empty p{font-size:12.5px;color:var(--muted);max-width:220px;line-height:1.5}
+
+.ord-list{display:flex;flex-direction:column;gap:10px;padding-top:6px}
+.ord-row{
+  display:flex;align-items:center;gap:12px;
+  background:#fff;border-radius:16px;padding:11px 12px;
+  box-shadow:0 1px 3px rgba(15,30,60,.06),0 1px 2px rgba(15,30,60,.04);
+}
+.ord-thumb{width:48px;height:48px;border-radius:12px;flex-shrink:0}
+.ord-row-info{flex:1;min-width:0}
+.ord-row-name{font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ord-row-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.ord-row-right{text-align:right;flex-shrink:0}
+.ord-row-price{font-size:13px;font-weight:800;color:var(--text)}
+.ord-row-status{
+  font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  margin-top:3px;display:inline-block;padding:2px 8px;border-radius:999px;
+}
+.status-done{background:rgba(31,176,104,.12);color:#178a51}
+.status-pending{background:rgba(245,158,11,.12);color:#b45309}
+.status-active{background:rgba(26,86,240,.12);color:#1a56f0}
+
+/* ════════════════════════════════════
+   Bottom sheet — "+" action (Add product / Create Niche)
+   Apple-style modal sheet: scrim behind, white sheet slides
+   up from the bottom with a grabber handle.
+════════════════════════════════════ */
+.sheet-scrim{
+  position:absolute;inset:0;z-index:50;
+  background:rgba(8,14,28,0);
+  transition:background .32s var(--ease);
+  pointer-events:none;
+}
+.sheet-scrim.show{background:rgba(8,14,28,.45);pointer-events:auto}
+.add-sheet{
+  position:absolute;left:0;right:0;bottom:0;z-index:51;
+  background:#fff;border-radius:26px 26px 0 0;
+  padding:14px 22px calc(28px + var(--sab));
+  transform:translateY(102%);
+  transition:transform .42s cubic-bezier(.32,.9,.4,1);
+  box-shadow:0 -20px 60px rgba(0,0,0,.18);
+}
+.add-sheet.show{transform:translateY(0)}
+.sheet-grab{width:36px;height:5px;border-radius:3px;background:#e2e7f0;margin:0 auto 18px}
+.sheet-title{font-size:19px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:4px}
+.sheet-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.sheet-options{display:flex;flex-direction:column;gap:10px;margin-bottom:6px}
+.sheet-opt{
+  display:flex;align-items:center;gap:14px;
+  border:1.5px solid #eef1f7;border-radius:18px;
+  padding:14px 16px;background:#fff;cursor:pointer;
+  transition:background .15s,border-color .15s,transform .15s;
+}
+.sheet-opt:active{transform:scale(.98);background:#f8fafd}
+.sheet-opt-ic{
+  width:46px;height:46px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:#fff;
+}
+.sheet-opt-ic.blue{background:linear-gradient(160deg,#3b7bff,#1140c8)}
+.sheet-opt-ic.purple{background:linear-gradient(160deg,#9b6bff,#5a1fc8)}
+.sheet-opt-txt{flex:1;min-width:0}
+.sheet-opt-txt h4{font-size:14.5px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+.sheet-opt-txt p{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+.sheet-opt-arrow{color:#c5cedb;flex-shrink:0}
+
+/* ════════════════════════════════════
+   Locked-feature screens (Niches / Growth) — premium paywall
+════════════════════════════════════ */
+.lock-screen{background:#fff;justify-content:flex-start}
+.lock-top{
+  width:100%;padding:calc(var(--sat) + 14px) 18px 12px;
+  display:flex;align-items:center;flex-shrink:0;border-bottom:1px solid #f0f3f9;
+}
+.lock-body{
+  width:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 28px calc(110px + var(--sab));text-align:center;
+}
+.lock-badge{
+  width:84px;height:84px;border-radius:42px;
+  background:linear-gradient(150deg,#2a2a35,#0a0a10);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;
+  box-shadow:0 16px 36px -8px rgba(0,0,0,.32),0 1px 1px rgba(255,255,255,.12) inset;
+}
+.lock-h2{font-size:21px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:10px}
+.lock-p{font-size:13.5px;color:var(--muted);line-height:1.6;max-width:280px;margin-bottom:26px}
+.lock-feats{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;margin-bottom:30px}
+.lock-feat{
+  display:flex;align-items:center;gap:10px;text-align:left;
+  background:#f7f9fc;border-radius:14px;padding:11px 14px;
+}
+.lock-feat svg{flex-shrink:0;color:#1877f2}
+.lock-feat span{font-size:12.5px;font-weight:600;color:var(--text)}
+.lock-cta{width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px}
+.lock-price{font-size:11.5px;color:var(--muted);margin-top:2px}
 </style>
 </head>
 <body>
@@ -315,9 +562,7 @@ body{
     <div class="hero-fade"></div>
   </div>
   <div class="ob-sheet">
-    <div class="ob-eyebrow"><div class="dot"></div><span>Algeria's Marketplace</span></div>
-    <h1 class="ob-h1">Your <span class="accent">own corner</span><br>of the marketplace</h1>
-    <p class="ob-sub">Sell what you don't need, find what you do, and run your own Niche store — all in one app.</p>
+    <h1 class="ob-h1">Buy, Sell &amp; Launch<br>Your <span class="accent">Niche</span> on Blex</h1>
     <div class="ob-cta">
       <button class="btn btn-p" id="btnSignup">Create an account</button>
       <button class="btn btn-g" id="btnLogin">I already have an account</button>
@@ -404,7 +649,7 @@ body{
 <!-- S6 LOADING (3s) -->
 <div class="screen offright" id="s6">
   <div class="load-wrap">
-    <div class="load-logo" id="loadLogo"></div>
+    <div class="load-logo-halo"><div class="load-logo" id="loadLogo"></div></div>
     <div class="ring"><svg viewBox="0 0 40 40"><circle class="rc-bg" cx="20" cy="20" r="16"/><circle class="rc-fg" cx="20" cy="20" r="16"/></svg></div>
     <div class="load-txt"><h3>Entering the marketplace&#x2026;</h3><p>Setting up your account</p></div>
   </div>
@@ -414,13 +659,14 @@ body{
 <div class="screen offright" id="s7">
   <div class="mk-topbar">
     <div class="mk-logo" id="mkLogo"></div>
-    <div class="mk-toggle">
+    <div class="mk-toggle" id="mkToggle">
+      <div class="mk-pill" id="mkPill"></div>
       <button class="active" id="tglSaller">Saller</button>
       <button id="tglSekers">Sekers</button>
     </div>
     <div class="mk-icons">
       <button aria-label="Search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-      <button aria-label="Profile"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg></button>
+      <button aria-label="Profile"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg></button>
     </div>
   </div>
 
@@ -451,24 +697,184 @@ body{
 
   </div>
 
-  <div class="mk-tabbar">
-    <button class="tab-item active">
-      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+  <div class="mk-tabbar" id="mkTabbar">
+    <div class="tab-glow" id="tabGlow"></div>
+    <button class="tab-item active" data-tab="market">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
       <span>Market</span>
     </button>
-    <button class="tab-item">
-      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+    <button class="tab-item" data-tab="orders">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
       <span>Orders</span>
     </button>
     <div class="tab-fab" id="fabAdd">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     </div>
-    <button class="tab-item">
-      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    <button class="tab-item" data-tab="niches">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
       <span>Niches</span>
     </button>
-    <button class="tab-item">
-      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    <button class="tab-item" data-tab="growth">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
+      <span>Growth</span>
+    </button>
+  </div>
+</div>
+
+<!-- S8 ORDERS -->
+<div class="screen offright" id="s8">
+  <div class="ord-hdr">
+    <h1>Orders</h1>
+  </div>
+  <div class="ord-seg-wrap">
+    <div class="ord-seg" id="ordSeg">
+      <div class="ord-seg-pill" id="ordPill"></div>
+      <button class="ord-seg-btn active" data-seg="products">Products</button>
+      <button class="ord-seg-btn" data-seg="niche">Niche</button>
+      <button class="ord-seg-btn" data-seg="purchases">Purchases</button>
+    </div>
+  </div>
+  <div class="ord-body" id="ordBody">
+    <!-- content injected by JS per segment -->
+  </div>
+
+  <div class="mk-tabbar" id="ordTabbar">
+    <div class="tab-glow" id="ordTabGlow"></div>
+    <button class="tab-item" data-tab="market">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
+      <span>Market</span>
+    </button>
+    <button class="tab-item active" data-tab="orders">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      <span>Orders</span>
+    </button>
+    <div class="tab-fab" id="fabAdd2">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <button class="tab-item" data-tab="niches">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+      <span>Niches</span>
+    </button>
+    <button class="tab-item" data-tab="growth">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
+      <span>Growth</span>
+    </button>
+  </div>
+</div>
+
+<!-- ADD BOTTOM SHEET (Product / Niche) -->
+<div class="sheet-scrim" id="addScrim"></div>
+<div class="add-sheet" id="addSheet">
+  <div class="sheet-grab"></div>
+  <div class="sheet-title">Create something new</div>
+  <div class="sheet-sub">Choose what you'd like to add to Blex.</div>
+  <div class="sheet-options">
+    <div class="sheet-opt" id="optAddProduct">
+      <div class="sheet-opt-ic blue">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+      </div>
+      <div class="sheet-opt-txt"><h4>Add a product</h4><p>List an item to sell on the marketplace</p></div>
+      <svg class="sheet-opt-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="sheet-opt" id="optCreateNiche">
+      <div class="sheet-opt-ic purple">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+      </div>
+      <div class="sheet-opt-txt"><h4>Create a Niche</h4><p>Launch your own themed storefront</p></div>
+      <svg class="sheet-opt-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- S9 — LOCKED: NICHES -->
+<div class="screen modal offdown lock-screen" id="s9">
+  <div class="lock-top">
+    <div class="back-btn" id="lockNichesBack">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+  </div>
+  <div class="lock-body">
+    <div class="lock-badge">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <h2 class="lock-h2">Unlock more with Pro</h2>
+    <p class="lock-p">Subscribe to publish a Niche with more than 6 products and access advanced storefront features.</p>
+    <div class="lock-feats">
+      <div class="lock-feat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Unlimited products per Niche</span></div>
+      <div class="lock-feat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Custom storefront branding</span></div>
+      <div class="lock-feat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Priority placement in search</span></div>
+    </div>
+    <div class="lock-cta">
+      <button class="btn btn-p">Subscribe to Pro</button>
+      <div class="lock-price">From 1.490 DA / month · Cancel anytime</div>
+    </div>
+  </div>
+
+  <div class="mk-tabbar" id="lockTabbar9">
+    <div class="tab-glow" id="lockGlow9"></div>
+    <button class="tab-item" data-tab="market">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
+      <span>Market</span>
+    </button>
+    <button class="tab-item" data-tab="orders">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      <span>Orders</span>
+    </button>
+    <div class="tab-fab" id="fabAdd9">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <button class="tab-item active" data-tab="niches">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+      <span>Niches</span>
+    </button>
+    <button class="tab-item" data-tab="growth">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
+      <span>Growth</span>
+    </button>
+  </div>
+</div>
+<div class="screen modal offdown lock-screen" id="s10">
+  <div class="lock-top">
+    <div class="back-btn" id="lockGrowthBack">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+  </div>
+  <div class="lock-body">
+    <div class="lock-badge">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <h2 class="lock-h2">Unlock more with Pro</h2>
+    <p class="lock-p">Subscribe to build your own website and access advanced growth features.</p>
+    <div class="lock-feats">
+      <div class="lock-feat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Create your own website</span></div>
+      <div class="lock-feat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Advanced sales analytics</span></div>
+      <div class="lock-feat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Promotion & ad tools</span></div>
+    </div>
+    <div class="lock-cta">
+      <button class="btn btn-p">Subscribe to Pro</button>
+      <div class="lock-price">From 1.490 DA / month · Cancel anytime</div>
+    </div>
+  </div>
+
+  <div class="mk-tabbar" id="lockTabbar10">
+    <div class="tab-glow" id="lockGlow10"></div>
+    <button class="tab-item" data-tab="market">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
+      <span>Market</span>
+    </button>
+    <button class="tab-item" data-tab="orders">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      <span>Orders</span>
+    </button>
+    <div class="tab-fab" id="fabAdd10">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <button class="tab-item" data-tab="niches">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+      <span>Niches</span>
+    </button>
+    <button class="tab-item active" data-tab="growth">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
       <span>Growth</span>
     </button>
   </div>
@@ -1396,6 +1802,16 @@ function go(a,b,d){
   el(a).classList.add(d==='l'?'offleft':'offright');
   el(b).classList.remove('offright','offleft');
 }
+/* Present a modal screen (slide up from the bottom, like an iOS
+   sheet/page presented over the current context) and dismiss it
+   back down — distinct from go(), which is for lateral step-to-step
+   navigation between sibling screens in the same flow. */
+function presentModal(id){
+  el(id).classList.remove('offdown');
+}
+function dismissModal(id){
+  el(id).classList.add('offdown');
+}
 setTimeout(function(){go('s1','s2','l')},1700);
 
 el('btnSignup').addEventListener('click',function(){go('s2','s3','l')});
@@ -1524,12 +1940,390 @@ PRODUCTS.forEach(function(p){
   grid.appendChild(c);
 });
 
-el('tglSaller').addEventListener('click',function(){
-  el('tglSaller').classList.add('active');el('tglSekers').classList.remove('active');
+/* ── Draggable Saller/Sekers toggle ──
+   Real pointer-drag: follow finger/mouse, scale up while dragging,
+   snap back to size + nearest side on release. */
+(function(){
+  var toggle = el('mkToggle'), pill = el('mkPill'),
+      btnA = el('tglSaller'), btnB = el('tglSekers');
+  var dragging = false, startX = 0, current = 'A'; // which side is active
+
+  function sizeFor(btn){ return { w: btn.offsetWidth, l: btn.offsetLeft }; }
+
+  function placePill(which, animate){
+    var target = which === 'A' ? btnA : btnB;
+    var s = sizeFor(target);
+    if(!animate) pill.style.transition = 'none';
+    pill.style.left = s.l + 'px';
+    pill.style.width = s.w + 'px';
+    if(!animate){ requestAnimationFrame(function(){ pill.style.transition = ''; }); }
+  }
+
+  function setActive(which){
+    current = which;
+    btnA.classList.toggle('active', which === 'A');
+    btnB.classList.toggle('active', which === 'B');
+    placePill(which, true);
+  }
+
+  // initial placement once layout is ready
+  requestAnimationFrame(function(){ placePill('A', false); });
+  window.addEventListener('resize', function(){ placePill(current, false); });
+
+  function onDown(e){
+    dragging = true;
+    startX = (e.touches ? e.touches[0].clientX : e.clientX);
+    toggle.classList.add('dragging');
+  }
+  function onMove(e){
+    if(!dragging) return;
+    var x = (e.touches ? e.touches[0].clientX : e.clientX);
+    var dx = x - startX;
+    // While dragging, let the pill subtly follow finger direction by
+    // previewing the opposite side once the drag passes a threshold —
+    // gives a "liquid" feel without fully detaching from the track.
+    if(Math.abs(dx) > 28){
+      var preview = dx > 0 ? 'B' : 'A';
+      if(preview !== current){
+        btnA.classList.toggle('active', preview === 'A');
+        btnB.classList.toggle('active', preview === 'B');
+        placePill(preview, true);
+        current = preview;
+        startX = x;
+      }
+    }
+  }
+  function onUp(){
+    if(!dragging) return;
+    dragging = false;
+    toggle.classList.remove('dragging');
+  }
+
+  toggle.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  toggle.addEventListener('touchstart', onDown, {passive:true});
+  window.addEventListener('touchmove', onMove, {passive:true});
+  window.addEventListener('touchend', onUp);
+
+  // Tap still works as a simple shortcut
+  btnA.addEventListener('click', function(){ if(!dragging) setActive('A'); });
+  btnB.addEventListener('click', function(){ if(!dragging) setActive('B'); });
+})();
+
+/* ── Liquid glow indicator — reusable for any bottom tab bar ──
+   Glides under whichever tab is active. Enlarges while moving
+   (tap OR drag), settles back to normal size when it stops.
+   Color lives only on the icon/label — the glow stays a neutral
+   translucent blob, never tinted. Draggable by finger/mouse.
+   Tapping a tab also switches screens via the provided map. */
+function initTabBar(barId, glowId, screenMap, currentScreenId){
+  var bar = el(barId), glow = el(glowId);
+  var items = Array.prototype.slice.call(bar.querySelectorAll('.tab-item'));
+  var dragging = false, shrinkTimer = null;
+  window.LOCK_ORIGIN = window.LOCK_ORIGIN || 's7';
+
+  function centerLeftFor(item){
+    var barRect = bar.getBoundingClientRect();
+    var r = item.getBoundingClientRect();
+    return r.left - barRect.left + (r.width - 66) / 2;
+  }
+  function growGlow(){ clearTimeout(shrinkTimer); glow.classList.add('morph'); }
+  function settleGlow(){ shrinkTimer = setTimeout(function(){ glow.classList.remove('morph'); }, 180); }
+  function setActiveItem(item){
+    items.forEach(function(i){ i.classList.remove('active'); });
+    item.classList.add('active');
+  }
+  function moveGlowTo(item, withGrow){
+    if(withGrow) growGlow();
+    glow.style.left = Math.max(5, centerLeftFor(item)) + 'px';
+    if(withGrow) settleGlow();
+  }
+  function nearestItem(clientX){
+    var best = items[0], bestDist = Infinity;
+    items.forEach(function(i){
+      var r = i.getBoundingClientRect();
+      var c = r.left + r.width / 2;
+      var d = Math.abs(clientX - c);
+      if(d < bestDist){ bestDist = d; best = i; }
+    });
+    return best;
+  }
+
+  items.forEach(function(item){
+    item.addEventListener('click', function(){
+      if(dragging) return;
+      setActiveItem(item);
+      moveGlowTo(item, true);
+      var key = item.getAttribute('data-tab');
+      var target = screenMap[key];
+      if(target && target !== currentScreenId){
+        if(target === 's9' || target === 's10'){
+          window.LOCK_ORIGIN = currentScreenId;
+          presentModal(target);
+        } else {
+          go(currentScreenId, target, 'l');
+        }
+      }
+    });
+  });
+
+  function dragStart(e){ dragging = true; glow.classList.add('dragging'); growGlow(); dragMove(e); }
+  function dragMove(e){
+    if(!dragging) return;
+    var x = (e.touches ? e.touches[0].clientX : e.clientX);
+    var barRect = bar.getBoundingClientRect();
+    var left = x - barRect.left - 33;
+    var min = 5, max = barRect.width - 66 - 5;
+    glow.style.left = Math.min(max, Math.max(min, left)) + 'px';
+    setActiveItem(nearestItem(x));
+  }
+  function dragEnd(){
+    if(!dragging) return;
+    dragging = false;
+    glow.classList.remove('dragging');
+    var active = bar.querySelector('.tab-item.active') || items[0];
+    moveGlowTo(active, true);
+    var key = active.getAttribute('data-tab');
+    var target = screenMap[key];
+    if(target && target !== currentScreenId){
+      if(target === 's9' || target === 's10'){
+        window.LOCK_ORIGIN = currentScreenId;
+        presentModal(target);
+      } else {
+        go(currentScreenId, target, 'l');
+      }
+    }
+  }
+  glow.style.pointerEvents = 'auto';
+  glow.style.cursor = 'grab';
+  glow.addEventListener('pointerdown', dragStart);
+  window.addEventListener('pointermove', dragMove);
+  window.addEventListener('pointerup', dragEnd);
+  glow.addEventListener('touchstart', dragStart, {passive:true});
+  window.addEventListener('touchmove', dragMove, {passive:true});
+  window.addEventListener('touchend', dragEnd);
+
+  requestAnimationFrame(function(){
+    moveGlowTo(bar.querySelector('.tab-item.active') || items[0], false);
+  });
+  window.addEventListener('resize', function(){
+    moveGlowTo(bar.querySelector('.tab-item.active') || items[0], false);
+  });
+}
+
+var SCREEN_MAP = { market:'s7', orders:'s8', niches:'s9', growth:'s10' };
+initTabBar('mkTabbar', 'tabGlow', SCREEN_MAP, 's7');
+initTabBar('ordTabbar', 'ordTabGlow', SCREEN_MAP, 's8');
+
+/* ── Locked screens' own tab bars: switching to Market/Orders from
+   here dismisses the modal and reveals the right screen underneath,
+   already synced to the correct tab. Tapping the FAB still opens
+   the Add sheet. Tapping Niches/Growth again is a no-op (already here). */
+function wireLockTabbar(lockId, barId, glowId){
+  var bar = el(barId), glow = el(glowId);
+  var items = Array.prototype.slice.call(bar.querySelectorAll('.tab-item'));
+
+  function centerLeftFor(item){
+    var barRect = bar.getBoundingClientRect();
+    var r = item.getBoundingClientRect();
+    return r.left - barRect.left + (r.width - 66) / 2;
+  }
+  requestAnimationFrame(function(){
+    var active = bar.querySelector('.tab-item.active') || items[0];
+    glow.style.left = Math.max(5, centerLeftFor(active)) + 'px';
+  });
+
+  items.forEach(function(item){
+    item.addEventListener('click', function(){
+      var key = item.getAttribute('data-tab');
+      if(key === 'niches' && lockId === 's9') return;
+      if(key === 'growth' && lockId === 's10') return;
+      if(key === 'market'){
+        dismissModal(lockId);
+        resetBarGlobal('mkTabbar', 'tabGlow', 'market');
+      } else if(key === 'orders'){
+        dismissModal(lockId);
+        resetBarGlobal('ordTabbar', 'ordTabGlow', 'orders');
+      } else if(key === 'niches'){
+        dismissModal(lockId);
+        presentModal('s9');
+      } else if(key === 'growth'){
+        dismissModal(lockId);
+        presentModal('s10');
+      }
+    });
+  });
+}
+function resetBarGlobal(barId, glowId, tabKey){
+  var bar = el(barId), glow = el(glowId);
+  var items = Array.prototype.slice.call(bar.querySelectorAll('.tab-item'));
+  items.forEach(function(i){ i.classList.remove('active'); });
+  var target = bar.querySelector('[data-tab="'+tabKey+'"]');
+  if(!target) return;
+  target.classList.add('active');
+  var barRect = bar.getBoundingClientRect();
+  var r = target.getBoundingClientRect();
+  glow.style.left = Math.max(5, r.left - barRect.left + (r.width - 66) / 2) + 'px';
+}
+wireLockTabbar('s9', 'lockTabbar9', 'lockGlow9');
+wireLockTabbar('s10', 'lockTabbar10', 'lockGlow10');
+el('fabAdd9').addEventListener('click', function(){
+  el('addScrim').classList.add('show'); el('addSheet').classList.add('show');
 });
-el('tglSekers').addEventListener('click',function(){
-  el('tglSekers').classList.add('active');el('tglSaller').classList.remove('active');
+el('fabAdd10').addEventListener('click', function(){
+  el('addScrim').classList.add('show'); el('addSheet').classList.add('show');
 });
+
+/* ── "+" FAB: opens the Add bottom sheet ── */
+(function(){
+  var scrim = el('addScrim'), sheet = el('addSheet');
+  function openSheet(){ scrim.classList.add('show'); sheet.classList.add('show'); }
+  function closeSheet(){ scrim.classList.remove('show'); sheet.classList.remove('show'); }
+  el('fabAdd').addEventListener('click', openSheet);
+  el('fabAdd2').addEventListener('click', openSheet);
+  scrim.addEventListener('click', closeSheet);
+  el('optAddProduct').addEventListener('click', closeSheet);
+  el('optCreateNiche').addEventListener('click', closeSheet);
+})();
+
+/* ── Locked feature screens: back returns to wherever the user
+   actually came from (Market or Orders), and resets that screen's
+   own tab bar back to its proper tab + glow position. ── */
+(function(){
+  function backFromLock(fromId){
+    var origin = window.LOCK_ORIGIN || 's7';
+    dismissModal(fromId);
+    if(origin === 's7') resetBarGlobal('mkTabbar', 'tabGlow', 'market');
+    else resetBarGlobal('ordTabbar', 'ordTabGlow', 'orders');
+  }
+  el('lockNichesBack').addEventListener('click', function(){ backFromLock('s9'); });
+  el('lockGrowthBack').addEventListener('click', function(){ backFromLock('s10'); });
+})();
+
+/* ── Orders screen: 3-way segmented control with sliding glass pill ── */
+(function(){
+  var seg = el('ordSeg'), pill = el('ordPill');
+  var btns = Array.prototype.slice.call(seg.querySelectorAll('.ord-seg-btn'));
+  var body = el('ordBody');
+  var dragging = false, shrinkTimer = null;
+
+  var CONTENT = {
+    products: {
+      icon:'<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
+      rows:[
+        {name:'Quantum X1 Headphones',sub:'Order #4821 · 2 days ago',price:'349,00 €',status:'Delivered',cls:'status-done',grad:'linear-gradient(160deg,#06122e,#1659c9)'},
+        {name:'MacBook Pro M3 16"',sub:'Order #4790 · 5 days ago',price:'2.199,00 €',status:'In transit',cls:'status-active',grad:'linear-gradient(160deg,#0a1020,#223252)'},
+        {name:'Sony A7 IV Camera',sub:'Order #4765 · 1 week ago',price:'1.699,00 €',status:'Processing',cls:'status-pending',grad:'linear-gradient(160deg,#0c0c0c,#2a2a2a)'}
+      ]
+    },
+    niche: {
+      icon:'<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>',
+      rows:[
+        {name:'Gamer Zone',sub:'24 products · Active',price:'',status:'Live',cls:'status-done',grad:'linear-gradient(135deg,#1a2540,#0a3a6e)'},
+        {name:"Men's Style",sub:'32 products · Active',price:'',status:'Live',cls:'status-done',grad:'linear-gradient(135deg,#1a1a1a,#2e2e2e)'}
+      ]
+    },
+    purchases: {
+      icon:'<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>',
+      rows:[
+        {name:'Premium Living Room Set',sub:'Bought 5 hours ago',price:'1.250,00 €',status:'Delivered',cls:'status-done',grad:'linear-gradient(160deg,#241a14,#52392a)'}
+      ]
+    }
+  };
+
+  function render(key){
+    var data = CONTENT[key];
+    if(!data.rows.length){
+      body.innerHTML =
+        '<div class="ord-empty"><div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+data.icon+'</svg></div>'+
+        '<h3>Nothing here yet</h3><p>Your '+key+' will show up here once you have some.</p></div>';
+      return;
+    }
+    var html = '<div class="ord-list">';
+    data.rows.forEach(function(r){
+      html += '<div class="ord-row">'+
+        '<div class="ord-thumb" style="background:'+r.grad+'"></div>'+
+        '<div class="ord-row-info"><div class="ord-row-name">'+r.name+'</div><div class="ord-row-sub">'+r.sub+'</div></div>'+
+        '<div class="ord-row-right">'+(r.price?'<div class="ord-row-price">'+r.price+'</div>':'')+
+        '<span class="ord-row-status '+r.cls+'">'+r.status+'</span></div>'+
+      '</div>';
+    });
+    html += '</div>';
+    body.innerHTML = html;
+  }
+
+  function centerLeftFor(btn){
+    var segRect = seg.getBoundingClientRect();
+    var r = btn.getBoundingClientRect();
+    return r.left - segRect.left;
+  }
+  function widthFor(btn){ return btn.offsetWidth; }
+  function growPill(){ clearTimeout(shrinkTimer); pill.classList.add('morph'); }
+  function settlePill(){ shrinkTimer = setTimeout(function(){ pill.classList.remove('morph'); }, 160); }
+
+  function placePill(btn, withGrow){
+    if(withGrow) growPill();
+    pill.style.left = centerLeftFor(btn) + 'px';
+    pill.style.width = widthFor(btn) + 'px';
+    if(withGrow) settlePill();
+  }
+  function setActive(btn){
+    btns.forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    render(btn.getAttribute('data-seg'));
+  }
+  function nearestBtn(clientX){
+    var best = btns[0], bestDist = Infinity;
+    btns.forEach(function(b){
+      var r = b.getBoundingClientRect();
+      var c = r.left + r.width/2;
+      var d = Math.abs(clientX - c);
+      if(d < bestDist){ bestDist = d; best = b; }
+    });
+    return best;
+  }
+
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(dragging) return;
+      setActive(btn);
+      placePill(btn, true);
+    });
+  });
+
+  // Drag the pill itself
+  function dragStart(e){ dragging = true; growPill(); dragMove(e); }
+  function dragMove(e){
+    if(!dragging) return;
+    var x = (e.touches ? e.touches[0].clientX : e.clientX);
+    var hovered = nearestBtn(x);
+    setActive(hovered);
+    placePill(hovered, false);
+  }
+  function dragEnd(){
+    if(!dragging) return;
+    dragging = false;
+    var active = seg.querySelector('.ord-seg-btn.active') || btns[0];
+    placePill(active, true);
+  }
+  pill.style.pointerEvents = 'auto';
+  pill.style.cursor = 'grab';
+  pill.addEventListener('pointerdown', dragStart);
+  window.addEventListener('pointermove', dragMove);
+  window.addEventListener('pointerup', dragEnd);
+  pill.addEventListener('touchstart', dragStart, {passive:true});
+  window.addEventListener('touchmove', dragMove, {passive:true});
+  window.addEventListener('touchend', dragEnd);
+
+  render('products');
+  requestAnimationFrame(function(){
+    placePill(seg.querySelector('.ord-seg-btn.active') || btns[0], false);
+  });
+  window.addEventListener('resize', function(){
+    placePill(seg.querySelector('.ord-seg-btn.active') || btns[0], false);
+  });
+})();
 
 })();
 </script>
