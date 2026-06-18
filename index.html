@@ -315,7 +315,7 @@ body{
    active icon rather than a flat pill.
 ════════════════════════════════════ */
 .mk-tabbar{
-  position:absolute;left:14px;right:14px;bottom:calc(12px + var(--sab));z-index:10;
+  position:absolute;left:14px;right:14px;bottom:calc(12px + var(--sab));z-index:20;
   height:64px;border-radius:32px;
   display:flex;align-items:center;justify-content:space-around;
   background:rgba(255,255,255,.42);
@@ -474,6 +474,7 @@ body{
    Apple-style modal sheet: scrim behind, white sheet slides
    up from the bottom with a grabber handle.
 ════════════════════════════════════ */
+.mk-tabbar.hidden{transform:translateY(100%);opacity:0;pointer-events:none;transition:transform .35s var(--ease),opacity .3s var(--ease),pointer-events 0s .35s}
 .sheet-scrim{
   position:absolute;inset:0;z-index:50;
   background:rgba(8,14,28,0);
@@ -697,28 +698,6 @@ body{
 
   </div>
 
-  <div class="mk-tabbar" id="mkTabbar">
-    <div class="tab-glow" id="tabGlow"></div>
-    <button class="tab-item active" data-tab="market">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
-      <span>Market</span>
-    </button>
-    <button class="tab-item" data-tab="orders">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      <span>Orders</span>
-    </button>
-    <div class="tab-fab" id="fabAdd">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </div>
-    <button class="tab-item" data-tab="niches">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-      <span>Niches</span>
-    </button>
-    <button class="tab-item" data-tab="growth">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
-      <span>Growth</span>
-    </button>
-  </div>
 </div>
 
 <!-- S8 ORDERS -->
@@ -738,28 +717,6 @@ body{
     <!-- content injected by JS per segment -->
   </div>
 
-  <div class="mk-tabbar" id="ordTabbar">
-    <div class="tab-glow" id="ordTabGlow"></div>
-    <button class="tab-item" data-tab="market">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
-      <span>Market</span>
-    </button>
-    <button class="tab-item active" data-tab="orders">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      <span>Orders</span>
-    </button>
-    <div class="tab-fab" id="fabAdd2">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </div>
-    <button class="tab-item" data-tab="niches">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-      <span>Niches</span>
-    </button>
-    <button class="tab-item" data-tab="growth">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
-      <span>Growth</span>
-    </button>
-  </div>
 </div>
 
 <!-- ADD BOTTOM SHEET (Product / Niche) -->
@@ -810,28 +767,6 @@ body{
     </div>
   </div>
 
-  <div class="mk-tabbar" id="lockTabbar9">
-    <div class="tab-glow" id="lockGlow9"></div>
-    <button class="tab-item" data-tab="market">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
-      <span>Market</span>
-    </button>
-    <button class="tab-item" data-tab="orders">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      <span>Orders</span>
-    </button>
-    <div class="tab-fab" id="fabAdd9">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </div>
-    <button class="tab-item active" data-tab="niches">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-      <span>Niches</span>
-    </button>
-    <button class="tab-item" data-tab="growth">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
-      <span>Growth</span>
-    </button>
-  </div>
 </div>
 <div class="screen modal offdown lock-screen" id="s10">
   <div class="lock-top">
@@ -856,28 +791,30 @@ body{
     </div>
   </div>
 
-  <div class="mk-tabbar" id="lockTabbar10">
-    <div class="tab-glow" id="lockGlow10"></div>
-    <button class="tab-item" data-tab="market">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
-      <span>Market</span>
-    </button>
-    <button class="tab-item" data-tab="orders">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      <span>Orders</span>
-    </button>
-    <div class="tab-fab" id="fabAdd10">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </div>
-    <button class="tab-item" data-tab="niches">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-      <span>Niches</span>
-    </button>
-    <button class="tab-item active" data-tab="growth">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
-      <span>Growth</span>
-    </button>
+</div>
+
+<!-- ── Single persistent tab bar ── -->
+<div class="mk-tabbar hidden" id="globTabbar">
+  <div class="tab-glow" id="globTabGlow"></div>
+  <button class="tab-item active" data-tab="market">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
+    <span>Market</span>
+  </button>
+  <button class="tab-item" data-tab="orders">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+    <span>Orders</span>
+  </button>
+  <div class="tab-fab" id="fabAdd">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
   </div>
+  <button class="tab-item" data-tab="niches">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+    <span>Niches</span>
+  </button>
+  <button class="tab-item" data-tab="growth">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
+    <span>Growth</span>
+  </button>
 </div>
 
 </div><!-- /shell -->
@@ -1798,9 +1735,14 @@ el('hdrLogo').style.backgroundImage = 'url(' + iconUrl + ')';
 el('loadLogo').style.backgroundImage = 'url(' + iconUrl + ')';
 el('mkLogo').style.backgroundImage = 'url(' + wordUrl + ')';
 
+var CURRENT_SCREEN = 's1';
 function go(a,b,d){
   el(a).classList.add(d==='l'?'offleft':'offright');
   el(b).classList.remove('offright','offleft');
+  CURRENT_SCREEN = b;
+  var tb = el('globTabbar');
+  if(b === 's7' || b === 's8') tb.classList.remove('hidden');
+  else tb.classList.add('hidden');
 }
 /* Present a modal screen (slide up from the bottom, like an iOS
    sheet/page presented over the current context) and dismiss it
@@ -1808,9 +1750,13 @@ function go(a,b,d){
    navigation between sibling screens in the same flow. */
 function presentModal(id){
   el(id).classList.remove('offdown');
+  el('globTabbar').classList.add('hidden');
 }
 function dismissModal(id){
   el(id).classList.add('offdown');
+  if(id === 's9' || id === 's10'){
+    el('globTabbar').classList.remove('hidden');
+  }
 }
 setTimeout(function(){go('s1','s2','l')},1700);
 
@@ -2017,11 +1963,13 @@ PRODUCTS.forEach(function(p){
    Color lives only on the icon/label — the glow stays a neutral
    translucent blob, never tinted. Draggable by finger/mouse.
    Tapping a tab also switches screens via the provided map. */
-function initTabBar(barId, glowId, screenMap, currentScreenId){
+function initTabBar(barId, glowId, screenMap){
   var bar = el(barId), glow = el(glowId);
   var items = Array.prototype.slice.call(bar.querySelectorAll('.tab-item'));
   var dragging = false, shrinkTimer = null;
   window.LOCK_ORIGIN = window.LOCK_ORIGIN || 's7';
+
+  var SCREENS_ORDER = ['s7','s8','s9','s10'];
 
   function centerLeftFor(item){
     var barRect = bar.getBoundingClientRect();
@@ -2050,21 +1998,25 @@ function initTabBar(barId, glowId, screenMap, currentScreenId){
     return best;
   }
 
+  function navigateToTab(key){
+    var target = screenMap[key];
+    if(!target || target === CURRENT_SCREEN) return;
+    if(target === 's9' || target === 's10'){
+      window.LOCK_ORIGIN = CURRENT_SCREEN;
+      presentModal(target);
+    } else {
+      var ci = SCREENS_ORDER.indexOf(CURRENT_SCREEN);
+      var ti = SCREENS_ORDER.indexOf(target);
+      go(CURRENT_SCREEN, target, ti > ci ? 'l' : 'r');
+    }
+  }
+
   items.forEach(function(item){
     item.addEventListener('click', function(){
       if(dragging) return;
       setActiveItem(item);
       moveGlowTo(item, true);
-      var key = item.getAttribute('data-tab');
-      var target = screenMap[key];
-      if(target && target !== currentScreenId){
-        if(target === 's9' || target === 's10'){
-          window.LOCK_ORIGIN = currentScreenId;
-          presentModal(target);
-        } else {
-          go(currentScreenId, target, 'l');
-        }
-      }
+      navigateToTab(item.getAttribute('data-tab'));
     });
   });
 
@@ -2084,16 +2036,7 @@ function initTabBar(barId, glowId, screenMap, currentScreenId){
     glow.classList.remove('dragging');
     var active = bar.querySelector('.tab-item.active') || items[0];
     moveGlowTo(active, true);
-    var key = active.getAttribute('data-tab');
-    var target = screenMap[key];
-    if(target && target !== currentScreenId){
-      if(target === 's9' || target === 's10'){
-        window.LOCK_ORIGIN = currentScreenId;
-        presentModal(target);
-      } else {
-        go(currentScreenId, target, 'l');
-      }
-    }
+    navigateToTab(active.getAttribute('data-tab'));
   }
   glow.style.pointerEvents = 'auto';
   glow.style.cursor = 'grab';
@@ -2110,70 +2053,17 @@ function initTabBar(barId, glowId, screenMap, currentScreenId){
   window.addEventListener('resize', function(){
     moveGlowTo(bar.querySelector('.tab-item.active') || items[0], false);
   });
+
+  return {
+    setActive: function(key){
+      var item = bar.querySelector('[data-tab="'+key+'"]');
+      if(item){ setActiveItem(item); moveGlowTo(item, false); }
+    }
+  };
 }
 
 var SCREEN_MAP = { market:'s7', orders:'s8', niches:'s9', growth:'s10' };
-initTabBar('mkTabbar', 'tabGlow', SCREEN_MAP, 's7');
-initTabBar('ordTabbar', 'ordTabGlow', SCREEN_MAP, 's8');
-
-/* ── Locked screens' own tab bars: switching to Market/Orders from
-   here dismisses the modal and reveals the right screen underneath,
-   already synced to the correct tab. Tapping the FAB still opens
-   the Add sheet. Tapping Niches/Growth again is a no-op (already here). */
-function wireLockTabbar(lockId, barId, glowId){
-  var bar = el(barId), glow = el(glowId);
-  var items = Array.prototype.slice.call(bar.querySelectorAll('.tab-item'));
-
-  function centerLeftFor(item){
-    var barRect = bar.getBoundingClientRect();
-    var r = item.getBoundingClientRect();
-    return r.left - barRect.left + (r.width - 66) / 2;
-  }
-  requestAnimationFrame(function(){
-    var active = bar.querySelector('.tab-item.active') || items[0];
-    glow.style.left = Math.max(5, centerLeftFor(active)) + 'px';
-  });
-
-  items.forEach(function(item){
-    item.addEventListener('click', function(){
-      var key = item.getAttribute('data-tab');
-      if(key === 'niches' && lockId === 's9') return;
-      if(key === 'growth' && lockId === 's10') return;
-      if(key === 'market'){
-        dismissModal(lockId);
-        resetBarGlobal('mkTabbar', 'tabGlow', 'market');
-      } else if(key === 'orders'){
-        dismissModal(lockId);
-        resetBarGlobal('ordTabbar', 'ordTabGlow', 'orders');
-      } else if(key === 'niches'){
-        dismissModal(lockId);
-        presentModal('s9');
-      } else if(key === 'growth'){
-        dismissModal(lockId);
-        presentModal('s10');
-      }
-    });
-  });
-}
-function resetBarGlobal(barId, glowId, tabKey){
-  var bar = el(barId), glow = el(glowId);
-  var items = Array.prototype.slice.call(bar.querySelectorAll('.tab-item'));
-  items.forEach(function(i){ i.classList.remove('active'); });
-  var target = bar.querySelector('[data-tab="'+tabKey+'"]');
-  if(!target) return;
-  target.classList.add('active');
-  var barRect = bar.getBoundingClientRect();
-  var r = target.getBoundingClientRect();
-  glow.style.left = Math.max(5, r.left - barRect.left + (r.width - 66) / 2) + 'px';
-}
-wireLockTabbar('s9', 'lockTabbar9', 'lockGlow9');
-wireLockTabbar('s10', 'lockTabbar10', 'lockGlow10');
-el('fabAdd9').addEventListener('click', function(){
-  el('addScrim').classList.add('show'); el('addSheet').classList.add('show');
-});
-el('fabAdd10').addEventListener('click', function(){
-  el('addScrim').classList.add('show'); el('addSheet').classList.add('show');
-});
+var TAB_BAR = initTabBar('globTabbar', 'globTabGlow', SCREEN_MAP);
 
 /* ── "+" FAB: opens the Add bottom sheet ── */
 (function(){
@@ -2181,21 +2071,18 @@ el('fabAdd10').addEventListener('click', function(){
   function openSheet(){ scrim.classList.add('show'); sheet.classList.add('show'); }
   function closeSheet(){ scrim.classList.remove('show'); sheet.classList.remove('show'); }
   el('fabAdd').addEventListener('click', openSheet);
-  el('fabAdd2').addEventListener('click', openSheet);
   scrim.addEventListener('click', closeSheet);
   el('optAddProduct').addEventListener('click', closeSheet);
   el('optCreateNiche').addEventListener('click', closeSheet);
 })();
 
-/* ── Locked feature screens: back returns to wherever the user
-   actually came from (Market or Orders), and resets that screen's
-   own tab bar back to its proper tab + glow position. ── */
+/* ── Locked feature screens: back dismisses the modal and resets
+   the tab bar to the origin screen's active tab. ── */
 (function(){
   function backFromLock(fromId){
-    var origin = window.LOCK_ORIGIN || 's7';
     dismissModal(fromId);
-    if(origin === 's7') resetBarGlobal('mkTabbar', 'tabGlow', 'market');
-    else resetBarGlobal('ordTabbar', 'ordTabGlow', 'orders');
+    var originTab = (window.LOCK_ORIGIN || 's7') === 's8' ? 'orders' : 'market';
+    TAB_BAR.setActive(originTab);
   }
   el('lockNichesBack').addEventListener('click', function(){ backFromLock('s9'); });
   el('lockGrowthBack').addEventListener('click', function(){ backFromLock('s10'); });
