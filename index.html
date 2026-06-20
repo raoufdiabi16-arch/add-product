@@ -49,12 +49,24 @@ body{
    an iOS presented sheet, with rounded top corners while active,
    and sits above the regular screens via z-index. */
 .screen.modal{
-  z-index:30;border-radius:28px 28px 0 0;overflow:hidden;
-  transition:transform .46s cubic-bezier(.32,.9,.4,1),opacity .3s var(--ease),border-radius .3s;
+  inset:auto;top:50%;left:50%;
+  width:84%;max-width:320px;max-height:78%;height:auto;
+  z-index:30;border-radius:26px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(1);opacity:1;
+  box-shadow:0 24px 64px -14px rgba(8,12,26,.4),0 0 0 1px rgba(255,255,255,.5) inset;
+  transition:transform .34s cubic-bezier(.34,1.56,.64,1),opacity .22s var(--ease);
 }
 .screen.modal.offdown{
-  transform:translateY(100%);opacity:1;pointer-events:none;border-radius:0;
+  transform:translate(-50%,-50%) scale(.86);opacity:0;pointer-events:none;
 }
+.lock-scrim{
+  position:absolute;inset:0;z-index:29;
+  background:rgba(9,13,26,.38);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;
+  transition:opacity .28s var(--ease);
+}
+.lock-scrim.show{opacity:1;pointer-events:auto}
 
 /* ════ S1 SPLASH ════ */
 #s1{background:#fff;justify-content:center;align-items:center}
@@ -667,28 +679,34 @@ body{
 /* ════════════════════════════════════
    Locked-feature screens (Niches / Growth) — premium paywall
 ════════════════════════════════════ */
-.lock-screen{background:#fff;justify-content:flex-start}
-.lock-top{
-  width:100%;padding:calc(var(--sat) + 14px) 18px 12px;
-  display:flex;align-items:center;flex-shrink:0;border-bottom:1px solid #f0f3f9;
+.lock-screen{
+  background:rgba(255,255,255,.78);
+  -webkit-backdrop-filter:blur(26px) saturate(180%);
+  backdrop-filter:blur(26px) saturate(180%);
+  justify-content:flex-start;
 }
+.lock-top{
+  width:100%;padding:14px 14px 0;
+  display:flex;align-items:center;justify-content:flex-end;flex-shrink:0;border-bottom:none;
+}
+.lock-screen .back-btn{width:28px;height:28px;background:rgba(120,130,150,.16)}
 .lock-body{
   width:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:24px 28px calc(110px + var(--sab));text-align:center;
+  padding:4px 24px 26px;text-align:center;overflow-y:auto;
 }
 .lock-badge{
-  width:84px;height:84px;border-radius:42px;
+  width:62px;height:62px;border-radius:31px;
   background:linear-gradient(150deg,#2a2a35,#0a0a10);
   display:flex;align-items:center;justify-content:center;
-  margin-bottom:24px;
+  margin-bottom:16px;
   box-shadow:0 16px 36px -8px rgba(0,0,0,.32),0 1px 1px rgba(255,255,255,.12) inset;
 }
-.lock-h2{font-size:21px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:10px}
-.lock-p{font-size:13.5px;color:var(--muted);line-height:1.6;max-width:280px;margin-bottom:26px}
-.lock-feats{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;margin-bottom:30px}
+.lock-h2{font-size:18.5px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:7px}
+.lock-p{font-size:12.5px;color:var(--mid);line-height:1.55;max-width:260px;margin-bottom:18px}
+.lock-feats{display:flex;flex-direction:column;gap:8px;width:100%;max-width:280px;margin-bottom:20px}
 .lock-feat{
   display:flex;align-items:center;gap:10px;text-align:left;
-  background:#f7f9fc;border-radius:14px;padding:11px 14px;
+  background:rgba(255,255,255,.55);border-radius:13px;padding:10px 13px;
 }
 .lock-feat svg{flex-shrink:0;color:#1877f2}
 .lock-feat span{font-size:12.5px;font-weight:600;color:var(--text)}
@@ -974,15 +992,16 @@ body{
 </div>
 
 <!-- S9 — LOCKED: NICHES -->
+<div class="lock-scrim" id="lockScrim"></div>
 <div class="screen modal offdown lock-screen" id="s9">
   <div class="lock-top">
     <div class="back-btn" id="lockNichesBack">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </div>
   </div>
   <div class="lock-body">
     <div class="lock-badge">
-      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
     </div>
     <h2 class="lock-h2">Unlock more with Pro</h2>
     <p class="lock-p">Subscribe to publish a Niche with more than 6 products and access advanced storefront features.</p>
@@ -1001,12 +1020,12 @@ body{
 <div class="screen modal offdown lock-screen" id="s10">
   <div class="lock-top">
     <div class="back-btn" id="lockGrowthBack">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </div>
   </div>
   <div class="lock-body">
     <div class="lock-badge">
-      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
     </div>
     <h2 class="lock-h2">Unlock more with Pro</h2>
     <p class="lock-p">Subscribe to build your own website and access advanced growth features.</p>
@@ -1980,10 +1999,12 @@ function go(a,b,d){
    navigation between sibling screens in the same flow. */
 function presentModal(id){
   el(id).classList.remove('offdown');
+  el('lockScrim').classList.add('show');
   el('globTabbar').classList.add('hidden');
 }
 function dismissModal(id){
   el(id).classList.add('offdown');
+  el('lockScrim').classList.remove('show');
   if(id === 's9' || id === 's10'){
     el('globTabbar').classList.remove('hidden');
   }
@@ -2464,6 +2485,9 @@ window.openFullscreen = function(elem){
   }
   el('lockNichesBack').addEventListener('click', function(){ backFromLock('s9'); });
   el('lockGrowthBack').addEventListener('click', function(){ backFromLock('s10'); });
+  el('lockScrim').addEventListener('click', function(){
+    backFromLock(!el('s9').classList.contains('offdown') ? 's9' : 's10');
+  });
 })();
 
 /* ── Orders screen: 3-way segmented control with sliding glass pill ── */
