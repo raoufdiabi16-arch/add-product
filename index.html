@@ -93,11 +93,11 @@ body{
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-family:inherit;transition:transform .15s var(--ease),box-shadow .15s,opacity .15s;position:relative;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.97)}
 .btn-p{width:100%;height:54px;border-radius:27px;background:var(--blue);color:#fff;font-size:17px;font-weight:700;letter-spacing:-.01em;
-  box-shadow:0 4px 0 0 var(--blue-dk),0 12px 22px -6px rgba(26,86,240,.45)}
-.btn-p:active{transform:scale(.97) translateY(2px);box-shadow:0 2px 0 0 var(--blue-dk),0 6px 14px -6px rgba(26,86,240,.4)}
+  box-shadow:0 4px 0 0 var(--blue-dk),0 6px 14px -7px rgba(26,86,240,.45)}
+.btn-p:active{transform:scale(.97) translateY(2px);box-shadow:0 2px 0 0 var(--blue-dk),0 4px 9px -6px rgba(26,86,240,.4)}
 .btn-p.off{opacity:.35;pointer-events:none;box-shadow:none}
-.btn-p.green{background:var(--green);box-shadow:0 4px 0 0 var(--green-dk),0 12px 22px -6px rgba(31,176,104,.45)}
-.btn-p.green:active{transform:scale(.97) translateY(2px);box-shadow:0 2px 0 0 var(--green-dk),0 6px 14px -6px rgba(31,176,104,.4)}
+.btn-p.green{background:var(--green);box-shadow:0 4px 0 0 var(--green-dk),0 6px 14px -7px rgba(31,176,104,.45)}
+.btn-p.green:active{transform:scale(.97) translateY(2px);box-shadow:0 2px 0 0 var(--green-dk),0 4px 9px -6px rgba(31,176,104,.4)}
 .btn-g{width:100%;height:54px;border-radius:27px;background:rgba(26,86,240,.08);color:var(--blue);font-size:17px;font-weight:600;letter-spacing:-.01em}
 .btn-g:active{background:rgba(26,86,240,.16)}
 .btn-soc{width:100%;height:50px;border-radius:25px;border:1px solid #e2e8f2;background:#fff;font-size:15px;font-weight:500;color:var(--text)}
@@ -206,11 +206,11 @@ body{
   border-bottom:1px solid #f1f4f9;
 }
 .mk-logo{
-  height:50px;background-size:contain;background-repeat:no-repeat;background-position:left center;
-  width:160px;flex-shrink:0;
+  height:60px;background-size:contain;background-repeat:no-repeat;background-position:left center;
+  width:60px;flex-shrink:0;
 }
 .mk-toggle{
-  position:relative;
+  position:relative;justify-self:center;
   display:flex;align-items:center;background:#f0f3f9;border-radius:999px;padding:3px;flex-shrink:0;
   touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;
   transition:transform .25s cubic-bezier(.34,1.56,.64,1);
@@ -712,6 +712,160 @@ body{
 .lock-feat span{font-size:12.5px;font-weight:600;color:var(--text)}
 .lock-cta{width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px}
 .lock-price{font-size:11.5px;color:var(--muted);margin-top:2px}
+/* ════════════════════════════════════
+   Store Map (Growth tab) — full-bleed map
+   with a draggable-style bottom sheet
+   listing nearby stores by category.
+════════════════════════════════════ */
+#s13{background:#fff;justify-content:flex-start}
+.sm-topbar{
+  width:100%;flex-shrink:0;display:flex;align-items:center;gap:10px;
+  padding:calc(var(--sat) + 12px) 16px 12px;background:#fff;
+  border-bottom:1px solid #f1f4f9;position:relative;z-index:4;
+}
+.sm-title{flex:1;text-align:center;font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+.sm-top-icons{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.sm-body{position:relative;width:100%;flex:1;min-height:0;overflow:hidden}
+.sm-map{position:absolute;inset:0;background:#eef1f6;overflow:hidden}
+.sm-map-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sm-poi{
+  position:absolute;transform:translate(0,-50%);display:flex;align-items:center;gap:6px;z-index:2;
+  max-width:120px;
+}
+.sm-poi-ic{
+  width:22px;height:22px;border-radius:50%;background:#ece3fb;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:#8b5cf6;
+  box-shadow:0 1px 3px rgba(15,30,60,.15);
+}
+.sm-poi span{font-size:10px;font-weight:700;color:#3a4456;line-height:1.2;
+  text-shadow:0 1px 2px rgba(255,255,255,.8),0 0 6px rgba(255,255,255,.6);}
+.sm-area-lbl{
+  position:absolute;transform:translate(-50%,-50%);font-size:11px;font-weight:600;color:#8a93a8;
+  text-shadow:0 1px 2px rgba(255,255,255,.7);z-index:1;white-space:nowrap;
+}
+.sm-road-badge{
+  position:absolute;transform:translate(-50%,-50%);font-size:8.5px;font-weight:800;
+  padding:2px 5px;border-radius:4px;z-index:2;box-shadow:0 1px 3px rgba(15,30,60,.2);letter-spacing:.01em;
+}
+.sm-road-badge.red{background:#e1463c;color:#fff}
+.sm-road-badge.yellow{background:#f5c518;color:#3a2e00}
+.sm-pin-wrap{position:absolute;transform:translate(-50%,-100%);z-index:2}
+.sm-pin{
+  width:32px;height:32px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 8px rgba(15,30,60,.3);border:2px solid #fff;
+}
+.sm-pin svg{transform:rotate(45deg)}
+.sm-pin.purple{background:#8b5cf6}
+.sm-pin.orange{background:#f0973e}
+.sm-pin.green{background:#22c55e}
+.sm-pin.white{background:#fff}
+.sm-user-wrap{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;z-index:3}
+.sm-user-pulse{
+  position:absolute;width:64px;height:64px;border-radius:50%;background:rgba(26,86,240,.18);
+  animation:smPulse 2.4s ease-out infinite;
+}
+.sm-user-dot{
+  position:relative;width:34px;height:34px;border-radius:50%;background:var(--blue);
+  border:3px solid #fff;box-shadow:0 3px 10px rgba(26,86,240,.5);
+  display:flex;align-items:center;justify-content:center;color:#fff;
+}
+@keyframes smPulse{0%{transform:scale(.35);opacity:.65}100%{transform:scale(1.7);opacity:0}}
+.sm-map-ctrls{position:absolute;right:14px;top:118px;display:flex;flex-direction:column;gap:12px;z-index:5}
+.sm-ctrl-btn{
+  width:40px;height:40px;border-radius:14px;background:#fff;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--text);
+  box-shadow:0 4px 14px -2px rgba(15,30,60,.2);transition:transform .15s var(--ease);
+}
+.sm-ctrl-btn:active{transform:scale(.9)}
+.sm-zoom{display:flex;flex-direction:column;border-radius:14px;overflow:hidden;box-shadow:0 4px 14px -2px rgba(15,30,60,.2)}
+.sm-zoom .sm-ctrl-btn{box-shadow:none;border-radius:0;font-size:18px;font-weight:600}
+.sm-zoom .sm-ctrl-btn:first-child{border-bottom:1px solid #f0f3f9}
+.sm-sheet{
+  position:absolute;left:0;right:0;bottom:0;height:60%;
+  background:#fff;border-radius:24px 24px 0 0;
+  box-shadow:0 -10px 28px -8px rgba(15,30,60,.16);
+  display:flex;flex-direction:column;overflow:hidden;z-index:4;
+}
+.sm-grabber{width:36px;height:4px;border-radius:2px;background:#e1e6ee;margin:10px auto 4px;flex-shrink:0}
+.sm-cats{display:flex;gap:16px;padding:8px 18px 14px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+.sm-cats::-webkit-scrollbar{display:none}
+.sm-cat{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;cursor:pointer;flex-shrink:0;font-family:inherit;padding:0}
+.sm-cat-ic{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;transition:transform .15s var(--ease)}
+.sm-cat-ic svg{width:19px;height:19px}
+.sm-cat-lbl{font-size:10.5px;font-weight:600;color:var(--muted)}
+.sm-cat.active .sm-cat-lbl{color:var(--text)}
+.sm-cat.active .sm-cat-ic{transform:scale(1.06)}
+.sm-cat:active .sm-cat-ic{transform:scale(.9)}
+.sm-filters{display:flex;align-items:center;gap:8px;padding:0 18px 14px;flex-shrink:0}
+.sm-chip{
+  display:flex;align-items:center;gap:5px;background:#f4f6fb;border:none;border-radius:999px;
+  padding:7px 11px;font-size:11.5px;font-weight:600;color:var(--text);cursor:pointer;flex-shrink:0;font-family:inherit;
+}
+.sm-chip svg{width:12px;height:12px;color:var(--mid);flex-shrink:0}
+.sm-chip .chev{width:10px;height:10px;color:var(--muted)}
+.sm-sort{
+  margin-left:auto;display:flex;align-items:center;gap:3px;background:none;border:none;
+  font-size:12px;font-weight:600;color:var(--mid);cursor:pointer;flex-shrink:0;font-family:inherit;
+}
+.sm-sort svg{width:11px;height:11px}
+.sm-list-head{display:flex;align-items:flex-end;justify-content:space-between;padding:2px 18px 12px;flex-shrink:0}
+.sm-list-title{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.sm-list-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.sm-see-all{font-size:12.5px;font-weight:600;color:var(--blue);text-decoration:none;cursor:pointer;background:none;border:none;font-family:inherit}
+.sm-list-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 18px calc(96px + var(--sab))}
+.sm-list{display:flex;flex-direction:column;gap:10px}
+.scard{display:flex;gap:11px;background:#fff;border-radius:18px;padding:8px;
+  box-shadow:0 1px 3px rgba(15,30,60,.07),0 1px 2px rgba(15,30,60,.05);cursor:pointer;}
+.scard-img{position:relative;width:84px;height:84px;border-radius:14px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.scard-featured{position:absolute;top:6px;left:6px;background:var(--blue);color:#fff;font-size:8px;font-weight:700;padding:3px 7px;border-radius:999px;letter-spacing:.02em;z-index:2}
+.scard-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.55)}
+.scard-info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:2px 2px 2px 0}
+.scard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+.scard-name{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scard-cat{font-size:11px;font-weight:600;color:var(--blue);margin-top:1px}
+.scard-save{width:25px;height:25px;border-radius:50%;background:#eef2fb;display:flex;align-items:center;justify-content:center;color:var(--blue);flex-shrink:0;border:none;cursor:pointer}
+.scard-save svg{width:12px;height:12px}
+.scard-save.on{color:#fff;background:var(--blue)}
+.scard-meta{display:flex;align-items:center;gap:9px;margin-top:6px}
+.scard-rating{display:flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--text)}
+.scard-rating svg{width:10px;height:10px}
+.scard-reviews{font-weight:500;color:var(--muted)}
+.scard-dist{display:flex;align-items:center;gap:3px;font-size:10.5px;color:var(--muted);margin-left:auto}
+.scard-dist svg{width:9px;height:9px}
+.scard-open{font-size:10.5px;font-weight:600;color:var(--green);margin-top:4px}
+
+/* ── Side drawer — half-page menu sliding in from the left ── */
+.drawer-scrim{
+  position:absolute;inset:0;z-index:70;background:rgba(9,13,26,.42);
+  opacity:0;pointer-events:none;transition:opacity .32s var(--ease);
+}
+.drawer-scrim.show{opacity:1;pointer-events:auto}
+.side-drawer{
+  position:absolute;top:0;left:0;bottom:0;width:62%;max-width:290px;z-index:71;
+  background:#fff;display:flex;flex-direction:column;overflow-y:auto;
+  transform:translateX(-100%);transition:transform .4s var(--spring);
+  box-shadow:10px 0 32px rgba(15,30,60,.2);
+  padding:calc(var(--sat) + 22px) 0 calc(18px + var(--sab));
+}
+.side-drawer.show{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;gap:10px;padding:0 22px 20px;border-bottom:1px solid #f1f4f9;margin-bottom:12px;flex-shrink:0}
+.drawer-logo{width:32px;height:32px;background-size:contain;background-repeat:no-repeat;background-position:left center;flex-shrink:0}
+.drawer-brand{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+.drawer-list{display:flex;flex-direction:column;padding:0 12px;flex-shrink:0}
+.drawer-item{
+  display:flex;align-items:center;gap:14px;padding:12px 12px;border-radius:14px;
+  background:none;border:none;font-size:14px;font-weight:600;color:var(--text);
+  cursor:pointer;text-align:left;font-family:inherit;width:100%;transition:background .15s;
+}
+.drawer-item:active{background:#f4f6fb;transform:scale(.98)}
+.drawer-item svg{width:19px;height:19px;color:var(--mid);flex-shrink:0}
+.drawer-item.active{color:var(--blue);background:#eef2fb}
+.drawer-item.active svg{color:var(--blue)}
+.drawer-sep{height:1px;background:#f1f4f9;margin:10px 22px;flex-shrink:0}
+.drawer-footer{margin-top:auto;padding:8px 12px 0;flex-shrink:0}
+.drawer-item.danger{color:#e5484d}
+.drawer-item.danger svg{color:#e5484d}
 </style>
 </head>
 <body>
@@ -923,6 +1077,170 @@ body{
   </div>
 </div>
 
+<!-- S13 — STORE MAP (Growth) -->
+<div class="screen offright" id="s13">
+  <div class="sm-topbar">
+    <div class="back-btn" id="smMenuBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </div>
+    <div class="sm-title">Store Map</div>
+    <div class="sm-top-icons">
+      <div class="back-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></div>
+      <div class="back-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+    </div>
+  </div>
+
+  <div class="sm-body">
+    <div class="sm-map" id="smMap">
+      <svg class="sm-map-bg" viewBox="0 0 400 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="320" fill="#eef1f6"/>
+        <path d="M-10 60 Q120 20 180 70 T420 50" stroke="#e1e7f0" stroke-width="10" fill="none"/>
+        <path d="M30 -10 Q60 100 40 180 T20 330" stroke="#e1e7f0" stroke-width="9" fill="none"/>
+        <path d="M-10 230 Q150 260 230 220 T420 240" stroke="#e1e7f0" stroke-width="10" fill="none"/>
+        <path d="M260 -10 Q230 120 260 200 T300 330" stroke="#e1e7f0" stroke-width="8" fill="none"/>
+        <path d="M-20 10 L300 250 Q330 270 420 260" stroke="#f0b94a" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M10 40 Q70 60 60 110 Q50 150 90 160" stroke="#dfe5ee" stroke-width="5" fill="none"/>
+        <path d="M320 30 Q360 60 340 110" stroke="#dfe5ee" stroke-width="5" fill="none"/>
+        <ellipse cx="48" cy="55" rx="42" ry="26" fill="#dcefe0"/>
+        <ellipse cx="55" cy="245" rx="50" ry="30" fill="#dcefe0"/>
+        <ellipse cx="365" cy="150" rx="34" ry="22" fill="#dcefe0"/>
+      </svg>
+
+      <div class="sm-poi" style="left:5%;top:6%">
+        <div class="sm-poi-ic"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+        <span>University of Algiers 3</span>
+      </div>
+      <div class="sm-area-lbl" style="left:75%;top:5%">Ben Aknoun</div>
+      <div class="sm-area-lbl" style="left:28%;top:19%">Hydra</div>
+      <div class="sm-area-lbl" style="left:78%;top:23%">El Biar</div>
+      <div class="sm-area-lbl" style="left:42%;top:33%">Birkhadem</div>
+
+      <div class="sm-road-badge red" style="left:60%;top:23%">N11</div>
+      <div class="sm-road-badge red" style="left:5%;top:38%">N5</div>
+      <div class="sm-road-badge yellow" style="left:85%;top:34%">CW 172</div>
+
+      <div class="sm-pin-wrap" style="left:31%;top:12%">
+        <div class="sm-pin purple"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+      </div>
+      <div class="sm-pin-wrap" style="left:68%;top:14%">
+        <div class="sm-pin orange"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg></div>
+      </div>
+      <div class="sm-pin-wrap" style="left:32%;top:30%">
+        <div class="sm-pin green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l4 2v4h-3v10H7V10H4V6l4-2 2 2h2l2-2Z"/></svg></div>
+      </div>
+      <div class="sm-pin-wrap" style="left:67%;top:36%">
+        <div class="sm-pin white"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></div>
+      </div>
+
+      <div class="sm-user-wrap" style="left:50%;top:24%">
+        <div class="sm-user-pulse"></div>
+        <div class="sm-user-dot"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="3"/><path d="M12 11c-3 0-6 1.5-6 4v3h12v-3c0-2.5-3-4-6-4z"/></svg></div>
+      </div>
+
+      <div class="sm-map-ctrls">
+        <button class="sm-ctrl-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></button>
+        <div class="sm-zoom">
+          <button class="sm-ctrl-btn">+</button>
+          <button class="sm-ctrl-btn">&minus;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sm-sheet">
+      <div class="sm-grabber"></div>
+      <div class="sm-cats" id="smCats">
+        <button class="sm-cat active" data-cat="All">
+          <span class="sm-cat-ic" style="background:var(--blue);color:#fff"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span>
+          <span class="sm-cat-lbl">All</span>
+        </button>
+        <button class="sm-cat" data-cat="Cafe">
+          <span class="sm-cat-ic" style="background:#fde9d2;color:#e0822f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg></span>
+          <span class="sm-cat-lbl">Cafes</span>
+        </button>
+        <button class="sm-cat" data-cat="Restaurant">
+          <span class="sm-cat-ic" style="background:#fde0e0;color:#e5484d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></span>
+          <span class="sm-cat-lbl">Restaurants</span>
+        </button>
+        <button class="sm-cat" data-cat="Shoes">
+          <span class="sm-cat-ic" style="background:#ece3fb;color:#8b5cf6"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 18c0-1 .5-2 1.5-2.3L9 14V9.5c0-.8.6-1.5 1.4-1.5h.3c.5 0 1 .2 1.3.6l2.4 2.7c.5.5 1.1.9 1.8 1l4 .7c1.2.2 2 1.2 2 2.4V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/></svg></span>
+          <span class="sm-cat-lbl">Shoes</span>
+        </button>
+        <button class="sm-cat" data-cat="Barber">
+          <span class="sm-cat-ic" style="background:#dcf3ef;color:#1ba893"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></span>
+          <span class="sm-cat-lbl">Barbers</span>
+        </button>
+        <button class="sm-cat" data-cat="Gym">
+          <span class="sm-cat-ic" style="background:#fde2e6;color:#ef4458"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="12" x2="18" y2="12"/><rect x="2" y="9" width="3" height="6" rx="1"/><rect x="19" y="9" width="3" height="6" rx="1"/><rect x="5" y="7" width="2" height="10" rx="1"/><rect x="17" y="7" width="2" height="10" rx="1"/></svg></span>
+          <span class="sm-cat-lbl">Gyms</span>
+        </button>
+        <button class="sm-cat" data-cat="More">
+          <span class="sm-cat-ic" style="background:#eef0f4;color:#8a93a3"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span>
+          <span class="sm-cat-lbl">More</span>
+        </button>
+      </div>
+
+      <div class="sm-filters">
+        <button class="sm-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Algiers<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="sm-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>Birkhadem<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="sm-sort">Sort by<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      </div>
+
+      <div class="sm-list-head">
+        <div><div class="sm-list-title">Nearby Stores</div><div class="sm-list-sub" id="smCount">23 stores found</div></div>
+        <button class="sm-see-all" id="smSeeAll">See all</button>
+      </div>
+
+      <div class="sm-list-scroll">
+        <div class="sm-list" id="smList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIDE DRAWER (opened from the Store Map hamburger button) -->
+<div class="drawer-scrim" id="drawerScrim"></div>
+<div class="side-drawer" id="sideDrawer">
+  <div class="drawer-head">
+    <div class="drawer-logo" id="drawerLogo"></div>
+    <div class="drawer-brand">Blex</div>
+  </div>
+  <div class="drawer-list">
+    <button class="drawer-item" data-go="market">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
+      <span>Market</span>
+    </button>
+    <button class="drawer-item" data-go="orders">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+      <span>Orders</span>
+    </button>
+    <button class="drawer-item" data-go="niches">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+      <span>Niches</span>
+    </button>
+    <button class="drawer-item" data-go="growth">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      <span>Maps</span>
+    </button>
+  </div>
+  <div class="drawer-sep"></div>
+  <div class="drawer-list">
+    <button class="drawer-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+      <span>Settings</span>
+    </button>
+    <button class="drawer-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Help &amp; Support</span>
+    </button>
+  </div>
+  <div class="drawer-footer">
+    <button class="drawer-item danger">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span>Log Out</span>
+    </button>
+  </div>
+</div>
+
 <!-- ADD BOTTOM SHEET (Product / Niche) -->
 <div class="sheet-scrim" id="addScrim"></div>
 <div class="add-sheet" id="addSheet">
@@ -1061,8 +1379,8 @@ body{
     <span>Niches</span>
   </button>
   <button class="tab-item" data-tab="growth">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
-    <span>Growth</span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+    <span>Maps</span>
   </button>
 </div>
 
@@ -1990,7 +2308,7 @@ function go(a,b,d){
   el(b).classList.remove('offright','offleft');
   CURRENT_SCREEN = b;
   var tb = el('globTabbar');
-  if(b === 's7' || b === 's8' || b === 's11') tb.classList.remove('hidden');
+  if(b === 's7' || b === 's8' || b === 's11' || b === 's13') tb.classList.remove('hidden');
   else tb.classList.add('hidden');
 }
 /* Present a modal screen (slide up from the bottom, like an iOS
@@ -2073,7 +2391,7 @@ by.addEventListener('click',function(){
   if(!open){
     open=true;panel.classList.add('open');bsk.classList.add('gone');
     by.textContent='Cancel';
-    by.style.cssText='background:rgba(26,86,240,.08);color:#1a56f0;width:100%;height:54px;border-radius:27px;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:none;';
+    by.style.cssText='background:#eef2fb;color:#1a56f0;width:100%;height:54px;border-radius:27px;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:none;';
   }else{
     open=false;sel=null;panel.classList.remove('open');bsk.classList.remove('gone');
     slot.classList.remove('show');by.textContent="Yes, I'm a student";by.removeAttribute('style');render();
@@ -2235,6 +2553,124 @@ PRODUCTS.forEach(function(p, idx){
   grid.appendChild(c);
 });
 
+/* ── Side drawer — half-page menu sliding from the left ── */
+var openSideDrawer, closeSideDrawer;
+(function(){
+  var scrim = el('drawerScrim'), drawer = el('sideDrawer');
+  var SCREEN_TO_TAB = {s7:'market', s8:'orders', s9:'niches', s11:'market', s12:'market', s13:'growth'};
+  el('drawerLogo').style.backgroundImage = 'url(' + iconUrl + ')';
+
+  openSideDrawer = function(){
+    var curTab = SCREEN_TO_TAB[CURRENT_SCREEN] || 'market';
+    Array.prototype.slice.call(drawer.querySelectorAll('.drawer-item[data-go]')).forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-go') === curTab);
+    });
+    drawer.classList.add('show');
+    scrim.classList.add('show');
+  };
+  closeSideDrawer = function(){
+    drawer.classList.remove('show');
+    scrim.classList.remove('show');
+  };
+
+  scrim.addEventListener('click', closeSideDrawer);
+  Array.prototype.slice.call(drawer.querySelectorAll('.drawer-item[data-go]')).forEach(function(btn){
+    btn.addEventListener('click', function(){
+      closeSideDrawer();
+      var key = btn.getAttribute('data-go');
+      var tabBtn = el('globTabbar').querySelector('[data-tab="'+key+'"]');
+      if(tabBtn) tabBtn.click();
+    });
+  });
+  Array.prototype.slice.call(drawer.querySelectorAll('.drawer-item:not([data-go])')).forEach(function(btn){
+    btn.addEventListener('click', closeSideDrawer);
+  });
+})();
+
+/* ── Store Map (Growth) — nearby stores list + category filter ── */
+(function(){
+  var STORES=[
+    {name:'Zara Store',cat:'Fashion',catKey:'Fashion',rating:'4.8',reviews:'128',dist:'0.3 km',open:'Open · Closes 9:00 PM',featured:true,saved:false,
+     grad:'linear-gradient(160deg,#1c1c1c 0%,#2b2b2b 55%,#3a3a3a 100%)',
+     icon:'<path d="M16 4l4 2v4h-3v10H7V10H4V6l4-2 2 2h2l2-2Z"/>'},
+    {name:'Coffee House',cat:'Cafe',catKey:'Cafe',rating:'4.6',reviews:'96',dist:'0.6 km',open:'Open · Closes 10:00 PM',featured:false,saved:false,
+     grad:'linear-gradient(160deg,#2a1c12 0%,#4a3220 55%,#6b4a2e 100%)',
+     icon:'<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/>'},
+    {name:'Book Haven',cat:'Books',catKey:'More',rating:'4.7',reviews:'74',dist:'0.8 km',open:'Open · Closes 8:00 PM',featured:false,saved:false,
+     grad:'linear-gradient(160deg,#241a10 0%,#3d2c18 55%,#5a4226 100%)',
+     icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'},
+    {name:'Le Gourmet',cat:'Restaurant',catKey:'Restaurant',rating:'4.5',reviews:'152',dist:'1.1 km',open:'Open · Closes 11:00 PM',featured:false,saved:false,
+     grad:'linear-gradient(160deg,#2a1010 0%,#4a1c1c 55%,#6e2b2b 100%)',
+     icon:'<path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>'},
+    {name:'SneakerLab',cat:'Shoes',catKey:'Shoes',rating:'4.9',reviews:'210',dist:'1.3 km',open:'Open · Closes 9:30 PM',featured:false,saved:false,
+     grad:'linear-gradient(160deg,#1c1430 0%,#2e2050 55%,#43317a 100%)',
+     icon:'<path d="M2 18c0-1 .5-2 1.5-2.3L9 14V9.5c0-.8.6-1.5 1.4-1.5h.3c.5 0 1 .2 1.3.6l2.4 2.7c.5.5 1.1.9 1.8 1l4 .7c1.2.2 2 1.2 2 2.4V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/>',iconFill:true},
+    {name:'Fade Barbershop',cat:'Barbers',catKey:'Barber',rating:'4.8',reviews:'61',dist:'1.6 km',open:'Open · Closes 8:30 PM',featured:false,saved:false,
+     grad:'linear-gradient(160deg,#0c2422 0%,#163a36 55%,#1f5048 100%)',
+     icon:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>'}
+  ];
+  var smList = el('smList'), smCats = el('smCats'), smCount = el('smCount');
+  function renderStores(filter){
+    var items = (!filter || filter === 'All') ? STORES : STORES.filter(function(s){ return s.catKey === filter; });
+    smCount.textContent = items.length + (items.length===1?' store found':' stores found');
+    smList.innerHTML = '';
+    items.forEach(function(s, i){
+      var c = document.createElement('div');
+      c.className = 'scard';
+      c.innerHTML =
+        '<div class="scard-img" style="background:'+s.grad+'">' +
+          (s.featured ? '<div class="scard-featured">Featured</div>' : '') +
+          '<div class="scard-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="'+(s.iconFill?'rgba(255,255,255,.55)':'none')+'" stroke="rgba(255,255,255,.55)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+s.icon+'</svg></div>' +
+        '</div>' +
+        '<div class="scard-info">' +
+          '<div class="scard-top">' +
+            '<div><div class="scard-name">'+s.name+'</div><div class="scard-cat">'+s.cat+'</div></div>' +
+            '<button class="scard-save'+(s.saved?' on':'')+'"><svg viewBox="0 0 24 24" fill="'+(s.saved?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>' +
+          '</div>' +
+          '<div class="scard-meta">' +
+            '<div class="scard-rating"><svg viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 2l2.9 6 6.6.9-4.8 4.6 1.1 6.5L12 16.9 6.2 20l1.1-6.5L2.5 8.9l6.6-.9z"/></svg><span>'+s.rating+'</span><span class="scard-reviews">&nbsp;('+s.reviews+')</span></div>' +
+            '<div class="scard-dist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+s.dist+'</div>' +
+          '</div>' +
+          '<div class="scard-open">'+s.open+'</div>' +
+        '</div>';
+      c.querySelector('.scard-save').addEventListener('click', function(ev){
+        ev.stopPropagation();
+        s.saved = !s.saved;
+        this.classList.toggle('on', s.saved);
+        this.innerHTML = '<svg viewBox="0 0 24 24" fill="'+(s.saved?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+      });
+      smList.appendChild(c);
+    });
+  }
+  renderStores('All');
+  var CAT_COLORS = {
+    All:{on:['#1a56f0','#fff'],off:['#e7edfb','#3a6bf0']},
+    Cafe:{on:['#e0822f','#fff'],off:['#fde9d2','#e0822f']},
+    Restaurant:{on:['#e5484d','#fff'],off:['#fde0e0','#e5484d']},
+    Shoes:{on:['#8b5cf6','#fff'],off:['#ece3fb','#8b5cf6']},
+    Barber:{on:['#1ba893','#fff'],off:['#dcf3ef','#1ba893']},
+    Gym:{on:['#ef4458','#fff'],off:['#fde2e6','#ef4458']},
+    More:{on:['#5b6472','#fff'],off:['#eef0f4','#8a93a3']}
+  };
+  function paintCat(btn, active){
+    var c = CAT_COLORS[btn.getAttribute('data-cat')];
+    if(!c) return;
+    var pair = active ? c.on : c.off;
+    var ic = btn.querySelector('.sm-cat-ic');
+    ic.style.background = pair[0];
+    ic.style.color = pair[1];
+  }
+  Array.prototype.slice.call(smCats.querySelectorAll('.sm-cat')).forEach(function(btn){
+    btn.addEventListener('click', function(){
+      smCats.querySelectorAll('.sm-cat').forEach(function(b){ b.classList.remove('active'); paintCat(b, false); });
+      btn.classList.add('active');
+      paintCat(btn, true);
+      renderStores(btn.getAttribute('data-cat'));
+    });
+  });
+  el('smMenuBtn').addEventListener('click', openSideDrawer);
+})();
+
 /* ── Draggable Saller/Sekers toggle ──
    Real pointer-drag: follow finger/mouse, scale up while dragging,
    snap back to size + nearest side on release. */
@@ -2318,7 +2754,7 @@ function initTabBar(barId, glowId, screenMap){
   var dragging = false, shrinkTimer = null;
   window.LOCK_ORIGIN = window.LOCK_ORIGIN || 's7';
 
-  var SCREENS_ORDER = ['s7','s8','s9','s10'];
+  var SCREENS_ORDER = ['s7','s8','s9','s13'];
 
   function centerLeftFor(item){
     var barRect = bar.getBoundingClientRect();
@@ -2350,7 +2786,7 @@ function initTabBar(barId, glowId, screenMap){
   function navigateToTab(key){
     var target = screenMap[key];
     if(!target || target === CURRENT_SCREEN) return;
-    if(target === 's9' || target === 's10'){
+    if(target === 's9'){
       window.LOCK_ORIGIN = CURRENT_SCREEN;
       presentModal(target);
     } else {
@@ -2411,7 +2847,7 @@ function initTabBar(barId, glowId, screenMap){
   };
 }
 
-var SCREEN_MAP = { market:'s7', orders:'s8', niches:'s9', growth:'s10' };
+var SCREEN_MAP = { market:'s7', orders:'s8', niches:'s9', growth:'s13' };
 var TAB_BAR = initTabBar('globTabbar', 'globTabGlow', SCREEN_MAP);
 
 /* ── "+" FAB: opens the Add bottom sheet ── */
@@ -2480,7 +2916,8 @@ window.openFullscreen = function(elem){
 (function(){
   function backFromLock(fromId){
     dismissModal(fromId);
-    var originTab = (window.LOCK_ORIGIN || 's7') === 's8' ? 'orders' : 'market';
+    var SCREEN_TO_TAB = {s7:'market', s8:'orders', s11:'market', s12:'market', s13:'growth'};
+    var originTab = SCREEN_TO_TAB[window.LOCK_ORIGIN] || 'market';
     TAB_BAR.setActive(originTab);
   }
   el('lockNichesBack').addEventListener('click', function(){ backFromLock('s9'); });
