@@ -704,9 +704,11 @@ body{
 .hidden{display:none!important}
 
 /* ════ S8 cart icon ════ */
-.ord-cart{position:relative;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#f4f6fb;cursor:pointer;color:var(--mid);transition:transform .15s,background .15s;flex-shrink:0}
-.ord-cart:active{transform:scale(.88);background:#e9edf5}
-.ord-cart-badge{position:absolute;top:-2px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:#ef4444;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;transform:scale(0);transition:transform .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 6px rgba(239,68,68,.4)}
+.ord-cart{position:relative;display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--mid);transition:transform .15s;flex-shrink:0}
+.ord-cart:active{transform:scale(.88)}
+.ord-cart-label{font-size:var(--fs-sm);font-weight:600;color:var(--muted);white-space:nowrap}
+.ord-cart svg{width:22px;height:22px;flex-shrink:0}
+.ord-cart-badge{position:absolute;top:-6px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:#ef4444;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;transform:scale(0);transition:transform .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 6px rgba(239,68,68,.4)}
 .ord-cart-badge.show{transform:scale(1)}
 
 /* ════ S22 — CART (My Purchases / My Messages & Questions) ════ */
@@ -728,7 +730,7 @@ body{
 .npk-back{width:34px;height:34px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);flex-shrink:0;transition:transform .15s}
 .npk-back:active{transform:scale(.88);background:#e9edf5}
 .npk-title{flex:1;text-align:center;font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.01em}
-.npk-list{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px calc(100px + var(--sab))}
+.npk-list{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 20px calc(100px + var(--sab))}
 .npk-card{display:flex;align-items:center;gap:14px;background:#fff;border-radius:var(--r-lg);padding:12px;margin-bottom:10px;cursor:pointer;box-shadow:var(--shadow-subtle);transition:transform .15s}
 .npk-card:active{transform:scale(.98)}
 .npk-card-img{width:56px;height:56px;border-radius:var(--r-lg);flex-shrink:0;display:flex;align-items:center;justify-content:center}
@@ -887,8 +889,9 @@ body{
   position:relative;z-index:1;flex:1;height:100%;
   border:none;background:none;cursor:pointer;font-family:inherit;
   font-size:var(--fs-base);font-weight:600;color:var(--muted);
-  transition:color .25s;
+  transition:color .25s;display:inline-flex;align-items:center;justify-content:center;gap:5px;
 }
+.ord-seg-btn svg{flex-shrink:0}
 .ord-seg-btn.active{color:var(--blue)}
 
 .ord-body{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 20px calc(100px + var(--sab))}
@@ -910,6 +913,24 @@ body{
   display:flex;align-items:center;gap:12px;
   background:#fff;border-radius:var(--r-lg);padding:11px 12px;
   box-shadow:var(--shadow-subtle);
+}
+.ord-row-wrap{position:relative}
+.ord-row-wrap.ord-stack-1{margin-bottom:10px}
+.ord-row-wrap.ord-stack-2{margin-bottom:18px}
+.ord-row-wrap .ord-row{position:relative;z-index:3}
+.ord-stack-card{
+  position:absolute;
+  top:6px;left:16px;right:16px;bottom:-10px;
+  border-radius:0 0 var(--r-lg) var(--r-lg);
+}
+.ord-stack-card.s1{
+  z-index:2;
+  background:linear-gradient(135deg,#dce8fd,#c2d8fb);
+}
+.ord-stack-card.s2{
+  z-index:1;
+  top:12px;left:26px;right:26px;bottom:-18px;
+  background:linear-gradient(135deg,#c2d8fb,#a3c4f8);
 }
 .ord-thumb{width:48px;height:48px;border-radius:var(--r-sm);flex-shrink:0}
 .ord-row-info{flex:1;min-width:0}
@@ -1149,26 +1170,24 @@ body{
 .lock-price{font-size:var(--fs-sm);color:var(--muted);margin-top:2px}
 /* ════ S9 — MY NICHES ════ */
 #s9{background:#f7f9fc;justify-content:flex-start}
-.nch-mg-hdr{width:100%;flex-shrink:0;background:#fff;padding:calc(var(--sat) + 16px) 18px 10px;display:flex;align-items:flex-start;border-bottom:1px solid #f1f4f9}
-.nch-mg-hdr-left{width:34px;flex-shrink:0}
-.nch-mg-hdr-center{flex:1;text-align:center}
-.nch-mg-title{font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.02em}
-.nch-mg-sub{font-size:var(--fs-xs);color:var(--muted);margin-top:2px;line-height:1.4;padding:0 10px}
-.nch-mg-filters{width:100%;flex-shrink:0;display:flex;gap:8px;padding:12px 20px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nch-mg-hdr{width:100%;flex-shrink:0;background:#fff;padding:calc(var(--sat) + 18px) 20px 8px;display:flex;flex-direction:column;border-bottom:1px solid #f1f4f9}
+.nch-mg-hdr-left{flex:1;text-align:left}
+.nch-mg-title{font-size:var(--fs-2xl);font-weight:800;color:var(--text);letter-spacing:-.035em}
+.nch-mg-filters{width:100%;flex-shrink:0;display:flex;gap:6px;padding:10px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .nch-mg-filters::-webkit-scrollbar{display:none}
 .nch-mg-filter{border:none;border-radius:var(--r-sm);padding:6px 13px;font-size:var(--fs-sm);font-weight:600;font-family:inherit;cursor:pointer;flex-shrink:0;display:flex;align-items:center;gap:5px;box-shadow:var(--shadow-subtle);transition:background .2s,color .2s,box-shadow .2s,transform .15s}
-.nch-mg-filter.active{background:var(--blue)!important;color:#fff!important;box-shadow:0 2px 8px rgba(26,86,240,.3)!important}
+.nch-mg-filter.active{background:#dbeafe!important;color:#2563eb!important;box-shadow:0 2px 8px rgba(37,99,235,.15)!important}
 .nch-mg-filter:active{transform:scale(.92)}
 .nch-mg-filter-reddot{width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0;box-shadow:0 0 0 2px #fff;margin-right:4px}
 .nch-mg-filter-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .nch-mg-filter-count{font-weight:700}
-.nch-mg-stats{width:100%;flex-shrink:0;padding:14px 20px;background:#f7f9fc}
-.nch-mg-stats-card{background:#fff;border-radius:var(--r-lg);padding:20px 12px;box-shadow:var(--shadow-subtle);display:flex;align-items:center;justify-content:space-between;gap:4px}
-.nch-mg-stat{flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
-.nch-mg-stat-icon{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.nch-mg-stat-icon svg{width:20px;height:20px}
-.nch-mg-stat-val{font-size:var(--fs-2xl);font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1}
-.nch-mg-stat-lbl{font-size:var(--fs-xs);font-weight:600;color:var(--muted)}
+.nch-mg-stats{width:100%;flex-shrink:0;padding:10px 20px;background:#f7f9fc}
+.nch-mg-stats-card{background:#fff;border-radius:var(--r-lg);padding:12px 8px;box-shadow:var(--shadow-subtle);display:flex;align-items:center;justify-content:space-between;gap:2px}
+.nch-mg-stat{flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nch-mg-stat-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.nch-mg-stat-icon svg{width:16px;height:16px}
+.nch-mg-stat-val{font-size:var(--fs-lg);font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1}
+.nch-mg-stat-lbl{font-size:10px;font-weight:600;color:var(--muted)}
 .nch-mg-body{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 20px calc(100px + var(--sab))}
 .nch-mg-card{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow-subtle);margin-bottom:10px}
 .nch-mg-card-top{display:flex;align-items:center;gap:12px;padding:12px 14px}
@@ -1454,6 +1473,58 @@ body{
 #s25 .ap-cheVRight{color:#b0b8c6;flex-shrink:0;}
 #s25 .ap-tick{color:var(--blue);opacity:0;transition:opacity .15s;flex-shrink:0;}
 #s25 .ap-tick.show{opacity:1;}
+
+/* ── Profile (s19) ── */
+#s19{background:#f5f7fa;}
+#s19 .prf-hdr{width:100%;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 12px;background:#fff;border-bottom:1px solid #f1f4f9;flex-shrink:0;}
+#s19 .prf-back{width:34px;height:34px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);flex-shrink:0;transition:transform .15s,background .15s;}
+#s19 .prf-back:active{transform:scale(.88);background:#e9edf5;}
+#s19 .prf-title{flex:1;text-align:center;font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.01em;}
+#s19 .prf-settings-btn{width:34px;height:34px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);flex-shrink:0;transition:transform .15s,background .15s;}
+#s19 .prf-settings-btn:active{transform:scale(.88);background:#e9edf5;}
+#s19 .prf-body{width:100%;flex:1;overflow-y:auto;padding:16px 16px 30px;}
+#s19 .prf-card{background:#fff;border-radius:var(--r-xl);padding:28px 20px;margin-bottom:18px;box-shadow:var(--shadow-subtle);}
+#s19 .prf-avatar-wrap{display:flex;flex-direction:column;align-items:center;}
+#s19 .prf-avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#6388f5);margin-bottom:14px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-2xl);font-weight:700;color:#fff;letter-spacing:.02em;}
+#s19 .prf-name{font-size:var(--fs-lg);font-weight:700;color:var(--text);margin-bottom:2px;}
+#s19 .prf-email{font-size:var(--fs-base);color:var(--mid);}
+#s19 .prf-joined{font-size:var(--fs-xs);color:var(--muted);margin-top:8px;}
+#s19 .prf-section{background:#fff;border-radius:var(--r-xl);margin-bottom:14px;box-shadow:var(--shadow-subtle);overflow:hidden;}
+#s19 .prf-section-title{font-size:var(--fs-xs);font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:14px 20px 4px;}
+#s19 .prf-row{display:flex;align-items:center;gap:14px;padding:15px 20px;cursor:pointer;color:var(--text);font-size:var(--fs-md);font-weight:500;border-bottom:1px solid #f1f4f8;}
+#s19 .prf-row:last-child{border-bottom:none;}
+#s19 .prf-row:active{background:#f5f7fa;}
+#s19 .prf-row-icon{width:32px;height:32px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#s19 .prf-row-icon svg{width:17px;height:17px;}
+#s19 .prf-row span{flex:1;}
+#s19 .prf-arrow{color:#d5dee8;flex-shrink:0;width:16px;height:16px;}
+#s19 .prf-logout{color:#ef4444;}
+
+/* ── Settings (s23) ── */
+#s23{background:#f5f7fa;}
+#s23 .set-hdr{width:100%;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 12px;background:#fff;border-bottom:1px solid #f1f4f9;flex-shrink:0;}
+#s23 .set-back{width:34px;height:34px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);flex-shrink:0;transition:transform .15s,background .15s;}
+#s23 .set-back:active{transform:scale(.88);background:#e9edf5;}
+#s23 .set-title{flex:1;text-align:center;font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.01em;}
+#s23 .set-body{width:100%;flex:1;overflow-y:auto;padding:16px 16px 30px;}
+#s23 .set-section{background:#fff;border-radius:var(--r-xl);margin-bottom:16px;box-shadow:var(--shadow-subtle);overflow:hidden;}
+#s23 .set-section-title{font-size:var(--fs-xs);font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:14px 20px 4px;}
+#s23 .set-row{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;cursor:pointer;min-height:52px;border-bottom:1px solid #f1f4f8;gap:14px;}
+#s23 .set-row:last-child{border-bottom:none;}
+#s23 .set-row:active{background:#f5f7fa;}
+#s23 .set-row-icon{width:32px;height:32px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#s23 .set-row-icon svg{width:17px;height:17px;}
+#s23 .set-row-info{display:flex;flex-direction:column;gap:3px;flex:1;}
+#s23 .set-row-label{font-size:var(--fs-md);font-weight:500;color:var(--text);}
+#s23 .set-row-desc{font-size:var(--fs-sm);color:var(--muted);line-height:1.3;}
+#s23 .set-row-value{font-size:var(--fs-md);color:var(--mid);font-weight:500;}
+#s23 .set-arrow{color:#d5dee8;flex-shrink:0;width:16px;height:16px;}
+#s23 .set-toggle{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;margin-left:12px;}
+#s23 .set-toggle input{opacity:0;width:0;height:0;}
+#s23 .set-toggle-slider{position:absolute;cursor:pointer;inset:0;background:#d5dee8;border-radius:24px;transition:background .2s;}
+#s23 .set-toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.15);}
+#s23 .set-toggle input:checked + .set-toggle-slider{background:var(--blue);}
+#s23 .set-toggle input:checked + .set-toggle-slider::before{transform:translateX(20px);}
 </style>
 </head>
 <body>
@@ -1578,7 +1649,7 @@ body{
     </div>
     <div class="mk-icons">
       <button id="srchOpenBtn" aria-label="Search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-      <button aria-label="Profile"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg></button>
+      <button id="prfOpenBtn" aria-label="Profile"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg></button>
     </div>
   </div>
 
@@ -1617,7 +1688,8 @@ body{
     <div style="flex:1;display:flex;align-items:center;justify-content:space-between">
       <h1>Orders</h1>
       <div class="ord-cart" id="ordCart">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <span class="ord-cart-label">My Purchases</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
         <div class="ord-cart-badge" id="ordCartBadge">0</div>
       </div>
     </div>
@@ -1625,8 +1697,8 @@ body{
   <div class="ord-seg-wrap">
     <div class="ord-seg" id="ordSeg">
       <div class="ord-seg-pill" id="ordPill"></div>
-      <button class="ord-seg-btn active" data-seg="products">Products</button>
-      <button class="ord-seg-btn" data-seg="niche">Niche</button>
+      <button class="ord-seg-btn active" data-seg="products"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>Products</button>
+      <button class="ord-seg-btn" data-seg="niche"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Niche</button>
     </div>
   </div>
   <div class="ord-body" id="ordBody">
@@ -2375,14 +2447,11 @@ body{
 <div class="lock-scrim" id="lockScrim"></div>
 <div class="screen offright" id="s9">
   <div class="nch-mg-hdr">
-    <div class="nch-mg-hdr-left"></div>
-    <div class="nch-mg-hdr-center">
+    <div class="nch-mg-hdr-left">
       <div class="nch-mg-title">My Niches</div>
-      <div class="nch-mg-sub">Manage and customize your published niches</div>
     </div>
-    <div style="width:34px"></div>
+    <div class="nch-mg-filters" id="nichesMgFilters"></div>
   </div>
-  <div class="nch-mg-filters" id="nichesMgFilters"></div>
   <div class="nch-mg-stats" id="nichesMgStats"></div>
   <div class="nch-mg-body" id="nichesMgBody"></div>
 </div>
@@ -2457,8 +2526,124 @@ body{
   </div>
 </div>
 
-</div><!-- /shell -->
+<!-- S19 — PROFILE -->
+<div class="screen offright" id="s19">
+  <div class="prf-hdr">
+    <button class="prf-back" id="prfBack">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="prf-title">Profile</div>
+    <button class="prf-settings-btn" id="prfSettingsBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+  <div class="prf-body">
+    <div class="prf-card">
+      <div class="prf-avatar-wrap">
+        <div class="prf-avatar" id="prfAvatar">AJ</div>
+        <div class="prf-name">Alex Johnson</div>
+        <div class="prf-email">alex.johnson@example.com</div>
+        <div class="prf-joined">Member since March 2025</div>
+      </div>
+    </div>
 
+    <div class="prf-section">
+      <div class="prf-section-title">Account</div>
+      <div class="prf-row"><div class="prf-row-icon" style="background:#dbeafe;color:#2563eb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span>Personal Info</span><svg class="prf-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="prf-row"><div class="prf-row-icon" style="background:#ede9fe;color:#7c3aed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span>Switch Account</span><svg class="prf-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="prf-row"><div class="prf-row-icon" style="background:#dcfce7;color:#16a34a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><span>Privacy & Security</span><svg class="prf-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+
+    <div class="prf-section">
+      <div class="prf-section-title">Support & Privacy</div>
+      <div class="prf-row"><div class="prf-row-icon" style="background:#fef3c7;color:#d97706"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span>Help & Support</span><svg class="prf-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+
+    <div class="prf-section">
+      <div class="prf-section-title">Other</div>
+      <div class="prf-row"><div class="prf-row-icon" style="background:#e0e7ff;color:#4f46e5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M12 3v18"/></svg></div><span>About Blex</span><svg class="prf-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <div class="prf-row prf-logout"><div class="prf-row-icon" style="background:#fee2e2;color:#ef4444"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div><span>Log Out</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S23 — SETTINGS -->
+<div class="screen offright" id="s23">
+  <div class="set-hdr">
+    <button class="set-back" id="setBack">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="set-title">Settings</div>
+    <div style="width:34px"></div>
+  </div>
+  <div class="set-body">
+    <div class="set-section">
+      <div class="set-section-title">General</div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#dbeafe;color:#2563eb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Language</div><div class="set-row-desc">App display language</div></div>
+        <div class="set-row-value">English</div>
+        <svg class="set-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#e0e7ff;color:#4f46e5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Dark Mode</div><div class="set-row-desc">Switch between light and dark themes</div></div>
+        <label class="set-toggle"><input type="checkbox"><span class="set-toggle-slider"></span></label>
+      </div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#dcfce7;color:#16a34a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Currency</div><div class="set-row-desc">Display currency for prices</div></div>
+        <div class="set-row-value">DZD</div>
+        <svg class="set-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <div class="set-section">
+      <div class="set-section-title">Notifications</div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#fef3c7;color:#d97706"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Push Notifications</div><div class="set-row-desc">Receive order updates and promotions</div></div>
+        <label class="set-toggle"><input type="checkbox" checked><span class="set-toggle-slider"></span></label>
+      </div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#fef3c7;color:#d97706"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Email Updates</div><div class="set-row-desc">Weekly newsletter and offers</div></div>
+        <label class="set-toggle"><input type="checkbox"><span class="set-toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="set-section">
+      <div class="set-section-title">Account</div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#fee2e2;color:#ef4444"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Change Password</div><div class="set-row-desc">Update your account password</div></div>
+        <svg class="set-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#fee2e2;color:#ef4444"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Two-Factor Auth</div><div class="set-row-desc">Add an extra layer of security</div></div>
+        <label class="set-toggle"><input type="checkbox"><span class="set-toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="set-section">
+      <div class="set-section-title">Privacy</div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#dcfce7;color:#16a34a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Show Online Status</div><div class="set-row-desc">Let others see when you're active</div></div>
+        <label class="set-toggle"><input type="checkbox" checked><span class="set-toggle-slider"></span></label>
+      </div>
+      <div class="set-row">
+        <div class="set-row-icon" style="background:#fee2e2;color:#ef4444"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg></div>
+        <div class="set-row-info"><div class="set-row-label">Blocked Users</div><div class="set-row-desc">Manage blocked accounts</div></div>
+        <div class="set-row-value">0</div>
+        <svg class="set-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /shell -->
 <script>
 (function(){
 'use strict';
@@ -3381,8 +3566,8 @@ function go(a,b,d){
   el(b).classList.remove('offright','offleft');
   CURRENT_SCREEN = b;
   var tb = el('globTabbar');
-   if(b === 's7' || b === 's8' || b === 's13' || b === 's15' || b === 's9') tb.classList.remove('hidden');
-   else tb.classList.add('hidden');
+  if(b === 's7' || b === 's8' || b === 's13' || b === 's9') tb.classList.remove('hidden');
+  else tb.classList.add('hidden');
 }
 /* Present a modal screen (slide up from the bottom, like an iOS
    sheet/page presented over the current context) and dismiss it
@@ -3421,6 +3606,12 @@ function toQ(){go('s3','s4','l')}
 el('btnApple').addEventListener('click',toQ);
 el('btnGoogle').addEventListener('click',toQ);
 el('btnSignin').addEventListener('click',function(){if(!bs.classList.contains('off'))toQ()});
+
+var PROFILE_SOURCE = 's7';
+el('prfOpenBtn').addEventListener('click',function(){PROFILE_SOURCE = CURRENT_SCREEN; go(CURRENT_SCREEN,'s19','l')});
+el('prfBack').addEventListener('click',function(){go('s19',PROFILE_SOURCE,'r')});
+el('prfSettingsBtn').addEventListener('click',function(){go('s19','s23','l')});
+el('setBack').addEventListener('click',function(){go('s23','s19','r')});
 
 var UNIS=[
   {n:"University of Algiers 1",c:"Algiers"},{n:"University of Algiers 2",c:"Algiers"},
@@ -3486,31 +3677,31 @@ function load(){
 var NICHES=[
   {name:'Gamer Zone',count:'24 products',grad:'linear-gradient(135deg,#1a2540,#0a3a6e)',desc:'Premium gaming gear and accessories for the ultimate gaming experience.',
    products:[
-     {name:'Quantum X1 Headphones',price:'34.900 DA',time:'2h ago',seller:'TechWorld',rating:'4.9',reviews:'210',grad:'linear-gradient(160deg,#06122e 0%,#0b3a78 55%,#1659c9 100%)',images:['linear-gradient(160deg,#06122e,#1659c9)','linear-gradient(160deg,#0b3a78,#1e7ae8)','linear-gradient(160deg,#082a4a,#1a5ab9)','linear-gradient(160deg,#0c3a5a,#2078cc)','linear-gradient(160deg,#071e36,#124eaa)','linear-gradient(160deg,#0a3470,#1a6ad9)'],desc:'Premium wireless headphones with active noise cancellation, 30-hour battery life, and ultra-comfortable ear cushions for all-day wear.',specs:['Bluetooth 5.3','ANC Technology','30h Battery','USB-C','40mm Drivers']},
-     {name:'MacBook Pro M3 16"',price:'219.900 DA',time:'1d ago',seller:'TechWorld',rating:'4.9',reviews:'210',grad:'linear-gradient(160deg,#0a1020 0%,#16223c 60%,#223252 100%)',images:['linear-gradient(160deg,#0a1020,#223252)','linear-gradient(160deg,#101828,#2a3a5a)','linear-gradient(160deg,#080e18,#1c2a42)','linear-gradient(160deg,#121e30,#283852)','linear-gradient(160deg,#0c1422,#1e2e48)','linear-gradient(160deg,#0e1826,#24344e)'],desc:'Apple MacBook Pro with M3 chip, 18GB RAM, 512GB SSD, and stunning 16-inch Liquid Retina XDR display.',specs:['M3 Chip','18GB RAM','512GB SSD','16" Display','Touch ID']},
-     {name:'Sony A7 IV Camera',price:'169.900 DA',time:'3h ago',seller:'PhotoPro',rating:'4.8',reviews:'75',grad:'linear-gradient(160deg,#0c0c0c 0%,#1c1c1c 60%,#2a2a2a 100%)',images:['linear-gradient(160deg,#0c0c0c,#2a2a2a)','linear-gradient(160deg,#141414,#333)','linear-gradient(160deg,#080808,#1c1c1c)','linear-gradient(160deg,#181818,#383838)','linear-gradient(160deg,#0e0e0e,#242424)','linear-gradient(160deg,#121212,#2e2e2e)'],desc:'Full-frame mirrorless camera with 33MP sensor, 4K 60fps video, real-time eye AF, and advanced image stabilization.',specs:['33MP Sensor','4K 60fps','Eye AF','IBIS','Full-Frame']},
-     {name:'RGB Mechanical Keyboard',price:'12.900 DA',time:'6h ago',seller:'KeyCaps',rating:'4.7',reviews:'43',grad:'linear-gradient(160deg,#1a1030 0%,#2a1a50 60%,#3f2870 100%)',images:['linear-gradient(160deg,#1a1030,#3f2870)','linear-gradient(160deg,#2a1a50,#4e3090)','linear-gradient(160deg:#140e28,#2e1e5a)','linear-gradient(160deg,#22143e,#3a2878)','linear-gradient(160deg:#0e0820,#241448)','linear-gradient(160deg,#1c1240,#34286a)'],desc:'Mechanical keyboard with RGB backlighting, hot-swappable switches, and a compact tenkeyless design for gamers and typists.',specs:['RGB Backlight','Hot-Swappable','Tenkeyless','USB-C','Cherry MX']}
+      {name:'Quantum X1 Headphones',price:'34.900 DA',time:'2h ago',seller:'TechWorld',rating:'4.9',reviews:'210',grad:'linear-gradient(160deg,#06122e 0%,#0b3a78 55%,#1659c9 100%)',images:['linear-gradient(160deg,#06122e,#1659c9)','linear-gradient(160deg,#0b3a78,#1e7ae8)','linear-gradient(160deg,#082a4a,#1a5ab9)','linear-gradient(160deg,#0c3a5a,#2078cc)','linear-gradient(160deg,#071e36,#124eaa)','linear-gradient(160deg,#0a3470,#1a6ad9)'],desc:'Premium wireless headphones with active noise cancellation, 30-hour battery life, and ultra-comfortable ear cushions for all-day wear.',specs:['Bluetooth 5.3','ANC Technology','30h Battery','USB-C','40mm Drivers'],orders:25},
+      {name:'MacBook Pro M3 16"',price:'219.900 DA',time:'1d ago',seller:'TechWorld',rating:'4.9',reviews:'210',grad:'linear-gradient(160deg,#0a1020 0%,#16223c 60%,#223252 100%)',images:['linear-gradient(160deg,#0a1020,#223252)','linear-gradient(160deg,#101828,#2a3a5a)','linear-gradient(160deg,#080e18,#1c2a42)','linear-gradient(160deg,#121e30,#283852)','linear-gradient(160deg,#0c1422,#1e2e48)','linear-gradient(160deg,#0e1826,#24344e)'],desc:'Apple MacBook Pro with M3 chip, 18GB RAM, 512GB SSD, and stunning 16-inch Liquid Retina XDR display.',specs:['M3 Chip','18GB RAM','512GB SSD','16" Display','Touch ID'],orders:18},
+      {name:'Sony A7 IV Camera',price:'169.900 DA',time:'3h ago',seller:'PhotoPro',rating:'4.8',reviews:'75',grad:'linear-gradient(160deg,#0c0c0c 0%,#1c1c1c 60%,#2a2a2a 100%)',images:['linear-gradient(160deg,#0c0c0c,#2a2a2a)','linear-gradient(160deg,#141414,#333)','linear-gradient(160deg,#080808,#1c1c1c)','linear-gradient(160deg,#181818,#383838)','linear-gradient(160deg,#0e0e0e,#242424)','linear-gradient(160deg,#121212,#2e2e2e)'],desc:'Full-frame mirrorless camera with 33MP sensor, 4K 60fps video, real-time eye AF, and advanced image stabilization.',specs:['33MP Sensor','4K 60fps','Eye AF','IBIS','Full-Frame'],orders:7},
+      {name:'RGB Mechanical Keyboard',price:'12.900 DA',time:'6h ago',seller:'KeyCaps',rating:'4.7',reviews:'43',grad:'linear-gradient(160deg,#1a1030 0%,#2a1a50 60%,#3f2870 100%)',images:['linear-gradient(160deg,#1a1030,#3f2870)','linear-gradient(160deg,#2a1a50,#4e3090)','linear-gradient(160deg:#140e28,#2e1e5a)','linear-gradient(160deg,#22143e,#3a2878)','linear-gradient(160deg:#0e0820,#241448)','linear-gradient(160deg,#1c1240,#34286a)'],desc:'Mechanical keyboard with RGB backlighting, hot-swappable switches, and a compact tenkeyless design for gamers and typists.',specs:['RGB Backlight','Hot-Swappable','Tenkeyless','USB-C','Cherry MX'],orders:2}
    ]},
   {name:'Home Comfort',count:'18 products',grad:'linear-gradient(135deg,#241a1a,#3a2418)',desc:'Cozy and stylish home essentials to make your living space warm and inviting.',
    products:[
-     {name:'Premium Living Room Set',price:'125.000 DA',time:'5h ago',seller:'Maison Élégance',rating:'4.8',reviews:'96',grad:'linear-gradient(160deg,#241a14 0%,#3a2a1e 60%,#52392a 100%)',images:['linear-gradient(160deg,#241a14,#52392a)','linear-gradient(160deg,#2e221a,#604030)','linear-gradient(160deg,#1c1410,#3a2a1e)','linear-gradient(160deg,#34261e,#6a4c36)','linear-gradient(160deg,#1a120e,#2e1e14)','linear-gradient(160deg,#28201a,#4c3628)'],desc:'Elegant 3-piece living room set featuring a sofa, armchair, and coffee table with premium fabric upholstery and solid wood legs.',specs:['3-Piece Set','Premium Fabric','Solid Wood','Easy Assembly','Modern Style']},
-     {name:'Smart LED Lamp',price:'7.900 DA',time:'1d ago',seller:'HomeTech',rating:'4.6',reviews:'58',grad:'linear-gradient(160deg,#1c1c1c 0%,#2e2e2e 60%,#404040 100%)',images:['linear-gradient(160deg,#1c1c1c,#404040)','linear-gradient(160deg,#242424,#4e4e4e)','linear-gradient(160deg,#141414,#2e2e2e)','linear-gradient(160deg,#282828,#484848)','linear-gradient(160deg,#181818,#363636)','linear-gradient(160deg,#202020,#3a3a3a)'],desc:'Smart LED lamp with adjustable brightness, color temperature, and voice control compatibility for any room.',specs:['Wi-Fi','Voice Control','RGB Colors','Dimmable','Schedule']},
-     {name:'Cozy Throw Blanket',price:'4.500 DA',time:'2d ago',seller:'ComfortCo',rating:'4.9',reviews:'112',grad:'linear-gradient(160deg,#2a1e1e 0%,#4a3434 60%,#6a4848 100%)',images:['linear-gradient(160deg,#2a1e1e,#6a4848)','linear-gradient(160deg,#362626,#785454)','linear-gradient(160deg,#1e1414,#4a3434)','linear-gradient(160deg,#3e2a2a,#604040)','linear-gradient(160deg:#221818,#382828)','linear-gradient(160deg,#322424,#5a3e3e)'],desc:'Ultra-soft microfiber throw blanket perfect for cozy evenings. Machine washable and available in multiple colors.',specs:['Microfiber','Machine Washable','150x200cm','Hypoallergenic','Lightweight']}
+      {name:'Premium Living Room Set',price:'125.000 DA',time:'5h ago',seller:'Maison Élégance',rating:'4.8',reviews:'96',grad:'linear-gradient(160deg,#241a14 0%,#3a2a1e 60%,#52392a 100%)',images:['linear-gradient(160deg,#241a14,#52392a)','linear-gradient(160deg,#2e221a,#604030)','linear-gradient(160deg,#1c1410,#3a2a1e)','linear-gradient(160deg,#34261e,#6a4c36)','linear-gradient(160deg,#1a120e,#2e1e14)','linear-gradient(160deg,#28201a,#4c3628)'],desc:'Elegant 3-piece living room set featuring a sofa, armchair, and coffee table with premium fabric upholstery and solid wood legs.',specs:['3-Piece Set','Premium Fabric','Solid Wood','Easy Assembly','Modern Style'],orders:30},
+      {name:'Smart LED Lamp',price:'7.900 DA',time:'1d ago',seller:'HomeTech',rating:'4.6',reviews:'58',grad:'linear-gradient(160deg,#1c1c1c 0%,#2e2e2e 60%,#404040 100%)',images:['linear-gradient(160deg,#1c1c1c,#404040)','linear-gradient(160deg,#242424,#4e4e4e)','linear-gradient(160deg,#141414,#2e2e2e)','linear-gradient(160deg,#282828,#484848)','linear-gradient(160deg,#181818,#363636)','linear-gradient(160deg,#202020,#3a3a3a)'],desc:'Smart LED lamp with adjustable brightness, color temperature, and voice control compatibility for any room.',specs:['Wi-Fi','Voice Control','RGB Colors','Dimmable','Schedule'],orders:10},
+      {name:'Cozy Throw Blanket',price:'4.500 DA',time:'2d ago',seller:'ComfortCo',rating:'4.9',reviews:'112',grad:'linear-gradient(160deg,#2a1e1e 0%,#4a3434 60%,#6a4848 100%)',images:['linear-gradient(160deg,#2a1e1e,#6a4848)','linear-gradient(160deg,#362626,#785454)','linear-gradient(160deg,#1e1414,#4a3434)','linear-gradient(160deg,#3e2a2a,#604040)','linear-gradient(160deg:#221818,#382828)','linear-gradient(160deg,#322424,#5a3e3e)'],desc:'Ultra-soft microfiber throw blanket perfect for cozy evenings. Machine washable and available in multiple colors.',specs:['Microfiber','Machine Washable','150x200cm','Hypoallergenic','Lightweight'],orders:3}
    ]},
   {name:"Men's Style",count:'32 products',grad:'linear-gradient(135deg,#1a1a1a,#2e2e2e)',desc:'Trendy and classic menswear for every occasion. Jackets, pants, and accessories to elevate your wardrobe.',
    products:[
-     {name:'Classic Leather Jacket',price:'29.900 DA',time:'4h ago',seller:'UrbanFit',rating:'4.8',reviews:'67',grad:'linear-gradient(160deg,#141414 0%,#282828 60%,#3a3a3a 100%)',images:['linear-gradient(160deg,#141414,#3a3a3a)','linear-gradient(160deg:#1e1e1e,#464646)','linear-gradient(160deg,#0e0e0e,#282828)','linear-gradient(160deg:#1a1a1a,#323232)','linear-gradient(160deg,#101010,#202020)','linear-gradient(160deg:#181818,#2e2e2e)'],desc:'Genuine leather jacket with a timeless design. Features a soft inner lining, zippered pockets, and a tailored fit.',specs:['Genuine Leather','Inner Lining','Zip Pockets','Tailored Fit','Unisex']},
-     {name:'Slim Fit Chinos',price:'8.900 DA',time:'1d ago',seller:'UrbanFit',rating:'4.5',reviews:'34',grad:'linear-gradient(160deg,#1a1a1a 0%,#333 60%,#4d4d4d 100%)',images:['linear-gradient(160deg,#1a1a1a,#4d4d4d)','linear-gradient(160deg:#222,#565656)','linear-gradient(160deg:#121212,#333)','linear-gradient(160deg:#282828,#424242)','linear-gradient(160deg:#141414,#2a2a2a)','linear-gradient(160deg:#1e1e1e,#3a3a3a)'],desc:'Stretch cotton chinos with a modern slim fit. Comfortable for all-day wear with a crisp, polished look.',specs:['Stretch Cotton','Slim Fit','Machine Washable','5 Pockets','Belt Loops']}
+      {name:'Classic Leather Jacket',price:'29.900 DA',time:'4h ago',seller:'UrbanFit',rating:'4.8',reviews:'67',grad:'linear-gradient(160deg,#141414 0%,#282828 60%,#3a3a3a 100%)',images:['linear-gradient(160deg,#141414,#3a3a3a)','linear-gradient(160deg:#1e1e1e,#464646)','linear-gradient(160deg,#0e0e0e,#282828)','linear-gradient(160deg:#1a1a1a,#323232)','linear-gradient(160deg,#101010,#202020)','linear-gradient(160deg:#181818,#2e2e2e)'],desc:'Genuine leather jacket with a timeless design. Features a soft inner lining, zippered pockets, and a tailored fit.',specs:['Genuine Leather','Inner Lining','Zip Pockets','Tailored Fit','Unisex'],orders:15},
+      {name:'Slim Fit Chinos',price:'8.900 DA',time:'1d ago',seller:'UrbanFit',rating:'4.5',reviews:'34',grad:'linear-gradient(160deg,#1a1a1a 0%,#333 60%,#4d4d4d 100%)',images:['linear-gradient(160deg,#1a1a1a,#4d4d4d)','linear-gradient(160deg:#222,#565656)','linear-gradient(160deg:#121212,#333)','linear-gradient(160deg:#282828,#424242)','linear-gradient(160deg:#141414,#2a2a2a)','linear-gradient(160deg:#1e1e1e,#3a3a3a)'],desc:'Stretch cotton chinos with a modern slim fit. Comfortable for all-day wear with a crisp, polished look.',specs:['Stretch Cotton','Slim Fit','Machine Washable','5 Pockets','Belt Loops'],orders:0}
    ]},
   {name:'Content Creator',count:'15 products',grad:'linear-gradient(135deg,#241830,#3a1f4a)',desc:'High-quality gear for content creators. Cameras, microphones, and studio equipment to bring your vision to life.',
    products:[
-     {name:'Sony A7 IV Camera',price:'169.900 DA',time:'3h ago',seller:'PhotoPro',rating:'4.8',reviews:'75',grad:'linear-gradient(160deg,#0c0c0c 0%,#1c1c1c 60%,#2a2a2a 100%)',images:['linear-gradient(160deg,#0c0c0c,#2a2a2a)','linear-gradient(160deg,#141414,#333)','linear-gradient(160deg,#080808,#1c1c1c)','linear-gradient(160deg,#181818,#383838)','linear-gradient(160deg,#0e0e0e,#242424)','linear-gradient(160deg,#121212,#2e2e2e)'],desc:'Full-frame mirrorless camera with 33MP sensor, 4K 60fps video, real-time eye AF, and advanced image stabilization.',specs:['33MP Sensor','4K 60fps','Eye AF','IBIS','Full-Frame']},
-     {name:'Studio Mic Pro',price:'19.900 DA',time:'8h ago',seller:'AudioPlus',rating:'4.7',reviews:'41',grad:'linear-gradient(160deg,#1a1020 0%,#2e1e3a 60%,#402850 100%)',images:['linear-gradient(160deg,#1a1020,#402850)','linear-gradient(160deg,#26183a,#503870)','linear-gradient(160deg:#120c1e,#2e1e3a)','linear-gradient(160deg,#22143a,#3a2860)','linear-gradient(160deg:#0e0818,#241830)','linear-gradient(160deg:#1c1430,#342a50)'],desc:'Professional condenser microphone with cardioid pickup pattern, perfect for podcasting, streaming, and voiceovers.',specs:['Condenser','Cardioid','USB-C','Zero Latency','Boom Arm Ready']}
+      {name:'Sony A7 IV Camera',price:'169.900 DA',time:'3h ago',seller:'PhotoPro',rating:'4.8',reviews:'75',grad:'linear-gradient(160deg,#0c0c0c 0%,#1c1c1c 60%,#2a2a2a 100%)',images:['linear-gradient(160deg,#0c0c0c,#2a2a2a)','linear-gradient(160deg,#141414,#333)','linear-gradient(160deg,#080808,#1c1c1c)','linear-gradient(160deg,#181818,#383838)','linear-gradient(160deg,#0e0e0e,#242424)','linear-gradient(160deg,#121212,#2e2e2e)'],desc:'Full-frame mirrorless camera with 33MP sensor, 4K 60fps video, real-time eye AF, and advanced image stabilization.',specs:['33MP Sensor','4K 60fps','Eye AF','IBIS','Full-Frame'],orders:22},
+      {name:'Studio Mic Pro',price:'19.900 DA',time:'8h ago',seller:'AudioPlus',rating:'4.7',reviews:'41',grad:'linear-gradient(160deg,#1a1020 0%,#2e1e3a 60%,#402850 100%)',images:['linear-gradient(160deg,#1a1020,#402850)','linear-gradient(160deg,#26183a,#503870)','linear-gradient(160deg:#120c1e,#2e1e3a)','linear-gradient(160deg,#22143a,#3a2860)','linear-gradient(160deg:#0e0818,#241830)','linear-gradient(160deg:#1c1430,#342a50)'],desc:'Professional condenser microphone with cardioid pickup pattern, perfect for podcasting, streaming, and voiceovers.',specs:['Condenser','Cardioid','USB-C','Zero Latency','Boom Arm Ready'],orders:5}
    ]},
   {name:'Study Essentials',count:'21 products',grad:'linear-gradient(135deg,#142428,#1c3a40)',desc:'Everything you need to ace your studies. Laptops, noise-canceling earbuds, and smart study accessories.',
    products:[
-     {name:'MacBook Pro M3 16"',price:'219.900 DA',time:'1d ago',seller:'TechWorld',rating:'4.9',reviews:'210',grad:'linear-gradient(160deg,#0a1020 0%,#16223c 60%,#223252 100%)',images:['linear-gradient(160deg,#0a1020,#223252)','linear-gradient(160deg,#101828,#2a3a5a)','linear-gradient(160deg,#080e18,#1c2a42)','linear-gradient(160deg,#121e30,#283852)','linear-gradient(160deg,#0c1422,#1e2e48)','linear-gradient(160deg,#0e1826,#24344e)'],desc:'Apple MacBook Pro with M3 chip, 18GB RAM, 512GB SSD, and stunning 16-inch Liquid Retina XDR display.',specs:['M3 Chip','18GB RAM','512GB SSD','16" Display','Touch ID']},
-     {name:'Noise Canceling Earbuds',price:'15.900 DA',time:'12h ago',seller:'AudioPlus',rating:'4.6',reviews:'88',grad:'linear-gradient(160deg,#142428 0%,#1c3a40 60%,#245058 100%)',images:['linear-gradient(160deg,#142428,#245058)','linear-gradient(160deg:#1a3038,#2e5868)','linear-gradient(160deg:#101c22,#1c3a40)','linear-gradient(160deg:#182e34,#224a56)','linear-gradient(160deg:#0e1820,#142428)','linear-gradient(160deg:#162c32,#205060)'],desc:'True wireless earbuds with adaptive noise cancellation, comfortable fit, and crystal-clear call quality.',specs:['ANC','IPX5','6h Battery','Wireless Charging','Touch Control']}
+      {name:'MacBook Pro M3 16"',price:'219.900 DA',time:'1d ago',seller:'TechWorld',rating:'4.9',reviews:'210',grad:'linear-gradient(160deg,#0a1020 0%,#16223c 60%,#223252 100%)',images:['linear-gradient(160deg,#0a1020,#223252)','linear-gradient(160deg,#101828,#2a3a5a)','linear-gradient(160deg,#080e18,#1c2a42)','linear-gradient(160deg,#121e30,#283852)','linear-gradient(160deg,#0c1422,#1e2e48)','linear-gradient(160deg,#0e1826,#24344e)'],desc:'Apple MacBook Pro with M3 chip, 18GB RAM, 512GB SSD, and stunning 16-inch Liquid Retina XDR display.',specs:['M3 Chip','18GB RAM','512GB SSD','16" Display','Touch ID'],orders:40},
+      {name:'Noise Canceling Earbuds',price:'15.900 DA',time:'12h ago',seller:'AudioPlus',rating:'4.6',reviews:'88',grad:'linear-gradient(160deg,#142428 0%,#1c3a40 60%,#245058 100%)',images:['linear-gradient(160deg,#142428,#245058)','linear-gradient(160deg:#1a3038,#2e5868)','linear-gradient(160deg:#101c22,#1c3a40)','linear-gradient(160deg:#182e34,#224a56)','linear-gradient(160deg:#0e1820,#142428)','linear-gradient(160deg:#162c32,#205060)'],desc:'True wireless earbuds with adaptive noise cancellation, comfortable fit, and crystal-clear call quality.',specs:['ANC','IPX5','6h Battery','Wireless Charging','Touch Control'],orders:8}
    ]}
 ];
 var nicheStatus = NICHES.map(function(){ return 'active'; });
@@ -4788,16 +4979,16 @@ el('nichesMgFilters').addEventListener('click', function(e){
     products: {
       icon:'<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
       rows:[
-        {name:'Quantum X1 Headphones',sub:'Order #4821 · 2 days ago',price:'34.900 DA',status:'Delivered',cls:'status-done',grad:'linear-gradient(160deg,#06122e,#1659c9)'},
-        {name:'MacBook Pro M3 16"',sub:'Order #4790 · 5 days ago',price:'219.900 DA',status:'In transit',cls:'status-active',grad:'linear-gradient(160deg,#0a1020,#223252)'},
-        {name:'Sony A7 IV Camera',sub:'Order #4765 · 1 week ago',price:'169.900 DA',status:'Processing',cls:'status-pending',grad:'linear-gradient(160deg,#0c0c0c,#2a2a2a)'}
+        {name:'Quantum X1 Headphones',sub:'Order #4821 · 2 days ago',price:'34.900 DA',status:'Delivered',cls:'status-done',grad:'linear-gradient(160deg,#06122e,#1659c9)',orders:18},
+        {name:'MacBook Pro M3 16"',sub:'Order #4790 · 5 days ago',price:'219.900 DA',status:'In transit',cls:'status-active',grad:'linear-gradient(160deg,#0a1020,#223252)',orders:0},
+        {name:'Sony A7 IV Camera',sub:'Order #4765 · 1 week ago',price:'169.900 DA',status:'Processing',cls:'status-pending',grad:'linear-gradient(160deg,#0c0c0c,#2a2a2a)',orders:25}
       ]
     },
     niche: {
       icon:'<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>',
       rows:[
-        {name:'Gamer Zone',sub:'24 products · Active',price:'',status:'Live',cls:'status-done',grad:'linear-gradient(135deg,#1a2540,#0a3a6e)'},
-        {name:"Men's Style",sub:'32 products · Active',price:'',status:'Live',cls:'status-done',grad:'linear-gradient(135deg,#1a1a1a,#2e2e2e)'}
+        {name:'Gamer Zone',sub:'24 products · Active',price:'',status:'Live',cls:'status-done',grad:'linear-gradient(135deg,#1a2540,#0a3a6e)',orders:41},
+        {name:"Men's Style",sub:'32 products · Active',price:'',status:'Live',cls:'status-done',grad:'linear-gradient(135deg,#1a1a1a,#2e2e2e)',orders:9}
       ]
     },
     cart: {
@@ -4808,21 +4999,41 @@ el('nichesMgFilters').addEventListener('click', function(e){
     }
   };
 
+  function getStackTier(r){
+    if(typeof r.orders !== 'number') return 0;
+    if(r.orders >= 21) return 2;
+    if(r.orders >= 1) return 1;
+    return 0;
+  }
+
   function render(key){
     var data = CONTENT[key];
-    if(!data.rows.length){
+    var sortedRows = data.rows.slice().sort(function(a,b){
+      var tierA = getStackTier(a), tierB = getStackTier(b);
+      if(tierA !== tierB) return tierB - tierA;
+      return (b.orders||0) - (a.orders||0);
+    });
+    if(!sortedRows.length){
       body.innerHTML =
         '<div class="ord-empty"><div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+data.icon+'</svg></div>'+
         '<h3>Nothing here yet</h3><p>Your '+key+' will show up here once you have some.</p></div>';
       return;
     }
     var html = '<div class="ord-list">';
-    data.rows.forEach(function(r,i){
-      html += '<div class="ord-row" data-ord-idx="'+i+'">'+
-        '<div class="ord-thumb" style="background:'+r.grad+'"></div>'+
-        '<div class="ord-row-info"><div class="ord-row-name">'+r.name+'</div><div class="ord-row-sub">'+r.sub+'</div></div>'+
-        '<div class="ord-row-right">'+(r.price?'<div class="ord-row-price">'+r.price+'</div>':'')+
-        '<span class="ord-row-status '+r.cls+'">'+r.status+'</span></div>'+
+    sortedRows.forEach(function(r,i){
+      var stackCount = getStackTier(r);
+      var stackHtml = '';
+      if(stackCount === 1) stackHtml = '<div class="ord-stack-card s1"></div>';
+      if(stackCount === 2) stackHtml = '<div class="ord-stack-card s1"></div><div class="ord-stack-card s2"></div>';
+
+      html += '<div class="ord-row-wrap ord-stack-'+stackCount+'">'+
+        stackHtml+
+        '<div class="ord-row" data-ord-idx="'+i+'">'+
+          '<div class="ord-thumb" style="background:'+r.grad+'"></div>'+
+          '<div class="ord-row-info"><div class="ord-row-name">'+r.name+'</div><div class="ord-row-sub">'+r.sub+'</div></div>'+
+          '<div class="ord-row-right">'+(r.price?'<div class="ord-row-price">'+r.price+'</div>':'')+
+          '<span class="ord-row-status '+r.cls+'">'+r.status+'</span></div>'+
+        '</div>'+
       '</div>';
     });
     html += '</div>';
@@ -5146,20 +5357,8 @@ function renderOdrTab(tab){
         '</tbody></table>';
     } else {
       body.innerHTML =
-      '<div class="odr-ord-card"><h3>Order Info</h3>'+
-      '<div class="odr-ord-row"><span class="odr-ord-label">Order</span><span class="odr-ord-value">'+(SELECTED_ORDER.sub.split('·')[0].trim()||'#----')+'</span></div>'+
-      '<div class="odr-ord-row"><span class="odr-ord-label">Date</span><span class="odr-ord-value">'+(SELECTED_ORDER.sub.split('·')[1]||'')+'</span></div>'+
-      '<div class="odr-ord-row"><span class="odr-ord-label">Status</span><span class="odr-ord-value green">'+SELECTED_ORDER.status+'</span></div>'+
-      '<div class="odr-ord-row"><span class="odr-ord-label">Total</span><span class="odr-ord-value">'+SELECTED_ORDER.price+'</span></div>'+
-      '</div>'+
       '<div class="odr-ord-card"><h3>Items</h3><div class="odr-ord-items">'+
       '<div class="odr-ord-item"><div class="odr-ord-item-thumb" style="background:'+SELECTED_ORDER.grad+'"></div><div class="odr-ord-item-info"><div class="odr-ord-item-name">'+SELECTED_ORDER.name+'</div><div class="odr-ord-item-qty">Qty: 1</div></div><div class="odr-ord-item-price">'+SELECTED_ORDER.price+'</div></div>'+
-      '</div></div>'+
-      '<div class="odr-ord-card"><h3>Tracking</h3><div class="odr-track">'+
-      '<div class="odr-track-step"><div class="odr-track-dot done"></div><div class="odr-track-info"><div class="odr-track-title">Order Confirmed</div><div class="odr-track-sub">Order has been placed and confirmed.</div></div></div>'+
-      '<div class="odr-track-step"><div class="odr-track-dot '+(SELECTED_ORDER.cls==='status-done'?'done':SELECTED_ORDER.cls==='status-active'?'active':'')+'"></div><div class="odr-track-info"><div class="odr-track-title">Processing</div><div class="odr-track-sub">Seller is preparing your order.</div></div></div>'+
-      '<div class="odr-track-step"><div class="odr-track-dot '+(SELECTED_ORDER.cls==='status-done'?'done':'')+'"></div><div class="odr-track-info"><div class="odr-track-title">In Transit</div><div class="odr-track-sub">Package is on its way.</div></div></div>'+
-      '<div class="odr-track-step"><div class="odr-track-dot '+(SELECTED_ORDER.cls==='status-done'?'done':'')+'"></div><div class="odr-track-info"><div class="odr-track-title">Delivered</div><div class="odr-track-sub">Package has been delivered.</div></div></div>'+
       '</div></div>';
     }
   } else {
@@ -5454,16 +5653,28 @@ function renderNicheProductList(nicheIdx){
   el('npkTitle').textContent = n.name;
   var list = el('npkList');
   list.innerHTML = '';
-  n.products.forEach(function(p){
-    var card = document.createElement('div');
-    card.className = 'npk-card';
-    card.innerHTML =
-      '<div class="npk-card-img" style="background:'+p.grad+'">' +
-        '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>' +
-      '</div>' +
-      '<div class="npk-card-info"><div class="npk-card-name">'+p.name+'</div><div class="npk-card-price">'+p.price+'</div></div>' +
-      '<svg class="npk-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
-    card.addEventListener('click', function(){
+  var sorted = n.products.slice().sort(function(a,b){
+    var ta=typeof a.orders==='number'?(a.orders>=21?2:a.orders>=1?1:0):0;
+    var tb=typeof b.orders==='number'?(b.orders>=21?2:b.orders>=1?1:0):0;
+    if(ta!==tb) return tb-ta;
+    return (b.orders||0)-(a.orders||0);
+  });
+  sorted.forEach(function(p){
+    var stackCount=typeof p.orders==='number'?(p.orders>=21?2:p.orders>=1?1:0):0;
+    var stackHtml='';
+    if(stackCount===1) stackHtml='<div class="ord-stack-card s1"></div>';
+    if(stackCount===2) stackHtml='<div class="ord-stack-card s1"></div><div class="ord-stack-card s2"></div>';
+    var subText=p.seller?p.seller:(p.time||'');
+    var card=document.createElement('div');
+    card.className='ord-row-wrap ord-stack-'+stackCount;
+    card.innerHTML=stackHtml+
+      '<div class="ord-row" style="cursor:pointer">'+
+        '<div class="ord-thumb" style="background:'+p.grad+'"></div>'+
+        '<div class="ord-row-info"><div class="ord-row-name">'+p.name+'</div><div class="ord-row-sub">'+subText+'</div></div>'+
+        '<div class="ord-row-right">'+(p.price?'<div class="ord-row-price">'+p.price+'</div>':'')+
+        '<span class="ord-row-status status-done">Order</span></div>'+
+      '</div>';
+    card.querySelector('.ord-row').addEventListener('click', function(){
       openNicheProductOrder(p);
     });
     list.appendChild(card);
