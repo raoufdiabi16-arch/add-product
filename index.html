@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -39,7 +41,7 @@
   --fs-display:31px;
 
   /* Shadow tokens */
-  --shadow-subtle:0 1px 3px rgba(15,30,60,.06),0 1px 2px rgba(15,30,60,.04);
+  --shadow-subtle:0 2px 12px rgba(0,0,0,0.07);
   --shadow-card:0 4px 14px -4px rgba(15,30,60,.14),0 1px 3px rgba(15,30,60,.06);
   --shadow-elevated:0 20px 60px -12px rgba(8,12,26,.28),0 1px 1px rgba(255,255,255,.4) inset;
 }
@@ -260,28 +262,57 @@ body{
 
 /* ── Search Screen ── */
 .srch-top{
-  display:flex;align-items:center;gap:10px;
-  padding:calc(var(--sat) + 12px) 16px 12px;
+  display:flex;align-items:center;gap:6px;
+  padding:calc(var(--sat) + 8px) 0 8px;
   background:#fff;border-bottom:1px solid #f1f4f9;
 }
+.srch-back{
+  width:34px;height:34px;border-radius:50%;border:none;background:#f4f6fb;
+  display:none;align-items:center;justify-content:center;cursor:pointer;
+  color:var(--mid);flex-shrink:0;margin-left:10px;
+}
+.srch-back:active{background:#e0e4ea}
+.srch-cancel{
+  border:none;background:none;font-family:inherit;
+  font-size:var(--fs-base);font-weight:600;color:var(--blue);cursor:pointer;
+  white-space:nowrap;flex-shrink:0;padding:0 12px 0 2px;
+}
 .srch-input-wrap{
-  flex:1;display:flex;align-items:center;gap:8px;
-  background:#f4f6fb;border-radius:var(--r-sm);padding:0 12px;height:40px;
+  flex:1;display:flex;align-items:center;gap:6px;
+  background:#f4f6fb;border-radius:var(--r-sm);padding:0 10px;height:38px;
 }
 .srch-input{
   border:none;background:transparent;outline:none;flex:1;
-  font-size:var(--fs-md);font-family:inherit;color:var(--text);
+  font-size:var(--fs-sm);font-family:inherit;color:var(--text);
 }
 .srch-input::placeholder{color:#b8c2d0}
-.srch-cancel{
-  border:none;background:none;font-family:inherit;
-  font-size:var(--fs-md);font-weight:600;color:var(--blue);cursor:pointer;
-  white-space:nowrap;
+.srch-clear{
+  width:16px;height:16px;border-radius:50%;border:none;background:#c8ced8;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  flex-shrink:0;padding:0;color:#fff;transition:background .15s;opacity:.7;
 }
-.srch-body{flex:1;overflow-y:auto;padding:20px 16px}
+.srch-clear:active{background:#a8b0be}
+.srch-clear svg{width:10px;height:10px}
+.srch-body{flex:1;overflow-y:auto;padding:0}
 .srch-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:60px}
 .srch-empty p{font-size:var(--fs-md);color:var(--muted)}
-.srch-results{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mk-scroll{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(78px + var(--sab))}
+.srch-results{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 12px}.srch-history{padding:0}.srch-history .srch-hist-hdr{font-size:var(--fs-xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:16px 12px 6px}.srch-history .srch-hist-item{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;border-radius:0;transition:background .15s}.srch-history .srch-hist-item:hover{background:#f5f7fb}.srch-history .srch-hist-item:active{background:#eef2f6}.srch-history .srch-hist-item svg:first-child{width:16px;height:16px;flex-shrink:0;color:var(--muted)}.srch-history .srch-hist-item .srch-hist-name{flex:1;font-size:var(--fs-sm);color:var(--text);font-weight:500}.srch-history .srch-hist-item .srch-hist-del{width:22px;height:22px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#c8ced8;padding:0;border-radius:50%}.srch-history .srch-hist-item .srch-hist-del:hover{color:#ef4444;background:#fee2e2}.srch-history .srch-hist-item .srch-hist-del svg{width:12px;height:12px}.srch-suggestions{background:#fff;border-bottom:1px solid #eef2f6;max-height:200px;overflow-y:auto;display:none;padding:4px 0;z-index:2;flex-shrink:0}.srch-suggestions .srch-sug-item{padding:10px 12px;font-size:var(--fs-sm);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .15s}.srch-suggestions .srch-sug-item:hover{background:#f5f7fb}.srch-suggestions .srch-sug-item:active{background:#eef2f6}.srch-suggestions .srch-sug-item svg{width:16px;height:16px;flex-shrink:0;color:var(--muted)}.mk-scroll{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(78px + var(--sab))}
+.srch-input{
+  border:none;background:transparent;outline:none;flex:1;
+  font-size:var(--fs-sm);font-family:inherit;color:var(--text);
+}
+.srch-input::placeholder{color:#b8c2d0}
+.srch-clear{
+  width:16px;height:16px;border-radius:50%;border:none;background:#c8ced8;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  flex-shrink:0;padding:0;color:#fff;transition:background .15s;opacity:.7;
+}
+.srch-clear:active{background:#a8b0be}
+.srch-clear svg{width:10px;height:10px}
+.srch-body{flex:1;overflow-y:auto;padding:0}
+.srch-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:60px}
+.srch-empty p{font-size:var(--fs-md);color:var(--muted)}
+.srch-results{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 12px}.srch-history{padding:0}.srch-history .srch-hist-hdr{font-size:var(--fs-xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:16px 12px 6px}.srch-history .srch-hist-item{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;border-radius:0;transition:background .15s}.srch-history .srch-hist-item:hover{background:#f5f7fb}.srch-history .srch-hist-item:active{background:#eef2f6}.srch-history .srch-hist-item svg:first-child{width:16px;height:16px;flex-shrink:0;color:var(--muted)}.srch-history .srch-hist-item .srch-hist-name{flex:1;font-size:var(--fs-sm);color:var(--text);font-weight:500}.srch-history .srch-hist-item .srch-hist-del{width:22px;height:22px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#c8ced8;padding:0;border-radius:50%}.srch-history .srch-hist-item .srch-hist-del:hover{color:#ef4444;background:#fee2e2}.srch-history .srch-hist-item .srch-hist-del svg{width:12px;height:12px}.srch-suggestions{background:#fff;border-bottom:1px solid #eef2f6;max-height:200px;overflow-y:auto;display:none;padding:4px 0;z-index:2;flex-shrink:0}.srch-suggestions .srch-sug-item{padding:10px 12px;font-size:var(--fs-sm);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .15s}.srch-suggestions .srch-sug-item:hover{background:#f5f7fb}.srch-suggestions .srch-sug-item:active{background:#eef2f6}.srch-suggestions .srch-sug-item svg{width:16px;height:16px;flex-shrink:0;color:var(--muted)}.mk-scroll{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(78px + var(--sab))}
 
 /* Promo banner */
 .mk-promo{
@@ -313,50 +344,63 @@ body{
 .mk-section-hdr h4{font-size:var(--fs-md);font-weight:700;color:var(--text);letter-spacing:-.01em}
 .mk-section-hdr a{font-size:var(--fs-base);font-weight:600;color:var(--blue);text-decoration:none}
 
-/* ── Niche Detail Screen ── */
-.nch-hdr{
-  display:flex;align-items:center;justify-content:space-between;width:100%;
-  padding:18px 16px 12px;position:sticky;top:0;z-index:10;
-  background:rgba(246,248,253,.92);
-  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
-}
-.nch-back{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:7px 14px;border-radius:var(--r-pill);
-  background:var(--blue);color:#fff;cursor:pointer;
-  font-size:var(--fs-sm);font-weight:600;font-family:inherit;
-  flex-shrink:0;transition:transform .15s;
-  letter-spacing:-.01em;
-}
-.nch-back:active{transform:scale(.92)}
-.nch-back svg{width:16px;height:16px;flex-shrink:0;stroke-width:2.5}
-.nch-title{
-  font-size:var(--fs-lg);font-weight:800;color:var(--text);flex:1;
-  opacity:0;transition:opacity .22s ease;
-}
-.nch-title.show{opacity:1}
-.nch-cart{
-  width:34px;height:34px;border-radius:50%;background:#f4f6fb;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  color:var(--mid);flex-shrink:0;transition:transform .15s;position:relative;
-}
-.nch-cart:active{transform:scale(.92)}
-.nch-cart-badge{
-  position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;
-  border-radius:9px;background:#ff3b5c;color:#fff;
-  font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;
-  padding:0 4px;pointer-events:none;transform:scale(0);transition:transform .25s cubic-bezier(.34,1.56,.64,1);
-}
-.nch-cart-badge.show{transform:scale(1)}
-.nch-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 calc(24px + 64px)}
-.nch-cover{width:100%;height:200px;flex-shrink:0}
-.nch-info{padding:18px 16px 12px}
-.nch-name{font-size:var(--fs-2xl);font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:8px}
-.nch-desc{font-size:var(--fs-base);color:var(--mid);line-height:1.55;margin-bottom:12px}
-.nch-website{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-base);font-weight:600;color:var(--blue);text-decoration:none;padding:6px 14px;background:rgba(26,86,240,.08);border-radius:var(--r-pill);margin-bottom:4px;cursor:pointer}
-.nch-website svg{width:14px;height:14px;flex-shrink:0}
-.nch-section-title{font-size:var(--fs-md);font-weight:700;color:var(--text);letter-spacing:-.01em;padding:8px 16px 4px}
-.nch-products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 8px;margin-top:4px}
+/* ── Niche Detail Screen (redesigned) ── */
+#s11{background:#fff;overflow:hidden;display:flex;flex-direction:column}
+.nd-cover-wrap{position:relative;width:100%;height:220px;flex-shrink:0}
+.nd-cover{width:100%;height:100%}
+.nd-cover-overlay{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;pointer-events:none;background:transparent;transition:background .3s ease,-webkit-backdrop-filter .3s ease,backdrop-filter .3s ease}
+.nd-cover-overlay.show{background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.nd-cover-overlay>*{pointer-events:auto}
+.nd-back,.nd-share,.nd-more{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:#1a1f2b;cursor:pointer;transition:transform .15s,background .15s;flex-shrink:0}
+.nd-back:active,.nd-share:active,.nd-more:active{transform:scale(.9);background:rgba(255,255,255,.8)}
+.nd-back svg{width:18px;height:18px;stroke-width:2.5}
+.nd-cover-actions{display:flex;align-items:center;gap:8px}
+.nd-header-title{font-size:16px;font-weight:700;color:var(--text);flex:1;text-align:center;opacity:0;transition:opacity .25s ease;pointer-events:none}
+.nd-body{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(100px + var(--sab))}
+.nd-info-card{position:relative;background:#fff;border-radius:var(--r-xl) var(--r-xl) 0 0;margin-top:-20px;padding:54px 20px 16px;z-index:2}
+.nd-icon-wrap{position:absolute;top:-34px;left:20px;width:72px;height:72px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.15);border:3px solid #fff;overflow:hidden;flex-shrink:0}
+.nd-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);font-size:28px;font-weight:800;letter-spacing:-.03em}
+.nd-name-wrap{display:flex;align-items:center;gap:5px;padding-top:0;margin-bottom:4px}
+.nd-name{font-size:var(--fs-2xl);font-weight:800;color:var(--text);letter-spacing:-.035em;margin:0}
+.nd-verified{flex-shrink:0}
+.nd-desc{font-size:var(--fs-base);color:var(--mid);line-height:1.55;margin:0 0 10px}
+.nd-website-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.nd-website{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-sm);font-weight:600;color:#1a56f0;text-decoration:none;padding:6px 14px;background:rgba(26,86,240,.08);border-radius:var(--r-pill);cursor:pointer;transition:background .15s}
+.nd-website:active{background:rgba(26,86,240,.15)}
+.nd-website svg{width:13px;height:13px;flex-shrink:0}
+.nd-follow{padding:6px 20px;border-radius:var(--r-pill);border:1.5px solid #1a56f0;background:#fff;color:#1a56f0;font-size:var(--fs-sm);font-weight:700;cursor:pointer;transition:background .15s,color .15s}
+.nd-follow:active{background:rgba(26,86,240,.08)}
+.nd-stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;background:#f8fafd;border-radius:var(--r-lg);margin:0 20px 14px;padding:14px 8px}
+.nd-stat{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center}
+.nd-stat-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:2px}
+.nd-stat-value{font-size:var(--fs-md);font-weight:800;color:var(--text);line-height:1}
+.nd-stat-label{font-size:var(--fs-xs);color:var(--muted);font-weight:500}
+.nd-tab-wrap{width:100%;padding:0 20px 8px;flex-shrink:0}
+.nd-tab-seg{position:relative;display:flex;align-items:center;background:#F2F4F7;border-radius:50px;padding:3px;height:36px}
+.nd-tab-pill{position:absolute;top:3px;bottom:3px;left:3px;border-radius:50px;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,0.08);transition:left .3s cubic-bezier(.34,1.56,.64,1),width .3s cubic-bezier(.34,1.56,.64,1);z-index:0}
+.nd-tab-btn{position:relative;z-index:1;flex:1;height:100%;border:none;background:none;cursor:pointer;font-family:inherit;font-size:var(--fs-xs);font-weight:600;color:#9CA3AF;transition:color .25s;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;padding:0 4px}
+.nd-tab-btn.active{color:#1a56f0}
+.nd-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:4px 20px 8px}
+.nd-section-title{font-size:var(--fs-md);font-weight:700;color:var(--text);letter-spacing:-.01em}
+.nd-sort{display:flex;align-items:center;gap:4px;font-size:var(--fs-sm);font-weight:600;color:#1a56f0;cursor:pointer;padding:4px 8px;border-radius:var(--r-pill);transition:background .15s}
+.nd-sort:active{background:rgba(26,86,240,.08)}
+.nd-products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 8px}
+.nd-prod{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow-subtle);overflow:hidden;cursor:pointer;transition:transform .15s}
+.nd-prod:active{transform:scale(.97)}
+.nd-prod-img{position:relative;width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4)}
+.nd-prod-img svg{width:32px;height:32px}
+
+.nd-prod-info{padding:10px 11px 12px;position:relative}
+.nd-prod-name{font-size:var(--fs-base);font-weight:600;color:var(--text);line-height:1.3;margin-bottom:3px;padding-right:30px}
+.nd-prod-rating{display:flex;align-items:center;gap:3px;font-size:var(--fs-xs);font-weight:600;color:var(--mid);margin-bottom:6px}
+.nd-prod-rating svg{width:10px;height:10px;fill:#f59e0b;flex-shrink:0}
+.nd-prod-price{font-size:var(--fs-base);font-weight:800;color:var(--text);letter-spacing:-.01em}
+.nd-prod-cart{position:absolute;bottom:10px;right:11px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;color:#1a56f0;cursor:pointer;transition:transform .15s,background .15s;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.nd-prod-cart:active{transform:scale(.85);background:rgba(255,255,255,.85)}
+.nd-prod-cart svg{width:18px;height:18px;stroke-width:2;transition:stroke .3s ease,transform .3s cubic-bezier(.34,1.56,.64,1)}
+.nd-prod-cart.pulse{background:rgba(255,255,255,.8)}
+.nd-prod-cart.pulse svg{stroke:#22c55e;transform:scale(1.15)}
+
 
 /* ── Shopping Bag Sheet ── */
 .bag-scrim{
@@ -461,14 +505,15 @@ body{
 .prod-niche-btn svg{width:13px;height:13px;flex-shrink:0}
 
 /* ════ S14 — BROWSE NICHES ════ */
-#s14{background:#f7f9fc;justify-content:flex-start}
-.brw-top{width:100%;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 12px;background:#fff;border-bottom:1px solid #f1f4f9;flex-shrink:0}
+#s14{background:#fff;justify-content:flex-start}
+.brw-top{width:100%;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 12px;background:#fff;flex-shrink:0}
 .brw-back{width:34px;height:34px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);flex-shrink:0;transition:transform .15s}
 .brw-back:active{transform:scale(.88);background:#e9edf5}
 .brw-title{flex:1;text-align:center;font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.01em}
 .brw-cats{width:100%;padding:10px 16px 6px;display:flex;gap:10px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .brw-cats::-webkit-scrollbar{display:none}
-.brw-cat{flex-shrink:0;display:flex;align-items:center;gap:6px;border:none;border-radius:var(--r-pill);padding:8px 16px;font-size:var(--fs-base);font-weight:600;font-family:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.brw-cat{flex-shrink:0;display:flex;align-items:center;gap:6px;border:none;border-radius:var(--r-pill);padding:8px 16px;font-size:var(--fs-base);font-weight:600;font-family:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s;background:#f0f3f9;color:#9ca3af}
+.brw-cat.active{background:#dbeafe!important;color:#2563eb!important;box-shadow:0 2px 8px rgba(37,99,235,.15)!important}
 
 .brw-cat:active{transform:scale(.93)}
 .brw-cat svg{width:15px;height:15px;flex-shrink:0}
@@ -500,13 +545,17 @@ body{
 .brw-card-arrow{color:#c5cedb;flex-shrink:0}
 
 /* ════ S15 — ORDER DETAIL with Orders/Messages tabs ════ */
-#s15{background:#f7f9fc;justify-content:flex-start}
-.odr-hdr{width:100%;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 12px;background:#fff;border-bottom:1px solid #f1f4f9;flex-shrink:0}
+#s15{background:#fff;justify-content:flex-start}
+.odr-hdr{width:100%;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 12px;background:#fff;flex-shrink:0}
 .odr-back{width:34px;height:34px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);flex-shrink:0;transition:transform .15s}
 .odr-back:active{transform:scale(.88);background:#e9edf5}
 .odr-title{flex:1;text-align:center;font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.01em}
-.odr-tab-wrap{width:100%;background:#fff;padding:4px 16px 10px;flex-shrink:0}
-.odr-tab-seg{position:relative;display:flex;align-items:center;background:#f0f3f9;border-radius:var(--r-sm);padding:3px;height:36px;gap:2px}
+.odr-tab-wrap{width:100%;background:#fff;padding:4px 16px 6px;flex-shrink:0}
+.odr-search-wrap{display:flex;align-items:center;gap:6px;background:#f4f6fb;border-radius:var(--r-sm);padding:0 10px;height:36px;margin:0 16px 8px;flex-shrink:0}
+.odr-search-icon{flex-shrink:0;color:var(--muted)}
+.odr-search{border:none;background:transparent;outline:none;flex:1;font-size:var(--fs-sm);font-family:inherit;color:var(--text)}
+.odr-search::placeholder{color:#b8c2d0}
+.odr-tab-seg{position:relative;display:flex;align-items:center;background:#fff;border-radius:var(--r-sm);padding:3px;height:36px;gap:2px;box-shadow:var(--shadow-subtle)}
 .odr-tab-pill{position:absolute;top:3px;bottom:3px;left:3px;border-radius:var(--r-sm);background:#fff;box-shadow:var(--shadow-subtle);transition:left .35s cubic-bezier(.34,1.56,.64,1),width .35s cubic-bezier(.34,1.56,.64,1);z-index:0}
 .odr-tab-btn{position:relative;z-index:1;flex:1;height:100%;border:none;background:none;cursor:pointer;font-family:inherit;font-size:var(--fs-sm);font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:5px;transition:color .25s;padding:0 4px}
 .odr-tab-btn.active{color:var(--text);font-weight:700}
@@ -527,22 +576,13 @@ body{
 .odr-table .odr-tbl-status.done{background:#d1fae5;color:#059669}
 .odr-table .odr-tbl-status.pending{background:#fef3c7;color:#d97706}
 .odr-table .odr-tbl-status.active{background:#dbeafe;color:#2563eb}
-.odr-ord-card{background:#fff;border-radius:var(--r-lg);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-subtle)}
-.odr-ord-card h3{font-size:var(--fs-md);font-weight:700;color:var(--text);margin-bottom:10px}
+.odr-ord-card{background:#fff;border-radius:var(--r-lg);padding:12px 4px;margin-bottom:12px;box-shadow:var(--shadow-subtle)}
 .odr-ord-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f4f6fb}
 .odr-ord-row:last-child{border-bottom:none}
 .odr-ord-label{font-size:var(--fs-base);color:var(--mid)}
 .odr-ord-value{font-size:var(--fs-base);font-weight:600;color:var(--text)}
 .odr-ord-value.green{color:#178a51}
 .odr-ord-value.blue{color:#1a56f0}
-.odr-ord-items{margin-bottom:12px}
-.odr-ord-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f4f6fb}
-.odr-ord-item:last-child{border-bottom:none}
-.odr-ord-item-thumb{width:36px;height:36px;border-radius:var(--r-sm);flex-shrink:0}
-.odr-ord-item-info{flex:1;min-width:0}
-.odr-ord-item-name{font-size:var(--fs-sm);font-weight:600;color:var(--text)}
-.odr-ord-item-qty{font-size:var(--fs-sm);color:var(--muted);margin-top:2px}
-.odr-ord-item-price{font-size:var(--fs-sm);font-weight:700;color:var(--text);flex-shrink:0}
 .odr-track{display:flex;flex-direction:column;gap:14px;padding-top:4px}
 .odr-track-step{display:flex;gap:12px;position:relative}
 .odr-track-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;background:#dde3ed}
@@ -706,10 +746,12 @@ body{
 /* ════ S8 cart icon ════ */
 .ord-cart{position:relative;display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--mid);transition:transform .15s;flex-shrink:0}
 .ord-cart:active{transform:scale(.88)}
-.ord-cart-label{font-size:var(--fs-sm);font-weight:600;color:var(--muted);white-space:nowrap}
+.ord-cart-label{font-size:var(--fs-sm);font-weight:600;color:var(--blue);white-space:nowrap}
 .ord-cart svg{width:22px;height:22px;flex-shrink:0}
 .ord-cart-badge{position:absolute;top:-6px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:#ef4444;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;transform:scale(0);transition:transform .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 6px rgba(239,68,68,.4)}
 .ord-cart-badge.show{transform:scale(1)}
+.ord-bell{width:34px;height:34px;border-radius:50%;border:none;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);flex-shrink:0;transition:background .15s,transform .15s}
+.ord-bell:active{background:#e9edf5;transform:scale(.88)}
 
 /* ════ S22 — CART (My Purchases / My Messages & Questions) ════ */
 #s22{background:#f7f9fc;justify-content:flex-start}
@@ -769,15 +811,7 @@ body{
   display:flex;align-items:center;justify-content:center;
   -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
 }
-.pcard-fav{
-  position:absolute;top:8px;right:8px;z-index:3;
-  width:28px;height:28px;border-radius:50%;
-  background:rgba(255,255,255,.92);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:#d1d8e2;
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
-}
-.pcard-fav.on{color:#ff3b5c}
+
 .pcard-add{
   position:absolute;bottom:8px;right:8px;z-index:3;
   width:30px;height:30px;border-radius:50%;
@@ -853,7 +887,7 @@ body{
    sliding glass pill, same motion language as the
    bottom tab bar's liquid glow.
 ════════════════════════════════════ */
-#s8{background:#f7f9fc;justify-content:flex-start}
+#s8{background:#fff;justify-content:flex-start}
 .ord-hdr{
   width:100%;flex-shrink:0;background:#fff;
   padding:calc(var(--sat) + 18px) 20px 4px;
@@ -868,31 +902,26 @@ body{
 .ord-seg-wrap{width:100%;background:#fff;padding:12px 20px 14px;flex-shrink:0;border-bottom:1px solid #f1f4f9}
 .ord-seg{
   position:relative;display:flex;align-items:center;
-  background:#f0f3f9;border-radius:var(--r-sm);padding:3px;height:38px;
+  background:#F2F4F7;border-radius:50px;padding:3px;height:38px;
 }
 .ord-seg-pill{
   position:absolute;top:3px;bottom:3px;left:3px;
-  border-radius:var(--r-sm);
-  background:rgba(255,255,255,.55);
-  -webkit-backdrop-filter:blur(10px) saturate(1.6);
-  backdrop-filter:blur(10px) saturate(1.6);
-  box-shadow:
-    0 3px 10px rgba(15,30,60,.12),
-    0 1px 1px rgba(255,255,255,.7) inset;
+  border-radius:50px;
+  background:#fff;
+  box-shadow:0 1px 6px rgba(0,0,0,0.08);
   transition:left .38s cubic-bezier(.34,1.56,.64,1),
-             width .38s cubic-bezier(.34,1.56,.64,1),
-             transform .38s cubic-bezier(.34,1.56,.64,1);
+             width .38s cubic-bezier(.34,1.56,.64,1);
   z-index:0;
 }
 .ord-seg-pill.morph{transform:scaleY(1.1)}
 .ord-seg-btn{
   position:relative;z-index:1;flex:1;height:100%;
   border:none;background:none;cursor:pointer;font-family:inherit;
-  font-size:var(--fs-base);font-weight:600;color:var(--muted);
+  font-size:var(--fs-base);font-weight:600;color:#9CA3AF;
   transition:color .25s;display:inline-flex;align-items:center;justify-content:center;gap:5px;
 }
 .ord-seg-btn svg{flex-shrink:0}
-.ord-seg-btn.active{color:var(--blue)}
+.ord-seg-btn.active{color:#2563EB}
 
 .ord-body{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 20px calc(100px + var(--sab))}
 .ord-empty{
@@ -970,21 +999,41 @@ body{
   box-shadow:var(--shadow-elevated);
   max-height:82vh;display:flex;flex-direction:column;
 }
-.prod-sheet-inner{overflow-y:auto;padding:14px 22px 0;flex:1}
+.prod-sheet.full{position:absolute;inset:0;border-radius:var(--r-xl) var(--r-xl) 0 0;max-height:none}
+.prod-sheet:not(.full) .sheet-grab{display:block;position:absolute;top:6px;left:50%;transform:translateX(-50%);z-index:6}
+.prod-sheet.full .sheet-grab{display:none}
+.prod-hdr{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;flex-shrink:0;background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-radius:var(--r-xl) var(--r-xl) 0 0}
+.prod-sheet.full .prod-hdr{padding:calc(var(--sat) + 10px) 14px 10px}
+.prod-sheet:not(.full) .prod-hdr-title{display:none}
+.prod-hdr-title{font-size:var(--fs-base);font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;text-align:center;margin:0 8px;opacity:0;transition:opacity .25s ease;pointer-events:none}
+.prod-sheet-inner{overflow-y:auto;padding:60px 22px 0;flex:1}
 .prod-sheet.show{transform:translateY(0)}
 .prod-close{
-  position:absolute;top:10px;right:14px;width:32px;height:32px;
-  border-radius:50%;background:#f4f6fb;
+  width:36px;height:36px;
+  border-radius:50%;background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--mid);z-index:10;
+  cursor:pointer;color:#1a1f2b;flex-shrink:0;transition:transform .15s,background .15s;
 }
+.prod-close:active{transform:scale(.9);background:rgba(255,255,255,.8)}
 .prod-nav-back{
-  position:absolute;top:10px;left:14px;width:32px;height:32px;
-  border-radius:50%;background:#f4f6fb;
+  width:36px;height:36px;
+  border-radius:50%;background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   display:none;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--mid);z-index:10;
+  cursor:pointer;color:#1a1f2b;flex-shrink:0;transition:transform .15s,background .15s;
 }
+.prod-nav-back:active{transform:scale(.9);background:rgba(255,255,255,.8)}
 .prod-nav-back.show{display:flex}
+.prod-more{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1a1f2b;flex-shrink:0;transition:transform .15s,background .15s}
+.prod-more:active{transform:scale(.9);background:rgba(255,255,255,.8)}
+.prod-glass-popup{position:absolute;top:calc(100% + 6px);left:0;z-index:20;min-width:200px;background:rgba(255,255,255,.7);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);border-radius:var(--r-lg);box-shadow:0 8px 40px rgba(0,0,0,.12),0 0 0 1px rgba(255,255,255,.9) inset;padding:4px;opacity:0;transform:scale(.92) translateY(-4px);pointer-events:none;transition:opacity .2s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
+.prod-glass-popup.show{opacity:1;transform:scale(1) translateY(0);pointer-events:auto}
+.prod-glass-item{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:none;border-radius:var(--r-sm);font-family:inherit;font-size:var(--fs-sm);font-weight:600;color:var(--text);cursor:pointer;transition:background .15s;text-align:left}
+.prod-glass-item:hover{background:rgba(0,0,0,.05)}
+.prod-glass-item:active{background:rgba(0,0,0,.08)}
+.prod-glass-item svg{flex-shrink:0;color:var(--muted)}
+.prod-glass-danger{color:#ef4444}
+.prod-glass-danger svg{color:#ef4444}
+.prod-glass-divider{height:1px;background:rgba(0,0,0,.06);margin:4px 8px}
 .prod-img{
   width:100%;aspect-ratio:1/0.7;border-radius:var(--r-lg);overflow:hidden;
   display:flex;align-items:center;justify-content:center;
@@ -1169,25 +1218,16 @@ body{
 .lock-cta{width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px}
 .lock-price{font-size:var(--fs-sm);color:var(--muted);margin-top:2px}
 /* ════ S9 — MY NICHES ════ */
-#s9{background:#f7f9fc;justify-content:flex-start}
-.nch-mg-hdr{width:100%;flex-shrink:0;background:#fff;padding:calc(var(--sat) + 18px) 20px 8px;display:flex;flex-direction:column;border-bottom:1px solid #f1f4f9}
+#s9{background:#fff;justify-content:flex-start}
+.nch-mg-hdr{width:100%;flex-shrink:0;background:#fff;padding:calc(var(--sat) + 18px) 20px 8px;display:flex;flex-direction:column}
 .nch-mg-hdr-left{flex:1;text-align:left}
 .nch-mg-title{font-size:var(--fs-2xl);font-weight:800;color:var(--text);letter-spacing:-.035em}
-.nch-mg-filters{width:100%;flex-shrink:0;display:flex;gap:6px;padding:10px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.nch-mg-filters::-webkit-scrollbar{display:none}
-.nch-mg-filter{border:none;border-radius:var(--r-sm);padding:6px 13px;font-size:var(--fs-sm);font-weight:600;font-family:inherit;cursor:pointer;flex-shrink:0;display:flex;align-items:center;gap:5px;box-shadow:var(--shadow-subtle);transition:background .2s,color .2s,box-shadow .2s,transform .15s}
-.nch-mg-filter.active{background:#dbeafe!important;color:#2563eb!important;box-shadow:0 2px 8px rgba(37,99,235,.15)!important}
-.nch-mg-filter:active{transform:scale(.92)}
-.nch-mg-filter-reddot{width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0;box-shadow:0 0 0 2px #fff;margin-right:4px}
-.nch-mg-filter-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.nch-mg-filter-count{font-weight:700}
-.nch-mg-stats{width:100%;flex-shrink:0;padding:10px 20px;background:#f7f9fc}
-.nch-mg-stats-card{background:#fff;border-radius:var(--r-lg);padding:12px 8px;box-shadow:var(--shadow-subtle);display:flex;align-items:center;justify-content:space-between;gap:2px}
-.nch-mg-stat{flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
-.nch-mg-stat-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.nch-mg-stat-icon svg{width:16px;height:16px}
-.nch-mg-stat-val{font-size:var(--fs-lg);font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1}
-.nch-mg-stat-lbl{font-size:10px;font-weight:600;color:var(--muted)}
+.nch-mg-filters{width:auto;flex-shrink:0;margin:4px 20px;padding:3px;position:relative;display:flex;align-items:center;background:#F2F4F7;border-radius:50px;height:38px;gap:2px}
+.nch-mg-filters-pill{position:absolute;top:3px;bottom:3px;left:3px;border-radius:50px;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,0.08);transition:left .38s cubic-bezier(.34,1.56,.64,1),width .38s cubic-bezier(.34,1.56,.64,1);z-index:0}
+.nch-mg-filter{border:none;position:relative;z-index:1;flex:1;height:100%;background:none;border-radius:0;cursor:pointer;font-family:inherit;font-size:var(--fs-base);font-weight:600;color:#9CA3AF;display:inline-flex;align-items:center;justify-content:center;gap:4px;transition:color .25s;padding:0 4px;white-space:nowrap}
+.nch-mg-filter.active{color:#2563EB;font-weight:700}
+.nch-mg-filter svg{display:none}
+.nch-mg-filter.active svg{display:inline;flex-shrink:0}
 .nch-mg-body{width:100%;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 20px calc(100px + var(--sab))}
 .nch-mg-card{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow-subtle);margin-bottom:10px}
 .nch-mg-card-top{display:flex;align-items:center;gap:12px;padding:12px 14px}
@@ -1233,36 +1273,22 @@ body{
    listing nearby stores by category.
 ════════════════════════════════════ */
 #s13{background:#fff;justify-content:flex-start}
-.sm-topbar{width:100%;flex-shrink:0;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 12px;background:#fff;position:relative;z-index:5;box-sizing:border-box}
-.sm-title{flex:1;text-align:center;font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.01em}
-.sm-top-icons{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .sm-body{position:relative;width:100%;flex:1;min-height:0;overflow:hidden}
-.sm-map{position:absolute;inset:0;background:#e8edf4;overflow:hidden}
-.sm-map-frame{position:absolute;inset:0;width:100%;height:100%;border:none}
-.sm-user-wrap{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;z-index:3}
-.sm-user-pulse{
-  position:absolute;width:64px;height:64px;border-radius:50%;background:rgba(26,86,240,.18);
-  animation:smPulse 2.4s ease-out infinite;
-}
-.sm-user-dot{
-  position:relative;width:34px;height:34px;border-radius:50%;background:var(--blue);
-  border:3px solid #fff;box-shadow:0 3px 10px rgba(26,86,240,.5);
-  display:flex;align-items:center;justify-content:center;color:#fff;
-}
-@keyframes smPulse{0%{transform:scale(.35);opacity:.65}100%{transform:scale(1.7);opacity:0}}
+.sm-float-topbar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:calc(var(--sat) + 12px) 16px 0}
+.sm-float-btn{width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-shadow:var(--shadow-card);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;flex-shrink:0}
+.sm-float-btn:active{transform:scale(.92)}
+.sm-float-title{font-size:var(--fs-lg);font-weight:700;color:var(--text);text-shadow:0 1px 8px rgba(255,255,255,.8)}
 .sm-sheet{
-  position:absolute;left:0;right:0;bottom:0;height:60%;
-  background:#fff;border-radius:var(--r-xl) var(--r-xl) 0 0;
-  box-shadow:0 -10px 28px -8px rgba(15,30,60,.16);
-  display:flex;flex-direction:column;overflow:hidden;z-index:4;
+  position:absolute;inset:0;
+  background:#fff;
+  display:flex;flex-direction:column;overflow:hidden;
 }
-.sm-grabber{width:36px;height:4px;border-radius:2px;background:#e1e6ee;margin:10px auto 4px;flex-shrink:0}
-.sm-sheet-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:12px}
+.sm-sheet-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(var(--sat) + 60px) 0 12px}
 .sm-cats{display:flex;gap:8px;padding:12px 18px 10px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;transition:opacity .25s,transform .25s;box-sizing:border-box}
 .sm-cats::-webkit-scrollbar{display:none}
 .sm-cats.hide{opacity:0;transform:translateY(-8px);pointer-events:none}
-.sm-cat{border:none;border-radius:var(--r-sm);padding:6px 13px;font-size:var(--fs-sm);font-weight:600;font-family:inherit;cursor:pointer;flex-shrink:0;display:flex;align-items:center;gap:5px;transition:background .25s ease,color .25s ease,box-shadow .25s ease,transform .15s;box-shadow:var(--shadow-subtle);will-change:background-color}
-.sm-cat.active{background:var(--blue)!important;color:#fff!important;box-shadow:0 2px 8px rgba(26,86,240,.3)!important;transition:background .25s ease,color .25s ease,box-shadow .25s ease,transform .15s}
+.sm-cat{border:none;border-radius:var(--r-pill);padding:8px 14px;font-size:var(--fs-sm);font-weight:600;font-family:inherit;cursor:pointer;flex-shrink:0;display:flex;align-items:center;gap:6px;transition:background .25s ease,color .25s ease,box-shadow .25s ease,transform .15s;box-shadow:var(--shadow-subtle);background:#f0f3f9;color:#9ca3af}
+.sm-cat.active{background:#dbeafe!important;color:#2563eb!important;box-shadow:0 2px 8px rgba(37,99,235,.3)!important}
 .sm-cat:active{transform:scale(.92)}
 .sm-cat svg{width:13px;height:13px;flex-shrink:0}
 .sm-filters{display:flex;align-items:center;gap:8px;padding:6px 18px 12px;position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #f1f4f9;box-sizing:border-box}
@@ -1282,10 +1308,11 @@ body{
 .sm-list-sub{font-size:var(--fs-sm);color:var(--muted);margin-top:2px}
 .sm-see-all{font-size:var(--fs-base);font-weight:600;color:var(--blue);text-decoration:none;cursor:pointer;background:none;border:none;font-family:inherit}
 .sm-list{display:flex;flex-direction:column;gap:10px;padding:0 18px calc(96px + var(--sab));box-sizing:border-box}
-.sm-map.pulse{animation:smMapPulse .45s ease}
-@keyframes smMapPulse{0%{transform:scale(1)}50%{transform:scale(1.015)}100%{transform:scale(1)}}
 .scard-save{transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
 .scard-save.pulse{animation:saveBump .35s cubic-bezier(.34,1.56,.64,1)}
+.scard-actions{margin-top:8px;display:flex}
+.scard-details-btn{flex:1;height:34px;border:none;border-radius:var(--r-pill);background:linear-gradient(135deg,var(--blue-lt),var(--blue));color:#fff;font-size:var(--fs-sm);font-weight:700;cursor:pointer}
+.scard-details-btn:active{transform:scale(.97)}
 @keyframes saveBump{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
 @keyframes scardIn{to{opacity:1;transform:translateY(0)}}
 .scard{opacity:0;transform:translateY(8px);animation:scardIn .35s ease forwards;display:flex;gap:11px;background:#fff;border-radius:var(--r-lg);padding:8px;
@@ -1314,8 +1341,8 @@ body{
 .sa-title{flex:1;text-align:center;font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.01em}
 .sa-cats{width:100%;display:flex;gap:8px;padding:12px 18px 10px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;box-sizing:border-box}
 .sa-cats::-webkit-scrollbar{display:none}
-.sa-cat{border:none;border-radius:var(--r-sm);padding:6px 13px;font-size:var(--fs-sm);font-weight:600;font-family:inherit;cursor:pointer;flex-shrink:0;display:flex;align-items:center;gap:5px;transition:background .2s,color .2s,box-shadow .2s,transform .15s;box-shadow:var(--shadow-subtle)}
-.sa-cat.active{background:var(--blue)!important;color:#fff!important;box-shadow:0 2px 8px rgba(26,86,240,.3)!important}
+.sa-cat{border:none;border-radius:var(--r-sm);padding:6px 13px;font-size:var(--fs-sm);font-weight:600;font-family:inherit;cursor:pointer;flex-shrink:0;display:flex;align-items:center;gap:5px;transition:background .2s,color .2s,box-shadow .2s,transform .15s;box-shadow:var(--shadow-subtle);background:#f0f3f9;color:#9ca3af}
+.sa-cat.active{background:#dbeafe!important;color:#2563eb!important;box-shadow:0 2px 8px rgba(37,99,235,.15)!important}
 .sa-cat:active{transform:scale(.92)}
 .sa-cat svg{width:13px;height:13px;flex-shrink:0}
 .sa-filters{width:100%;display:flex;align-items:center;gap:8px;padding:6px 18px 12px;flex-shrink:0;border-bottom:1px solid #f1f4f9;box-sizing:border-box}
@@ -1525,6 +1552,19 @@ body{
 #s23 .set-toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.15);}
 #s23 .set-toggle input:checked + .set-toggle-slider{background:var(--blue);}
 #s23 .set-toggle input:checked + .set-toggle-slider::before{transform:translateX(20px);}
+
+/* ════ S26 — NOTIFICATIONS ════ */
+#s26{background:#fff;justify-content:flex-start}
+#s26 .ntf-hdr{width:100%;flex-shrink:0;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 12px;background:#fff}
+#s26 .ntf-back{width:34px;height:34px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);flex-shrink:0;border:none;transition:transform .15s}
+#s26 .ntf-back:active{transform:scale(.88);background:#e9edf5}
+#s26 .ntf-title{flex:1;text-align:center;font-size:var(--fs-lg);font-weight:700;color:var(--text);letter-spacing:-.01em}
+#s26 .ntf-body{width:100%;flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+#s26 .ntf-empty{text-align:center;max-width:260px}
+#s26 .ntf-empty-icon{width:80px;height:80px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#bac4d0}
+#s26 .ntf-empty h3{font-size:var(--fs-lg);font-weight:700;color:var(--text);margin:0 0 6px}
+#s26 .ntf-empty p{font-size:var(--fs-base);color:var(--muted);line-height:1.5;margin:0}
+
 </style>
 </head>
 <body>
@@ -1687,18 +1727,23 @@ body{
   <div class="ord-hdr">
     <div style="flex:1;display:flex;align-items:center;justify-content:space-between">
       <h1>Orders</h1>
-      <div class="ord-cart" id="ordCart">
-        <span class="ord-cart-label">My Purchases</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
-        <div class="ord-cart-badge" id="ordCartBadge">0</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="ord-cart" id="ordCart">
+          <span class="ord-cart-label">My Purchases</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+          <div class="ord-cart-badge" id="ordCartBadge">0</div>
+        </div>
+        <button class="ord-bell" id="ordBell">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        </button>
       </div>
     </div>
   </div>
   <div class="ord-seg-wrap">
     <div class="ord-seg" id="ordSeg">
       <div class="ord-seg-pill" id="ordPill"></div>
-      <button class="ord-seg-btn active" data-seg="products"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>Products</button>
-      <button class="ord-seg-btn" data-seg="niche"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Niche</button>
+      <button class="ord-seg-btn active" data-seg="products">Products<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg></button>
+      <button class="ord-seg-btn" data-seg="niche">Niche<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></button>
     </div>
   </div>
   <div class="ord-body" id="ordBody">
@@ -1709,26 +1754,85 @@ body{
 
 <!-- S11 — NICHE DETAIL -->
 <div class="screen offright" id="s11">
-  <div class="nch-hdr">
-    <div class="nch-back" id="nchBack">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      <span>Return</span>
+  <div class="nd-cover-overlay">
+    <div class="nd-back" id="ndBack">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     </div>
-    <div class="nch-title" id="nchTitle">Niche</div>
-    <div class="nch-cart" id="nchCart">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
-      <div class="nch-cart-badge" id="nchCartBadge">0</div>
+    <div class="nd-header-title" id="ndHeaderTitle"></div>
+    <div class="nd-cover-actions">
+      <div class="nd-share" id="ndShare">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </div>
+      <div class="nd-more" id="ndCartBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+      </div>
     </div>
   </div>
-  <div class="nch-body" id="nchBody">
-    <div class="nch-cover" id="nchCover"></div>
-    <div class="nch-info">
-      <h1 class="nch-name" id="nchName"></h1>
-      <p class="nch-desc" id="nchDesc"></p>
-      <div class="nch-website" id="nchWebsite"></div>
+  <div class="nd-body" id="ndBody">
+    <div class="nd-cover-wrap">
+      <div class="nd-cover" id="ndCover"></div>
     </div>
-    <div class="nch-section-title">Products</div>
-    <div class="nch-products" id="nchProducts"></div>
+    <div class="nd-info-card">
+      <div class="nd-icon-wrap">
+        <div class="nd-icon" id="ndIcon"></div>
+      </div>
+      <div class="nd-name-wrap">
+        <h1 class="nd-name" id="ndName"></h1>
+        <svg class="nd-verified" width="18" height="18" viewBox="0 0 24 24" fill="#1a56f0"><path d="M12 1l2.6 2.5 3.5-.6.6 3.5L21 9l-2.3 2.7L21 14l-2.3 1.6-.6 3.5-3.5-.6L12 21l-2.6-2.5-3.5.6-.6-3.5L3 14l2.3-2.3L3 9l2.3-1.6.6-3.5 3.5.6L12 1z"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="nd-desc" id="ndDesc"></p>
+      <div class="nd-website-wrap">
+        <div class="nd-website" id="ndWebsite"></div>
+        <div class="nd-follow">Follow</div>
+      </div>
+    </div>
+    <div class="nd-stats">
+      <div class="nd-stat">
+        <div class="nd-stat-icon" style="background:rgba(26,86,240,.12);color:#1a56f0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M12 22V12"/><path d="m3.3 7 8.7 5 8.7-5"/></svg>
+        </div>
+        <div class="nd-stat-value" id="ndStatProducts">0</div>
+        <div class="nd-stat-label">Products</div>
+      </div>
+      <div class="nd-stat">
+        <div class="nd-stat-icon" style="background:rgba(251,191,36,.15);color:#f59e0b">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6 6.6.9-4.8 4.6 1.1 6.5L12 16.9 6.2 20l1.1-6.5L2.5 8.9l6.6-.9z"/></svg>
+        </div>
+        <div class="nd-stat-value" id="ndStatRating">0</div>
+        <div class="nd-stat-label">Rating</div>
+      </div>
+      <div class="nd-stat">
+        <div class="nd-stat-icon" style="background:rgba(43,199,126,.15);color:#2bc77e">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
+        </div>
+        <div class="nd-stat-value" id="ndStatFollowers">0</div>
+        <div class="nd-stat-label">Followers</div>
+      </div>
+      <div class="nd-stat">
+        <div class="nd-stat-icon" style="background:rgba(236,72,153,.12);color:#ec4899">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="nd-stat-value" id="ndStatViews">0</div>
+        <div class="nd-stat-label">Views</div>
+      </div>
+    </div>
+    <div class="nd-tab-wrap">
+      <div class="nd-tab-seg" id="ndTabSeg">
+        <div class="nd-tab-pill" id="ndTabPill"></div>
+        <button class="nd-tab-btn active" data-ndtab="products">Products</button>
+        <button class="nd-tab-btn" data-ndtab="about">À propos</button>
+        <button class="nd-tab-btn" data-ndtab="reviews">Avis</button>
+        <button class="nd-tab-btn" data-ndtab="policies">Politiques</button>
+      </div>
+    </div>
+    <div class="nd-section-hdr">
+      <div class="nd-section-title">Products</div>
+      <div class="nd-sort">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
+        Trier
+      </div>
+    </div>
+    <div class="nd-products" id="ndProducts"></div>
   </div>
 </div>
 
@@ -1750,13 +1854,21 @@ body{
 <!-- S12 — SEARCH -->
 <div class="screen offright" id="s12">
   <div class="srch-top">
+    <button class="srch-back" id="srchBack" style="display:none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
     <div class="srch-input-wrap">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input class="srch-input" id="srchInput" type="text" placeholder="Search products...">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="srch-input" id="srchInput" type="text" placeholder="Search products..." autocomplete="off">
+      <button class="srch-clear" id="srchClear" style="display:none">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
     <button class="srch-cancel" id="srchCancel">Cancel</button>
   </div>
+  <div class="srch-suggestions" id="srchSuggestions"></div>
   <div class="srch-body" id="srchBody">
+    <div class="srch-history" id="srchHistory"></div>
     <div class="srch-empty">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d8e2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <p>Search across all products</p>
@@ -1767,54 +1879,10 @@ body{
 
 <!-- S13 — STORE MAP (Growth) -->
 <div class="screen offright" id="s13">
-  <div class="sm-topbar">
-    <div class="back-btn" id="smMenuBtn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </div>
-    <div class="sm-title">Store Map</div>
-    <div class="sm-top-icons">
-      <div class="back-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-    </div>
-  </div>
-  <div class="sm-body">
-    <div class="sm-map" id="smMap">
-      <iframe class="sm-map-frame" src="https://www.openstreetmap.org/export/embed.html?bbox=-8.7,18.9,12.0,37.2&amp;layer=mapnik&amp;marker=28.0,3.0" loading="lazy" referrerpolicy="no-referrer" style="filter:saturate(1.05) contrast(1.02)"></iframe>
-
-      <div class="sm-user-wrap" style="left:50%;top:24%">
-        <div class="sm-user-pulse"></div>
-        <div class="sm-user-dot"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="3"/><path d="M12 11c-3 0-6 1.5-6 4v3h12v-3c0-2.5-3-4-6-4z"/></svg></div>
-      </div>
-    </div>
-
-    <div class="sm-sheet">
-      <div class="sm-grabber"></div>
-      <div class="sm-sheet-scroll">
-      <div class="sm-cats" id="smCats">
-        <button class="sm-cat active" data-cat="All" style="background:var(--blue);color:#fff">All</button>
-        <button class="sm-cat" data-cat="Cafe" style="background:#fde9d2;color:#e0822f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Cafes</button>
-        <button class="sm-cat" data-cat="Restaurant" style="background:#fde0e0;color:#e5484d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>Restaurants</button>
-        <button class="sm-cat" data-cat="Shoes" style="background:#ece3fb;color:#8b5cf6"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 18c0-1 .5-2 1.5-2.3L9 14V9.5c0-.8.6-1.5 1.4-1.5h.3c.5 0 1 .2 1.3.6l2.4 2.7c.5.5 1.1.9 1.8 1l4 .7c1.2.2 2 1.2 2 2.4V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/></svg>Shoes</button>
-        <button class="sm-cat" data-cat="Barber" style="background:#dcf3ef;color:#1ba893"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>Barbers</button>
-        <button class="sm-cat" data-cat="Gym" style="background:#fde2e6;color:#ef4458"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="12" x2="18" y2="12"/><rect x="2" y="9" width="3" height="6" rx="1"/><rect x="19" y="9" width="3" height="6" rx="1"/><rect x="5" y="7" width="2" height="10" rx="1"/><rect x="17" y="7" width="2" height="10" rx="1"/></svg>Gyms</button>
-        <button class="sm-cat" data-cat="More" style="background:#eef0f4;color:#8a93a3"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>More</button>
-      </div>
-
-      <div class="sm-filters">
-        <button class="sm-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Algiers<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <button class="sm-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>Birkhadem<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <button class="sm-sort">Sort by<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-      </div>
-
-      <div class="sm-list-head">
-        <div><div class="sm-list-title">Nearby Stores</div><div class="sm-list-sub" id="smCount">23 stores found</div></div>
-        <button class="sm-see-all" id="smSeeAll">See all</button>
-      </div>
-
-      <div class="sm-list" id="smList">
-        <!-- injected by JS -->
-      </div>
-      </div>
-    </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:40px 20px;color:var(--mid)">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    <div style="font-size:var(--fs-xl);font-weight:700;color:var(--text)">Under Development</div>
+    <div style="font-size:var(--fs-sm);color:var(--muted);text-align:center">This feature is currently being built and will be available soon.</div>
   </div>
 </div>
 
@@ -1867,6 +1935,10 @@ body{
         Messages
       </button>
     </div>
+  </div>
+  <div class="odr-search-wrap">
+    <svg class="odr-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="odr-search" id="odrSearch" type="text" placeholder="Search orders..." autocomplete="off">
   </div>
   <div class="odr-body" id="odrBody"></div>
 </div>
@@ -1977,7 +2049,7 @@ body{
     <div class="cart-back" id="cartBack">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     </div>
-    <div class="cart-title">My Cart</div>
+    <div class="cart-title">My Purchases</div>
     <div style="width:34px"></div>
   </div>
   <div class="cart-tab-wrap">
@@ -2277,14 +2349,31 @@ body{
 <!-- PRODUCT DETAIL SHEET -->
 <div class="sheet-scrim" id="prodScrim"></div>
 <div class="prod-sheet" id="prodSheet">
-  <div class="sheet-grab"></div>
-  <div class="prod-close" id="prodClose" onclick="document.getElementById('prodScrim').classList.remove('show');document.getElementById('prodSheet').classList.remove('show')">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <div class="prod-hdr">
+    <div class="sheet-grab"></div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div class="prod-nav-back" id="prodNavBack">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <div style="position:relative">
+        <div class="prod-more" id="prodMore">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+        </div>
+        <div class="prod-glass-popup" id="prodGlassPopup">
+          <button class="prod-glass-item" data-action="save"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Save product</button>
+          <button class="prod-glass-item" data-action="like-type"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>I'm interested</button>
+          <button class="prod-glass-item" data-action="dislike-type"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>Not interested</button>
+          <div class="prod-glass-divider"></div>
+          <button class="prod-glass-item prod-glass-danger" data-action="report"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>Report product</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-hdr-title" id="prodHdrTitle">Product</div>
+    <div class="prod-close" id="prodClose">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
   </div>
-  <div class="prod-nav-back" id="prodNavBack">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-  </div>
-  <div class="prod-sheet-inner">
+  <div class="prod-sheet-inner" id="prodSheetInner">
     <div class="prod-img" id="prodDetailImg">
       <div class="prod-img-count" id="prodImgCount"></div>
     </div>
@@ -2356,13 +2445,13 @@ body{
     <div style="width:34px"></div>
   </div>
   <div class="sa-cats" id="saCats">
-    <button class="sa-cat active" data-cat="All" style="background:var(--blue);color:#fff">All</button>
-    <button class="sa-cat" data-cat="Cafe" style="background:#fde9d2;color:#e0822f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Cafes</button>
-    <button class="sa-cat" data-cat="Restaurant" style="background:#fde0e0;color:#e5484d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>Restaurants</button>
-    <button class="sa-cat" data-cat="Shoes" style="background:#ece3fb;color:#8b5cf6"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 18c0-1 .5-2 1.5-2.3L9 14V9.5c0-.8.6-1.5 1.4-1.5h.3c.5 0 1 .2 1.3.6l2.4 2.7c.5.5 1.1.9 1.8 1l4 .7c1.2.2 2 1.2 2 2.4V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/></svg>Shoes</button>
-    <button class="sa-cat" data-cat="Barber" style="background:#dcf3ef;color:#1ba893"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>Barbers</button>
-    <button class="sa-cat" data-cat="Gym" style="background:#fde2e6;color:#ef4458"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="12" x2="18" y2="12"/><rect x="2" y="9" width="3" height="6" rx="1"/><rect x="19" y="9" width="3" height="6" rx="1"/><rect x="5" y="7" width="2" height="10" rx="1"/><rect x="17" y="7" width="2" height="10" rx="1"/></svg>Gyms</button>
-    <button class="sa-cat" data-cat="More" style="background:#eef0f4;color:#8a93a3"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>More</button>
+    <button class="sa-cat active" data-cat="All">All</button>
+    <button class="sa-cat" data-cat="Cafe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Cafes</button>
+    <button class="sa-cat" data-cat="Restaurant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>Restaurants</button>
+    <button class="sa-cat" data-cat="Shoes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 18c0-1 .5-2 1.5-2.3L9 14V9.5c0-.8.6-1.5 1.4-1.5h.3c.5 0 1 .2 1.3.6l2.4 2.7c.5.5 1.1.9 1.8 1l4 .7c1.2.2 2 1.2 2 2.4V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/></svg>Shoes</button>
+    <button class="sa-cat" data-cat="Barber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>Barbers</button>
+    <button class="sa-cat" data-cat="Gym"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="12" x2="18" y2="12"/><rect x="2" y="9" width="3" height="6" rx="1"/><rect x="19" y="9" width="3" height="6" rx="1"/><rect x="5" y="7" width="2" height="10" rx="1"/><rect x="17" y="7" width="2" height="10" rx="1"/></svg>Gyms</button>
+    <button class="sa-cat" data-cat="More"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>More</button>
   </div>
   <div class="sa-filters">
     <button class="sm-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Algiers<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -2450,9 +2539,8 @@ body{
     <div class="nch-mg-hdr-left">
       <div class="nch-mg-title">My Niches</div>
     </div>
-    <div class="nch-mg-filters" id="nichesMgFilters"></div>
   </div>
-  <div class="nch-mg-stats" id="nichesMgStats"></div>
+  <div class="nch-mg-filters" id="nichesMgFilters"></div>
   <div class="nch-mg-body" id="nichesMgBody"></div>
 </div>
 <div class="screen modal offdown lock-screen" id="s10">
@@ -2639,6 +2727,24 @@ body{
         <div class="set-row-value">0</div>
         <svg class="set-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- S26 — NOTIFICATIONS -->
+<div class="screen offright" id="s26">
+  <div class="ntf-hdr">
+    <button class="ntf-back" id="ntfBack">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="ntf-title">Notifications</div>
+    <div style="width:34px"></div>
+  </div>
+  <div class="ntf-body" id="ntfBody">
+    <div class="ntf-empty">
+      <div class="ntf-empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+      <h3>No notifications yet</h3>
+      <p>You'll see notifications here when something happens.</p>
     </div>
   </div>
 </div>
@@ -3754,9 +3860,6 @@ function renderBrowse(filter){
   CATEGORIES.forEach(function(c, ci){
     var btn = document.createElement('button');
     btn.className = 'brw-cat' + ((!filter && ci===0) || filter===c.id ? ' active' : '');
-    var p = CAT_PASTEL[c.id] || ['#eef0f4','#6b7280'];
-    btn.style.background = p[0];
-    btn.style.color = p[1];
     btn.innerHTML = c.icon + c.name;
     btn.addEventListener('click', function(){ renderBrowse(c.id); });
     catsEl.appendChild(btn);
@@ -3798,52 +3901,65 @@ el('brwSearch').addEventListener('input', function(){
 });
 
 /* ── Niche detail: open & render ── */
-var nchBody = el('nchBody'), nchTitle = el('nchTitle'), nchInfo = el('nchInfo');
-nchBody.addEventListener('scroll', function(){
-  var threshold = nchInfo.offsetTop - 40;
-  nchTitle.classList.toggle('show', nchBody.scrollTop > threshold);
-});
-
 function openNiche(idx){
   var n = NICHES[idx];
-  el('nchCover').style.background = n.grad;
-  nchTitle.textContent = '';
-  el('nchName').textContent = n.name;
-  el('nchDesc').textContent = n.desc || '';
-  el('nchWebsite').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Visit our store';
-  el('nchWebsite').onclick = function(){ el('prodScrim').classList.remove('show');el('prodSheet').classList.remove('show'); go(CURRENT_SCREEN, 's13', 'l'); };
-  var container = el('nchProducts');
+  var cover = el('ndCover');
+  cover.style.background = n.grad;
+  el('ndIcon').style.background = n.grad;
+  el('ndIcon').textContent = n.name.charAt(0).toUpperCase();
+  el('ndHeaderTitle').textContent = n.name;
+  el('ndName').textContent = n.name;
+  el('ndDesc').textContent = n.desc || '';
+  el('ndWebsite').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a56f0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Visit our store';
+  el('ndWebsite').onclick = function(){ el('prodScrim').classList.remove('show');el('prodSheet').classList.remove('show'); go(CURRENT_SCREEN, 's13', 'l'); };
+  /* Stats */
+  var totalRating = 0, totalViews = 0;
+  n.products.forEach(function(p){
+    totalRating += parseFloat(p.rating) || 0;
+    totalViews += (typeof p.views === 'number' ? p.views : Math.floor(Math.random() * 300) + 50);
+  });
+  el('ndStatProducts').textContent = n.products.length;
+  el('ndStatRating').textContent = n.products.length ? (totalRating / n.products.length).toFixed(1) : '0';
+  el('ndStatFollowers').textContent = '1.2k';
+  el('ndStatViews').textContent = totalViews > 999 ? (totalViews / 1000).toFixed(1) + 'k' : totalViews;
+  /* Products grid */
+  var container = el('ndProducts');
   container.innerHTML = '';
   n.products.forEach(function(p){
     var c = document.createElement('div');
-    c.className = 'pcard';
-    c.style.cursor = 'pointer';
+    c.className = 'nd-prod';
     c.innerHTML =
-      '<div class="pcard-img" style="'+(p._img?'background:url('+p._img+') center/cover no-repeat':'background:'+p.grad)+'">' +
-        '<div class="pcard-add" data-name="'+p.name+'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg></div>' +
-        '<div class="pcard-icon"'+(p._img?' style="display:none"':'')+'><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>' +
-        '<div class="pcard-time">'+p.time+'</div>' +
+      '<div class="nd-prod-img" style="'+(p._img?'background:url('+p._img+') center/cover no-repeat':'background:'+p.grad)+'">' +
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>' +
       '</div>' +
-      '<div class="pcard-info">' +
-        '<div class="pcard-name">'+p.name+'</div>' +
-        '<div class="pcard-price">'+p.price+'</div>' +
-        '<div class="pcard-seller">' +
-          '<div class="seller-av"></div>' +
-          '<span class="seller-nm">'+p.seller+'</span>' +
-          '<svg class="seller-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.6 2.5 3.5-.6.6 3.5L21 9l-2.3 2.7L21 14l-2.3 1.6-.6 3.5-3.5-.6L12 21l-2.6-2.5-3.5.6-.6-3.5L3 14l2.3-2.3L3 9l2.3-1.6.6-3.5 3.5.6L12 1z"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-          '<div class="pcard-rating"><svg viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 2l2.9 6 6.6.9-4.8 4.6 1.1 6.5L12 16.9 6.2 20l1.1-6.5L2.5 8.9l6.6-.9z"/></svg><span>'+p.rating+' ('+p.reviews+')</span></div>' +
-        '</div>' +
+      '<div class="nd-prod-info">' +
+        '<div class="nd-prod-name">'+p.name+'</div>' +
+        '<div class="nd-prod-rating"><svg viewBox="0 0 24 24" fill="#f59e0b"><path d="M12 2l2.9 6 6.6.9-4.8 4.6 1.1 6.5L12 16.9 6.2 20l1.1-6.5L2.5 8.9l6.6-.9z"/></svg>'+p.rating+' ('+p.reviews+')</div>' +
+        '<div class="nd-prod-price">'+p.price+'</div>' +
+        '<div class="nd-prod-cart" data-name="'+p.name+'"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-diff-icon lucide-diff"><path d="M12 3v14"/><path d="M5 10h14"/><path d="M5 21h14"/></svg></div>' +
       '</div>';
     c.addEventListener('click', function(e){
-      if(e.target.closest('.pcard-add')) return;
+      if(e.target.closest('.nd-prod-cart')) return;
       openProduct(p);
     });
     container.appendChild(c);
   });
-  /* ── Reset scroll + title ── */
-  nchBody.scrollTop = 0;
-  nchTitle.classList.remove('show');
-  nchTitle.textContent = n.name;
+  /* Reset scroll */
+  var ndBody = el('ndBody');
+  ndBody.scrollTop = 0;
+  el('ndHeaderTitle').style.opacity = '0';
+  el('ndHeaderTitle').style.pointerEvents = 'none';
+  document.querySelector('.nd-cover-overlay').classList.remove('show');
+  ndBody.onscroll = function() {
+    var nameEl = el('ndName');
+    var overlay = document.querySelector('.nd-cover-overlay');
+    var nameBottom = nameEl.getBoundingClientRect().bottom;
+    var headerBottom = overlay.getBoundingClientRect().bottom;
+    var hidden = nameBottom < headerBottom;
+    el('ndHeaderTitle').style.opacity = hidden ? '1' : '0';
+    el('ndHeaderTitle').style.pointerEvents = hidden ? 'auto' : 'none';
+    overlay.classList.toggle('show', hidden);
+  };
   go(CURRENT_SCREEN, 's11', 'l');
 }
 
@@ -3911,7 +4027,6 @@ el('nchEditBody').addEventListener('click', function(e){
 /* ── Shopping Bag ── */
 var bagScrim = el('bagScrim'), bagSheet = el('bagSheet');
 var bagItemsEl = el('bagItems'), bagCount = el('bagCount'), bagTotal = el('bagTotal');
-var bagBadge = el('nchCartBadge');
 var BAG = [];
 
 function addToBag(p, btn){
@@ -3924,7 +4039,10 @@ function addToBag(p, btn){
   } else {
     BAG.push({name:p.name, price:p.price, grad:p.grad, qty:1});
   }
-  if(btn) btn.classList.add('added');
+  if(btn) {
+    btn.classList.add('pulse');
+    setTimeout(function(){ btn.classList.remove('pulse'); }, 600);
+  }
   updateBagBadge();
 }
 
@@ -4000,15 +4118,13 @@ function updateBagTotal(){
 function updateBagBadge(){
   var count = 0;
   BAG.forEach(function(item){ count += item.qty; });
-  bagBadge.textContent = count;
-  bagBadge.classList.toggle('show', count > 0);
   var ordBadge = el('ordCartBadge');
   if(ordBadge){ ordBadge.textContent = count; ordBadge.classList.toggle('show', count > 0); }
 }
 
 /* ── Add-to-bag click handler (delegated) ── */
 document.addEventListener('click', function(e){
-  var btn = e.target.closest('.pcard-add');
+  var btn = e.target.closest('.pcard-add, .nd-prod-cart');
   if(!btn) return;
   e.stopPropagation();
   var name = btn.getAttribute('data-name');
@@ -4030,39 +4146,180 @@ function formatPrice(n){
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
-el('nchCart').addEventListener('click', function(){ renderBagSheet(); bagSheet.classList.add('show'); bagScrim.classList.add('show'); });
 bagScrim.addEventListener('click', function(){ bagSheet.classList.remove('show'); bagScrim.classList.remove('show'); });
-el('nchBack').addEventListener('click', function(){ go('s11', CURRENT_SCREEN === 's11' ? 's7' : CURRENT_SCREEN, 'r'); });
+el('ndCartBtn') && el('ndCartBtn').addEventListener('click', function(){ renderBagSheet(); bagSheet.classList.add('show'); bagScrim.classList.add('show'); });
+el('ndBack').addEventListener('click', function(){ go('s11', CURRENT_SCREEN === 's11' ? 's7' : CURRENT_SCREEN, 'r'); });
 
 /* ── Search screen ── */
-el('srchOpenBtn').addEventListener('click', function(){ go(CURRENT_SCREEN, 's12', 'l'); });
+el('srchOpenBtn').addEventListener('click', function(){ go(CURRENT_SCREEN, 's12', 'l'); setTimeout(renderSearchHistory, 50); });
 el('srchCancel').addEventListener('click', function(){ go('s12', 's7', 'r'); });
+
+var backBtn = el('srchBack'), cancelBtn = el('srchCancel'), clearBtn = el('srchClear');
+var searchResultsVisible = false, searching = false;
+
+function resetSearch(){
+  el('srchInput').value = '';
+  el('srchSuggestions').style.display = 'none';
+  el('srchResults').innerHTML = '';
+  el('srchBody').querySelector('.srch-empty').style.display = 'flex';
+  el('srchHistory').style.display = 'none';
+  searchResultsVisible = false;
+  updateSearchUI();
+  el('srchInput').focus();
+  renderSearchHistory();
+}
+
+function updateSearchUI(){
+  if(searchResultsVisible){
+    backBtn.style.display = 'flex';
+    cancelBtn.style.display = 'none';
+    clearBtn.style.display = 'flex';
+  } else {
+    backBtn.style.display = 'none';
+    cancelBtn.style.display = 'block';
+    clearBtn.style.display = el('srchInput').value.trim() ? 'flex' : 'none';
+  }
+}
+
+/* ── Search history (localStorage) ── */
+function getSearchHistory(){
+  try{ return JSON.parse(localStorage.getItem('srchHist')||'[]'); }catch(e){ return []; }
+}
+function saveSearchHistory(h){
+  try{ localStorage.setItem('srchHist', JSON.stringify(h)); }catch(e){}
+}
+function addToHistory(q){
+  var h = getSearchHistory();
+  h = h.filter(function(s){ return s.q.toLowerCase() !== q.toLowerCase(); });
+  h.unshift({q:q, t:Date.now()});
+  if(h.length > 20) h = h.slice(0, 20);
+  saveSearchHistory(h);
+}
+function removeFromHistory(q){
+  var h = getSearchHistory();
+  h = h.filter(function(s){ return s.q !== q; });
+  saveSearchHistory(h);
+  renderSearchHistory();
+}
+function renderSearchHistory(){
+  var hist = el('srchHistory'), empty = el('srchBody').querySelector('.srch-empty');
+  var h = getSearchHistory();
+  if(!h.length){ hist.innerHTML = ''; hist.style.display = 'none'; return; }
+  hist.style.display = 'block';
+  var html = '<div class="srch-hist-hdr">Recent Searches</div>';
+  h.forEach(function(s){
+    html += '<div class="srch-hist-item" data-q="'+s.q+'">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+      '<span class="srch-hist-name">'+s.q+'</span>' +
+      '<button class="srch-hist-del" data-del="'+s.q+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>' +
+    '</div>';
+  });
+  hist.innerHTML = html;
+  Array.from(hist.querySelectorAll('.srch-hist-item')).forEach(function(item){
+    item.addEventListener('click', function(e){
+      if(e.target.closest('.srch-hist-del')) return;
+      var q = this.dataset.q;
+      searching = true;
+      el('srchInput').value = q;
+      doSearch(q.toLowerCase());
+    });
+  });
+  Array.from(hist.querySelectorAll('.srch-hist-del')).forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      removeFromHistory(this.dataset.del);
+    });
+  });
+}
+
+el('srchBack').addEventListener('click', resetSearch);
+
+clearBtn.addEventListener('click', resetSearch);
+
+function doSearch(q){
+  searching = true;
+  try {
+    var container = el('srchResults'), empty = el('srchBody').querySelector('.srch-empty');
+    el('srchSuggestions').style.display = 'none';
+    container.innerHTML = '';
+    if(q) addToHistory(q);
+    searchResultsVisible = true;
+    updateSearchUI();
+    if(!q){ empty.style.display = 'flex'; el('srchHistory').style.display = 'none'; return; }
+    empty.style.display = 'none';
+    el('srchHistory').style.display = 'none';
+    var all = [];
+    NICHES.forEach(function(n){ all = all.concat(n.products); });
+    PRODUCTS.forEach(function(p){ all.push(p); });
+    all.forEach(function(p){
+      if(!p.name.toLowerCase().includes(q)) return;
+      var c = document.createElement('div');
+      c.className = 'pcard'; c.style.cursor = 'pointer';
+      var bgStyle = p._img ? 'background:url('+p._img+') center/cover no-repeat' : 'background:'+p.grad;
+      c.innerHTML =
+        '<div class="pcard-img" style="'+bgStyle+'">' +
+          '<div class="pcard-icon"'+(p._img?' style="display:none"':'')+'><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>' +
+          '<div class="pcard-time">'+p.time+'</div>' +
+        '</div>' +
+        '<div class="pcard-info">' +
+          '<div class="pcard-name">'+p.name+'</div>' +
+          '<div class="pcard-price">'+p.price+'</div>' +
+          '<div class="pcard-seller"><div class="seller-av"></div><span class="seller-nm">'+p.seller+'</span></div>' +
+        '</div>';
+      container.appendChild(c);
+      c.addEventListener('click', function(){ window.openProduct(p); });
+    });
+  } finally {
+    searching = false;
+  }
+}
+
 el('srchInput').addEventListener('input', function(){
+  if(searching) return;
   var q = this.value.trim().toLowerCase();
-  var container = el('srchResults'), empty = el('srchBody').querySelector('.srch-empty');
-  container.innerHTML = '';
-  if(!q){ empty.style.display = 'flex'; return; }
+  var sug = el('srchSuggestions'), empty = el('srchBody').querySelector('.srch-empty'), hist = el('srchHistory');
+  el('srchResults').innerHTML = '';
+  searchResultsVisible = false;
+  if(!q){ sug.style.display = 'none'; empty.style.display = 'flex'; hist.style.display = 'none'; updateSearchUI(); renderSearchHistory(); return; }
   empty.style.display = 'none';
+  hist.style.display = 'none';
   var all = [];
   NICHES.forEach(function(n){ all = all.concat(n.products); });
   PRODUCTS.forEach(function(p){ all.push(p); });
+  var matches = [];
   all.forEach(function(p){
-    if(!p.name.toLowerCase().includes(q)) return;
-    var c = document.createElement('div');
-    c.className = 'pcard'; c.style.cursor = 'pointer';
-    var bgStyle = p._img ? 'background:url('+p._img+') center/cover no-repeat' : 'background:'+p.grad;
-    c.innerHTML =
-      '<div class="pcard-img" style="'+bgStyle+'">' +
-        '<div class="pcard-icon"'+(p._img?' style="display:none"':'')+'><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>' +
-        '<div class="pcard-time">'+p.time+'</div>' +
-      '</div>' +
-      '<div class="pcard-info">' +
-        '<div class="pcard-name">'+p.name+'</div>' +
-        '<div class="pcard-price">'+p.price+'</div>' +
-        '<div class="pcard-seller"><div class="seller-av"></div><span class="seller-nm">'+p.seller+'</span></div>' +
-      '</div>';
-    container.appendChild(c);
+    if(matches.length >= 10) return;
+    if(p.name.toLowerCase().includes(q)) matches.push(p);
   });
+  if(matches.length){
+    sug.innerHTML = '';
+    matches.forEach(function(p){
+      var item = document.createElement('div');
+      item.className = 'srch-sug-item';
+      item.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'+p.name;
+      item.addEventListener('click', function(){
+        searching = true;
+        el('srchInput').value = p.name;
+        doSearch(p.name.toLowerCase());
+      });
+      sug.appendChild(item);
+    });
+    sug.style.display = 'block';
+  } else {
+    sug.style.display = 'none';
+  }
+  updateSearchUI();
+});
+
+el('srchInput').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){
+    var q = this.value.trim().toLowerCase();
+    if(q) doSearch(q);
+  }
+});
+
+el('srchBody').addEventListener('click', function(){
+  el('srchSuggestions').style.display = 'none';
 });
 
 // ── Marketplace: Product grid ──
@@ -4098,7 +4355,6 @@ function renderMarketGrid(){
     var hideIcon = p._img ? 'style="display:none"' : '';
     c.innerHTML =
       '<div class="pcard-img" style="'+bgStyle+'">' +
-        '<div class="pcard-fav'+(p.fav?' on':'')+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="'+(p.fav?'currentColor':'none')+'" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6c-1.9-1.9-5-1.9-6.9 0L12 6.5l-1.9-1.9c-1.9-1.9-5-1.9-6.9 0-1.9 1.9-1.9 5 0 6.9L12 20.3l8.8-8.8c1.9-1.9 1.9-5 0-6.9z"/></svg></div>' +
         '<div class="pcard-time">'+p.time+'</div>' +
         '<div class="pcard-icon" '+hideIcon+'><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>' +
       '</div>' +
@@ -4164,45 +4420,43 @@ var openSideDrawer, closeSideDrawer;
      photos:['linear-gradient(135deg,#1c1c1c,#3a3a3a)','linear-gradient(135deg,#2b2b2b,#4a4a4a)','linear-gradient(135deg,#333,#555)','linear-gradient(135deg,#1a1a1a,#2e2e2e)'],
      reviewsList:[{name:'Lina K.',stars:5,text:'Amazing collection and great customer service! Found exactly what I was looking for.',time:'2 days ago',color:'#e879f9'},{name:'Yassine M.',stars:4,text:'Good quality clothes, a bit pricey but worth it.',time:'1 week ago',color:'#818cf8'}],
      grad:'linear-gradient(160deg,#1c1c1c 0%,#2b2b2b 55%,#3a3a3a 100%)',
-     icon:'<path d="M16 4l4 2v4h-3v10H7V10H4V6l4-2 2 2h2l2-2Z"/>'},
+     icon:'<path d="M16 4l4 2v4h-3v10H7V10H4V6l4-2 2 2h2l2-2Z"/>',lat:36.7731,lng:3.0588,city:'Alger'},
     {name:'Coffee House',cat:'Cafe',catKey:'Cafe',rating:'4.6',reviews:'96',dist:'0.6 km',open:'Open · Closes 10:00 PM',featured:false,saved:false,
      desc:'Cozy neighborhood cafe serving artisan coffee, fresh pastries, and light meals in a warm, welcoming atmosphere.',
      phone:'+213 21 63 22 10',website:'https://coffeehouse.dz',location:'15 Rue Ben M\'hidi, Algiers',
      photos:['linear-gradient(135deg,#2a1c12,#4a3220)','linear-gradient(135deg,#3d2818,#5a3d26)','linear-gradient(135deg,#4a3220,#6b4a2e)','linear-gradient(135deg,#1e140e,#3d2818)'],
      reviewsList:[{name:'Amira S.',stars:5,text:'Best cappuccino in Algiers! The ambiance is perfect for studying or catching up with friends.',time:'3 days ago',color:'#f472b6'},{name:'Karim B.',stars:4,text:'Great coffee and friendly staff. The pastries are delicious.',time:'5 days ago',color:'#34d399'}],
-     grad:'linear-gradient(160deg,#2a1c12 0%,#4a3220 55%,#6b4a2e 100%)',
-     icon:'<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/>'},
-    {name:'Book Haven',cat:'Books',catKey:'More',rating:'4.7',reviews:'74',dist:'0.8 km',open:'Open · Closes 8:00 PM',featured:false,saved:false,
-     desc:'Independent bookstore with a carefully curated selection of fiction, non-fiction, and rare finds. A reader\'s paradise.',
-     phone:'+213 21 74 55 12',website:'https://bookhaven.dz',location:'8 Rue Abane Ramdane, Algiers',
-     photos:['linear-gradient(135deg,#241a10,#3d2c18)','linear-gradient(135deg,#3d2c18,#5a4226)','linear-gradient(135deg,#5a4226,#7a5c3a)','linear-gradient(135deg,#1e140e,#3d2c18)'],
-     reviewsList:[{name:'Sara M.',stars:5,text:'A hidden gem! The staff recommended amazing books I would never have found on my own.',time:'1 week ago',color:'#60a5fa'},{name:'Hamza R.',stars:4,text:'Great selection and cozy reading corners. My go-to spot for weekend browsing.',time:'2 weeks ago',color:'#a78bfa'}],
-     grad:'linear-gradient(160deg,#241a10 0%,#3d2c18 55%,#5a4226 100%)',
-     icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'},
+     grad:'linear-gradient(160deg,#2a1c12 0%,#4a3220 55%,#5a3d26 100%)',
+     icon:'<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/>',lat:36.7710,lng:3.0555,city:'Alger'},
     {name:'Le Gourmet',cat:'Restaurant',catKey:'Restaurant',rating:'4.5',reviews:'152',dist:'1.1 km',open:'Open · Closes 11:00 PM',featured:false,saved:false,
      desc:'Authentic French-Algerian fine dining. Seasonal menus crafted with locally sourced ingredients and traditional techniques.',
      phone:'+213 21 36 88 90',website:'https://legourmet.dz',location:'7 Rue Khelifa Boukhalfa, Algiers',
      photos:['linear-gradient(135deg,#2a1010,#4a1c1c)','linear-gradient(135deg,#4a1c1c,#6e2b2b)','linear-gradient(135deg,#6e2b2b,#8e3a3a)','linear-gradient(135deg,#1a0808,#3a1414)'],
      reviewsList:[{name:'Nadia T.',stars:5,text:'Exceptional dining experience! The couscous royale is out of this world.',time:'4 days ago',color:'#fb7185'},{name:'Rachid A.',stars:4,text:'Beautiful presentation and attentive service. Perfect for special occasions.',time:'1 week ago',color:'#fbbf24'}],
      grad:'linear-gradient(160deg,#2a1010 0%,#4a1c1c 55%,#6e2b2b 100%)',
-     icon:'<path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>'},
+     icon:'<path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',lat:36.7654,lng:3.0476,city:'Alger'},
     {name:'SneakerLab',cat:'Shoes',catKey:'Shoes',rating:'4.9',reviews:'210',dist:'1.3 km',open:'Open · Closes 9:30 PM',featured:false,saved:false,
      desc:'Sneakerhead headquarters. Stocking the rarest drops, limited editions, and streetwear essentials since 2020.',
      phone:'+213 21 59 44 30',website:'https://sneakerlab.dz',location:'23 Rue Larbi Ben M\'hidi, Algiers',
      photos:['linear-gradient(135deg,#1c1430,#2e2050)','linear-gradient(135deg,#2e2050,#43317a)','linear-gradient(135deg,#43317a,#5a3d9e)','linear-gradient(135deg,#120c20,#1c1430)'],
      reviewsList:[{name:'Mehdi K.',stars:5,text:'Best sneaker store in Algeria! Got my Yeezys at retail price, couldn\'t believe it.',time:'2 days ago',color:'#c084fc'},{name:'Ines H.',stars:5,text:'Incredible selection of Jordan retros. Staff are super knowledgeable.',time:'6 days ago',color:'#818cf8'}],
      grad:'linear-gradient(160deg,#1c1430 0%,#2e2050 55%,#43317a 100%)',
-     icon:'<path d="M2 18c0-1 .5-2 1.5-2.3L9 14V9.5c0-.8.6-1.5 1.4-1.5h.3c.5 0 1 .2 1.3.6l2.4 2.7c.5.5 1.1.9 1.8 1l4 .7c1.2.2 2 1.2 2 2.4V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/>',iconFill:true},
+     icon:'<path d="M2 18c0-1 .5-2 1.5-2.3L9 14V9.5c0-.8.6-1.5 1.4-1.5h.3c.5 0 1 .2 1.3.6l2.4 2.7c.5.5 1.1.9 1.8 1l4 .7c1.2.2 2 1.2 2 2.4V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/>',iconFill:true,lat:36.7521,lng:3.0398,city:'Alger'},
     {name:'Fade Barbershop',cat:'Barbers',catKey:'Barber',rating:'4.8',reviews:'61',dist:'1.6 km',open:'Open · Closes 8:30 PM',featured:false,saved:false,
      desc:'Premium barbershop specializing in modern fades, beard grooming, and classic hot towel shaves. Walk-ins welcome.',
      phone:'+213 21 48 77 66',website:'https://fadebarbershop.dz',location:'5 Rue de la Liberté, Algiers',
      photos:['linear-gradient(135deg,#0c2422,#163a36)','linear-gradient(135deg,#163a36,#1f5048)','linear-gradient(135deg,#1f5048,#2a6a5e)','linear-gradient(135deg,#081a18,#0c2422)'],
      reviewsList:[{name:'Aymen B.',stars:5,text:'Best fade in town! Ahmed is a true artist with the clippers. Highly recommend.',time:'1 week ago',color:'#2dd4bf'},{name:'Reda S.',stars:5,text:'Cleanest cuts and the hot towel shave is pure luxury. Great vibes in the shop.',time:'2 weeks ago',color:'#34d399'}],
      grad:'linear-gradient(160deg,#0c2422 0%,#163a36 55%,#1f5048 100%)',
-     icon:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>'}
+     icon:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>',lat:36.7488,lng:3.0512,city:'Alger'}
   ];
   window.STORES = STORES;
-  var smList = el('smList'), smCats = el('smCats'), smCount = el('smCount');
+  
+  var smList = el('smList'), smCats = el('smCats'), smCount = el('smCount'), smSeeAll = el('smSeeAll');
+  if(!smList || !smCats || !smCount || !smSeeAll) return; // placeholder — no store map UI
+
+
+
   function renderStores(filter){
     var items = (!filter || filter === 'All') ? STORES : STORES.filter(function(s){ return s.catKey === filter; });
     smCount.textContent = items.length + (items.length===1?' store found':' stores found');
@@ -4226,7 +4480,14 @@ var openSideDrawer, closeSideDrawer;
             '<div class="scard-dist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+s.dist+'</div>' +
           '</div>' +
           '<div class="scard-open">'+s.open+'</div>' +
+          '<div class="scard-actions">' +
+            '<button class="scard-details-btn">View Details</button>' +
+          '</div>' +
         '</div>';
+      c.querySelector('.scard-details-btn').addEventListener('click', function(ev){
+        ev.stopPropagation();
+        window.openStore(window.STORES.indexOf(s), 's13');
+      });
       c.querySelector('.scard-save').addEventListener('click', function(ev){
         ev.stopPropagation();
         s.saved = !s.saved;
@@ -4245,13 +4506,8 @@ var openSideDrawer, closeSideDrawer;
     btn.addEventListener('click', function(){
       smCats.querySelectorAll('.sm-cat').forEach(function(b){ b.classList.remove('active'); });
       btn.classList.add('active');
-      renderStores(btn.getAttribute('data-cat'));
-      var smMapEl = document.getElementById('smMap');
-      if(smMapEl){
-        smMapEl.classList.remove('pulse');
-        void smMapEl.offsetWidth;
-        smMapEl.classList.add('pulse');
-      }
+      var cat = btn.getAttribute('data-cat');
+      renderStores(cat);
     });
   });
   el('smSeeAll').addEventListener('click', function(){
@@ -4271,11 +4527,13 @@ var openSideDrawer, closeSideDrawer;
       lastSmScroll = st;
     });
   }
+
 })();
 
 /* ── S18 — See All Stores (full listing page) ── */
 (function(){
   var saList = el('saList'), saCats = el('saCats');
+  if(!saList || !saCats) return;
   function renderAllStores(filter){
     var items = (!filter || filter === 'All') ? window.STORES : window.STORES.filter(function(s){ return s.catKey === filter; });
     saList.innerHTML = '';
@@ -4425,13 +4683,15 @@ var openSideDrawer, closeSideDrawer;
   });
   el('drawerSaved').addEventListener('click', function(){
     closeSideDrawer();
+    var smList = el('smList'), smCount = el('smCount'), smCats = el('smCats');
+    if(!smList || !smCount || !smCats) return;
     var saved = window.STORES.filter(function(s){ return s.saved; });
     if(saved.length===0){
-      el('smCount').textContent = '0 stores found';
-      el('smList').innerHTML = '<div style="text-align:center;padding:30px 0;color:var(--muted);font-size:var(--fs-base)">No saved stores yet</div>';
+      smCount.textContent = '0 stores found';
+      smList.innerHTML = '<div style="text-align:center;padding:30px 0;color:var(--muted);font-size:var(--fs-base)">No saved stores yet</div>';
     } else {
-      el('smCount').textContent = saved.length + ' saved store'+(saved.length===1?'':'s');
-      el('smList').innerHTML = '';
+      smCount.textContent = saved.length + ' saved store'+(saved.length===1?'':'s');
+      smList.innerHTML = '';
       saved.forEach(function(s,i){
         var c = document.createElement('div');
         c.className = 'scard';
@@ -4443,11 +4703,10 @@ var openSideDrawer, closeSideDrawer;
           el('drawerSaved').click();
         });
         c.addEventListener('click', function(){ window.openStore(window.STORES.indexOf(s)); });
-        el('smList').appendChild(c);
+        smList.appendChild(c);
       });
     }
-    el('smCats').querySelectorAll('.sm-cat').forEach(function(b){ b.classList.remove('active'); });
-    var allBtn = el('smCats').querySelector('[data-cat="All"]');
+    var allBtn = smCats.querySelector('[data-cat="All"]');
     if(allBtn) allBtn.classList.add('active');
   });
 })();
@@ -4656,6 +4915,7 @@ el('prodFullscreen').addEventListener('click', function(e){
   var rating = el('prodDetailRating'), desc = el('prodDetailDesc');
   var specs = el('prodDetailSpecs'), body = el('prodBody');
   var countEl = el('prodImgCount'), navBack = el('prodNavBack');
+  var hdrTitle = el('prodHdrTitle');
 
   var nicheBtn = el('prodNicheLink'), PROD_STACK = [];
 
@@ -4695,6 +4955,11 @@ el('prodFullscreen').addEventListener('click', function(e){
     }
     img.onclick=function(){openProductGallery(p);};
     name.textContent = p.name;
+    if(hdrTitle) {
+      hdrTitle.textContent = p.name;
+      hdrTitle.style.opacity = '0';
+      hdrTitle.style.pointerEvents = 'none';
+    }
     price.textContent = p.price;
     seller.textContent = p.seller || '';
     rating.textContent = (p.rating || '') + (p.reviews ? ' ('+p.reviews+')' : '');
@@ -4733,6 +4998,7 @@ el('prodFullscreen').addEventListener('click', function(e){
       meta.style.display='none';
     }
     var ni = findNicheForProduct(p.name);
+    sheet.classList.toggle('full', ni > -1);
     if(ni > -1){
       nicheBtn.style.display = 'block';
       nicheBtn.innerHTML = '<button class="prod-niche-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg> Visit niches for this product</button>';
@@ -4775,10 +5041,22 @@ el('prodFullscreen').addEventListener('click', function(e){
     }
     scrim.classList.add('show');
     sheet.classList.add('show');
+    /* Scroll listener for header title */
+    var inner = el('prodSheetInner');
+    inner.onscroll = function() {
+      var nameTop = name.getBoundingClientRect().top;
+      var hdrBottom = document.querySelector('.prod-hdr').getBoundingClientRect().bottom;
+      if(hdrTitle) {
+        var hidden = nameTop < hdrBottom;
+        hdrTitle.style.opacity = hidden ? '1' : '0';
+        hdrTitle.style.pointerEvents = hidden ? 'auto' : 'none';
+      }
+    };
   }
 
   function animateTo(p){
     body.classList.add('swap');
+    el('prodSheetInner').scrollTop = 0;
     setTimeout(function(){
       renderProduct(p, true);
       body.classList.remove('swap');
@@ -4791,6 +5069,7 @@ el('prodFullscreen').addEventListener('click', function(e){
     if(PROD_STACK.length === 0) return;
     var prev = PROD_STACK.pop();
     animateTo(prev);
+    if(PROD_STACK.length === 0) navBack.classList.remove('show');
   });
 
   window.openProduct = function(p){ PROD_STACK = []; navBack.classList.remove('show'); renderProduct(p, false); };
@@ -4804,6 +5083,29 @@ el('prodFullscreen').addEventListener('click', function(e){
   scrim.addEventListener('click', closeProd);
   el('prodClose').addEventListener('click', closeProd);
   el('prodContact').addEventListener('click', closeProd);
+
+  /* ── Three-dots glass popup ── */
+  var moreBtn = el('prodMore'), glassPopup = el('prodGlassPopup');
+  moreBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    glassPopup.classList.toggle('show');
+  });
+  glassPopup.addEventListener('click', function(e){
+    var item = e.target.closest('.prod-glass-item');
+    if(!item) return;
+    var action = item.getAttribute('data-action');
+    glassPopup.classList.remove('show');
+    if(action === 'save') showToast('Product saved','');
+    else if(action === 'like-type') showToast('Marked as interested','');
+    else if(action === 'dislike-type') showToast('Marked as not interested','');
+    else if(action === 'report') showToast('Report submitted','');
+  });
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.prod-more') && !e.target.closest('.prod-glass-popup')){
+      glassPopup.classList.remove('show');
+    }
+  });
+
   el('prodOrderNow').addEventListener('click', function(){
     closeProd();
   });
@@ -4827,29 +5129,24 @@ el('prodFullscreen').addEventListener('click', function(e){
 var nichesMgFilter = 'all';
 
 function renderNichesMg(){
-  var total = NICHES.length;
   var actCount = 0, draftCount = 0, archCount = 0, delCount = 0;
   nicheStatus.forEach(function(s){ if(s==='active') actCount++; else if(s==='draft') draftCount++; else if(s==='archived') archCount++; else if(s==='deleted') delCount++; });
-  var views = '1,245';
-  var sales = '156';
 
   var filtersEl = el('nichesMgFilters');
   filtersEl.innerHTML =
-    '<button class="nch-mg-filter'+(nichesMgFilter==='all'?' active':'')+'" data-filter="all" style="background:#dbeafe;color:#2563eb">All Niches</button>'+
-    '<button class="nch-mg-filter'+(nichesMgFilter==='active'?' active':'')+'" data-filter="active" style="background:#d1fae5;color:#059669"><span class="nch-mg-filter-dot" style="background:#22c55e"></span>Active <span class="nch-mg-filter-count">'+actCount+'</span></button>'+
-    '<button class="nch-mg-filter'+(nichesMgFilter==='drafts'?' active':'')+'" data-filter="drafts" style="background:#fef3c7;color:#d97706"><span class="nch-mg-filter-dot" style="background:#f59e0b"></span>Drafts <span class="nch-mg-filter-count">'+draftCount+'</span></button>'+
-    '<button class="nch-mg-filter'+(nichesMgFilter==='archived'?' active':'')+'" data-filter="archived" style="background:#f0f3f9;color:#9ca3af"><span class="nch-mg-filter-dot" style="background:#9ca3af"></span>Archived <span class="nch-mg-filter-count">'+archCount+'</span></button>'+
-    '<button class="nch-mg-filter'+(nichesMgFilter==='deleted'?' active':'')+'" data-filter="deleted" style="background:#fee2e2;color:#ef4444">'+(delCount>0?'<span class="nch-mg-filter-reddot"></span>':'<span class="nch-mg-filter-dot" style="background:#ef4444"></span>')+'Deleted <span class="nch-mg-filter-count">'+delCount+'</span></button>';
+    '<div class="nch-mg-filters-pill" id="nchPill"></div>'+
+    '<button class="nch-mg-filter'+(nichesMgFilter==='all'?' active':'')+'" data-filter="all">All Niches</button>'+
+    '<button class="nch-mg-filter'+(nichesMgFilter==='active'?' active':'')+'" data-filter="active">Active<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></button>'+
+    '<button class="nch-mg-filter'+(nichesMgFilter==='drafts'?' active':'')+'" data-filter="drafts">Drafts<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'+
+    '<button class="nch-mg-filter'+(nichesMgFilter==='archived'?' active':'')+'" data-filter="archived">Archived<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg></button>'+
+    '<button class="nch-mg-filter'+(nichesMgFilter==='deleted'?' active':'')+'" data-filter="deleted">Deleted<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>';
 
-  var statsEl = el('nichesMgStats');
-  statsEl.innerHTML =
-    '<div class="nch-mg-stats-card">'+
-    '<div class="nch-mg-stat"><div class="nch-mg-stat-icon" style="background:#dbeafe;color:#2563eb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></div><div class="nch-mg-stat-val">'+total+'</div><div class="nch-mg-stat-lbl">Total Niches</div></div>'+
-    '<div class="nch-mg-stat"><div class="nch-mg-stat-icon" style="background:#d1fae5;color:#059669"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div><div class="nch-mg-stat-val">'+actCount+'</div><div class="nch-mg-stat-lbl">Active</div></div>'+
-    '<div class="nch-mg-stat"><div class="nch-mg-stat-icon" style="background:#fef3c7;color:#d97706"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="nch-mg-stat-val">'+views+'</div><div class="nch-mg-stat-lbl">Total Views</div></div>'+
-    '<div class="nch-mg-stat"><div class="nch-mg-stat-icon" style="background:#ede9fe;color:#7c3aed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><div class="nch-mg-stat-val">'+sales+'</div><div class="nch-mg-stat-lbl">Total Sales</div></div>'+
-    '</div>';
+  placeNchPill();
+  renderNicheBody();
+  setupNchFilterDrag();
+}
 
+function renderNicheBody(){
   var bodyEl = el('nichesMgBody');
   bodyEl.innerHTML = '';
 
@@ -4955,18 +5252,79 @@ document.addEventListener('click', function(e){
   }
 });
 
-// Filter pill clicks
-el('nichesMgFilters').addEventListener('click', function(e){
-  var pill = e.target.closest('.nch-mg-filter');
-  if(!pill) return;
-  var f = pill.getAttribute('data-filter');
-  if(!f || f === nichesMgFilter) return;
-  nichesMgFilter = f;
-  var siblings = el('nichesMgFilters').querySelectorAll('.nch-mg-filter');
-  siblings.forEach(function(s){ s.classList.remove('active'); });
-  pill.classList.add('active');
-  renderNichesMg();
-});
+function placeNchPill(){
+  var seg = el('nichesMgFilters');
+  var active = seg.querySelector('.nch-mg-filter.active');
+  var pill = el('nchPill');
+  if(!active || !pill) return;
+  var segRect = seg.getBoundingClientRect();
+  var btnRect = active.getBoundingClientRect();
+  pill.style.left = (btnRect.left - segRect.left + seg.scrollLeft) + 'px';
+  pill.style.width = btnRect.width + 'px';
+}
+window.addEventListener('resize', placeNchPill);
+
+function setupNchFilterDrag(){
+  var seg = el('nichesMgFilters'), pill = el('nchPill');
+  if(!seg || !pill) return;
+  var dragging = false;
+
+  function leftFor(btn){
+    var segRect = seg.getBoundingClientRect();
+    return btn.getBoundingClientRect().left - segRect.left;
+  }
+  function widthFor(btn){
+    return btn.offsetWidth;
+  }
+  function setActive(btn, render){
+    var f = btn.getAttribute('data-filter');
+    if(!f || f === nichesMgFilter) return;
+    nichesMgFilter = f;
+    seg.querySelectorAll('.nch-mg-filter').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    pill.style.left = leftFor(btn) + 'px';
+    pill.style.width = widthFor(btn) + 'px';
+    if(render) renderNicheBody();
+  }
+  function nearestBtn(clientX){
+    var btns = Array.prototype.slice.call(seg.querySelectorAll('.nch-mg-filter'));
+    var best = btns[0], bestDist = Infinity;
+    btns.forEach(function(b){
+      var r = b.getBoundingClientRect();
+      var c = r.left + r.width/2;
+      var d = Math.abs(clientX - c);
+      if(d < bestDist){ bestDist = d; best = b; }
+    });
+    return best;
+  }
+  seg.querySelectorAll('.nch-mg-filter').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(dragging) return;
+      setActive(btn, true);
+    });
+  });
+  function dragStart(e){ dragging = true; dragMove(e); }
+  function dragMove(e){
+    if(!dragging) return;
+    var x = (e.touches ? e.touches[0].clientX : e.clientX);
+    var hovered = nearestBtn(x);
+    setActive(hovered, false);
+  }
+  function dragEnd(){
+    if(!dragging) return;
+    dragging = false;
+    var active = seg.querySelector('.nch-mg-filter.active') || seg.querySelector('.nch-mg-filter');
+    renderNicheBody();
+  }
+  pill.style.pointerEvents = 'auto';
+  pill.style.cursor = 'grab';
+  pill.addEventListener('pointerdown', dragStart);
+  window.addEventListener('pointermove', dragMove);
+  window.addEventListener('pointerup', dragEnd);
+  pill.addEventListener('touchstart', dragStart, {passive:true});
+  window.addEventListener('touchmove', dragMove, {passive:true});
+  window.addEventListener('touchend', dragEnd);
+}
 
 /* ── Orders screen: 3-way segmented control with sliding glass pill ── */
 (function(){
@@ -5247,7 +5605,6 @@ odrBtns.forEach(function(btn){
       el('odrChevron').classList.remove('open');
       renderOdrTab('messages');
     } else {
-      // Orders tab → toggle popup
       odrBtns.forEach(function(b){ b.classList.remove('active'); });
       btn.classList.add('active');
       placeOdrPill(btn, false);
@@ -5283,6 +5640,24 @@ document.addEventListener('click', function(e){
 // init popup display
 odrToggleLabel();
 
+// S15 search filter
+el('odrSearch').addEventListener('input', function(){
+  var q = this.value.trim().toLowerCase();
+  var activeTabBtn = el('odrTabSeg').querySelector('.odr-tab-btn.active');
+  var tab = activeTabBtn ? activeTabBtn.getAttribute('data-odrtab') : '';
+  if(tab === 'orders'){
+    el('odrBody').querySelectorAll('.ord-row').forEach(function(row){
+      var name = row.querySelector('.ord-row-name').textContent.toLowerCase();
+      row.style.display = (!q || name.includes(q)) ? '' : 'none';
+    });
+  } else if(tab === 'messages'){
+    el('odrBody').querySelectorAll('.odr-msg-row').forEach(function(row){
+      var name = row.querySelector('.odr-msg-name').textContent.toLowerCase();
+      row.style.display = (!q || name.includes(q)) ? '' : 'none';
+    });
+  }
+});
+
 // S15 back
 el('odrBack').addEventListener('click', function(){
   go('s15', ODR_SOURCE || 's8', 'r');
@@ -5296,6 +5671,10 @@ el('ordCart').addEventListener('click', function(){
     placeCartPill(el('cartTabSeg').querySelector('.cart-tab-btn.active') || el('cartTabSeg').querySelector('.cart-tab-btn'));
   });
 });
+
+// Bell → Notifications
+el('ordBell').addEventListener('click', function(){ go('s8', 's26', 'l'); });
+el('ntfBack').addEventListener('click', function(){ go('s26', 's8', 'r'); });
 
 // S22 back
 el('cartBack').addEventListener('click', function(){
@@ -5346,7 +5725,10 @@ function renderCartTab(tab){
 
 function renderOdrTab(tab){
   var body = el('odrBody');
+  var search = el('odrSearch');
+  search.value = '';
   if(tab === 'orders'){
+    search.placeholder = 'Search orders...';
     if(odrTableMode){
       var statusClass = SELECTED_ORDER.cls === 'status-done' ? 'done' : SELECTED_ORDER.cls === 'status-active' ? 'active' : 'pending';
       body.innerHTML =
@@ -5356,13 +5738,34 @@ function renderOdrTab(tab){
         '<tr><td>'+(SELECTED_ORDER.sub.split('·')[0].trim()||'#----')+'</td><td>'+SELECTED_ORDER.name+'</td><td>'+SELECTED_ORDER.price+'</td><td>+213 5'+(Math.floor(55+Math.random()*45))+' '+(Math.floor(10+Math.random()*89))+' '+Math.floor(100+Math.random()*899)+'</td><td><span class="odr-tbl-status '+statusClass+'">'+SELECTED_ORDER.status+'</span></td></tr>'+
         '</tbody></table>';
     } else {
-      body.innerHTML =
-      '<div class="odr-ord-card"><h3>Items</h3><div class="odr-ord-items">'+
-      '<div class="odr-ord-item"><div class="odr-ord-item-thumb" style="background:'+SELECTED_ORDER.grad+'"></div><div class="odr-ord-item-info"><div class="odr-ord-item-name">'+SELECTED_ORDER.name+'</div><div class="odr-ord-item-qty">Qty: 1</div></div><div class="odr-ord-item-price">'+SELECTED_ORDER.price+'</div></div>'+
-      '</div></div>';
+      var orderId = SELECTED_ORDER.sub.split('·')[0].trim() || '#----';
+      var people = [
+        {name:'Ahmed Benali', initials:'AB', grad:'linear-gradient(135deg,#1a2540,#0a3a6e)', time:'4h', label:'since arrived'},
+        {name:'Sofia Khelifi', initials:'SK', grad:'linear-gradient(135deg,#1a1a1a,#2e2e2e)', time:'2h', label:'since picked up'},
+        {name:'Omar Mesbahi', initials:'OM', grad:'linear-gradient(135deg,#241a14,#52392a)', time:'30m', label:'since delivered'}
+      ];
+      var html = '<div class="odr-ord-card"><div class="odr-ord-people">';
+      people.forEach(function(p){
+        html +=
+          '<div class="odr-msg-row">' +
+            '<div class="odr-msg-av" style="background:'+p.grad+'">'+p.initials+'</div>' +
+            '<div class="odr-msg-info">' +
+              '<div class="odr-msg-row1">' +
+                '<div class="odr-msg-name">'+p.name+'</div>' +
+                '<div class="odr-msg-time">'+p.time+'</div>' +
+              '</div>' +
+              '<div class="odr-msg-row2">' +
+                '<div class="odr-msg-preview">'+orderId+' · '+p.label+'</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+      });
+      html += '</div></div>';
+      body.innerHTML = html;
     }
   } else {
     // Messages tab — list contacts
+    search.placeholder = 'Search messages...';
     var html = '<div class="odr-msg-list">';
     CONTACTS.forEach(function(c, i){
       var avHtml = '<div class="odr-msg-av" style="background:'+c.grad+'">'+c.initials+(c.online?'<div class="onlinedot"></div>':'')+'</div>';
