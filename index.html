@@ -316,23 +316,33 @@
     height:100%;
     display:flex;
     flex-direction:column;
-    align-items:flex-start;
-    justify-content:flex-start;
-    gap:clamp(16px,2.6vh,26px);
-    padding:clamp(50px,8vh,76px) clamp(20px,5vw,56px) clamp(24px,5vh,40px);
+    align-items:center;
+    justify-content:center;
+    gap:clamp(18px,3.2vh,32px);
+    padding:clamp(76px,11vh,104px) clamp(20px,5vw,56px) clamp(28px,6vh,56px);
     opacity:0;
     transform:translateY(14px);
     will-change:opacity, transform;
   }
   .card-intro-lede{
-    text-align:left;
+    text-align:center;
   }
   .card-intro-lede .section-kicker{margin-bottom:0;}
   .product-grid{
-    display:grid;
-    grid-template-columns:repeat(2, 1fr);
-    gap:clamp(12px,2.4vw,20px);
-    width:min(500px, 88vw);
+    --card-w:clamp(230px, 38vh, 360px);
+    display:flex; flex-wrap:nowrap; justify-content:center; align-items:stretch;
+    gap:clamp(16px,2.4vw,28px);
+    width:100%; max-width:100%;
+    overflow-x:auto; overflow-y:hidden;
+    scroll-snap-type:x mandatory; scrollbar-width:none;
+    padding:10px 4px 54px; margin-bottom:-28px;   /* room for the card shadow inside the scroller */
+  }
+  .product-grid::-webkit-scrollbar{display:none;}
+  .product-grid > .product-card{flex:0 0 var(--card-w); width:var(--card-w); scroll-snap-align:center;}
+  /* more cards than fit: start from the left so nothing is cut off, and it swipes */
+  .product-grid.is-overflowing{justify-content:flex-start;}
+  @media (max-width:640px){
+    .product-grid{--card-w:min(68vw, 36vh); justify-content:flex-start; padding-inline:calc((100% - var(--card-w)) / 2);}
   }
   .product-card{
     all:unset;
@@ -341,9 +351,9 @@
     cursor:pointer;
     background:#fff;
     border:1px solid var(--hairline);
-    border-radius:16px;
-    padding:10px 10px 18px;
-    box-shadow:0 16px 36px rgba(20,20,25,.08);
+    border-radius:22px;
+    padding:12px 12px 20px;
+    box-shadow:0 18px 44px rgba(20,20,25,.09);
     transition:transform .35s var(--ease), box-shadow .35s var(--ease);
     text-align:center;
   }
@@ -351,31 +361,34 @@
   .product-card:active{transform:translateY(-1px) scale(.99);}
   .product-card-media{
     position:relative;
-    border-radius:10px;
+    border-radius:14px;
     overflow:hidden;
-    aspect-ratio:1/1;
+    aspect-ratio:4/5;
     background:linear-gradient(160deg,#eeeeec,#e2e2df);
   }
   .product-card-media img{width:100%;height:100%;object-fit:cover; object-position:50% 15%; pointer-events:none;}
-  .product-card-info{padding:16px 4px 2px;}
+  .product-card-info{padding:18px 4px 2px;}
   .product-card-name{
     font-family:'Space Grotesk',sans-serif;
     font-weight:600;
-    font-size:16px;
-    margin:0 0 4px;
-    letter-spacing:-.01em;
+    font-size:clamp(16px,2.1vh,19px);
+    margin:0 0 6px;
+    letter-spacing:-.012em;
   }
   .product-card-price{
-    font-family:'Instrument Serif',serif;
-    font-style:italic;
-    font-size:15px;
-    color:var(--graphite);
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:clamp(15px,2vh,17px);
+    letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums;
+    color:var(--ink);
     margin:0;
   }
+  .product-card-price s{font-weight:400; color:var(--graphite-soft); font-size:.86em; margin-left:6px;}
   .product-card-cta{
     display:inline-flex; align-items:center; gap:5px;
-    margin-top:12px;
-    font-size:10px; font-weight:600;
+    margin-top:14px;
+    font-size:11px; font-weight:600;
     letter-spacing:.08em; text-transform:uppercase;
     color:var(--ink);
     padding-bottom:2px;
@@ -398,11 +411,11 @@
     justify-content:center;
     background:linear-gradient(160deg,#f4f4f2,#eaeae7);
   }
-  .product-card-media--soon svg{width:20px;height:20px;stroke:var(--graphite-soft);}
+  .product-card-media--soon svg{width:26px;height:26px;stroke:var(--graphite-soft);}
   .product-card-soon{
     font-family:'Instrument Serif',serif;
     font-style:italic;
-    font-size:13px;
+    font-size:15px;
     line-height:1.35;
     color:var(--graphite-soft);
     margin:0;
@@ -543,16 +556,17 @@
     grid-template-columns:0.85fr 1.15fr 0.85fr;
     gap:clamp(28px,4vw,56px);
     align-items:start;
-    padding:24px 0 100px;
+    padding:24px 0 56px;
   }
 
   /* -- description column -- */
   .desc-col{padding-top:clamp(10px,4vw,54px);}
   .buy-price{
     font-family:'Space Grotesk',sans-serif;
-    font-weight:700;
+    font-weight:600;
     font-size:26px;
     letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums;
     color:var(--ink);
     margin:0 0 8px;
   }
@@ -978,7 +992,8 @@
     align-items: center;
   }
   .payment-option-price {
-    font-weight: 700;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight: 600;
     font-size: 15px;
   }
   .payment-option-desc {
@@ -1760,8 +1775,8 @@
     color: var(--graphite);
   }
   .order-summary-price {
-    font-family: var(--font-ui);
-    font-weight: 700;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight: 600;
     font-size: 18px;
     letter-spacing: -0.01em;
     color: var(--ink);
@@ -2162,27 +2177,260 @@
     .form-input, .wilaya-search input, .search-input-row input, #searchInput { font-size:16px; }
   }
 
-  /* ---------- SEARCH MODAL (quick, honest site search — not a product catalog search) ---------- */
-  .search-input-row{display:flex; align-items:center; gap:10px; padding:16px 20px; border-bottom:1px solid var(--hairline);}
-  .search-input-row svg{width:17px;height:17px; stroke:var(--graphite-soft); flex-shrink:0;}
-  .search-input-row input{
-    flex:1; border:none; outline:none; background:none;
-    font-size:15px; font-family:var(--font-ui); color:var(--ink);
+  /* ---------- SEARCH PAGE (full-screen, frosted white) ---------- */
+  .search-page{
+    position:fixed; inset:0; z-index:330;
+    visibility:hidden; opacity:0; pointer-events:none;
+    background:rgba(250,250,252,.975);
+    backdrop-filter:blur(40px) saturate(180%);
+    -webkit-backdrop-filter:blur(40px) saturate(180%);
+    transition:opacity .3s var(--ease), visibility 0s linear .3s;
   }
-  .search-input-row input::placeholder{color:var(--graphite-soft);}
-  .search-input-row button{background:none; border:none; padding:4px; margin:-4px; cursor:pointer; flex-shrink:0;}
-  .search-input-row button svg{width:15px;height:15px; stroke:var(--graphite);}
-  .search-results{max-height:min(360px,50vh); overflow-y:auto; padding:8px;}
-  .search-result-item{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    padding:12px 12px; border-radius:var(--radius-sm);
-    cursor:pointer; transition:background .15s var(--ease);
+  .search-page.is-open{visibility:visible; opacity:1; pointer-events:auto; transition:opacity .3s var(--ease), visibility 0s linear 0s;}
+  .search-page-inner{
+    max-width:640px; margin:0 auto; height:100%;
+    display:flex; flex-direction:column;
+    padding-top:env(safe-area-inset-top,0px);
+    transform:translateY(-10px);
+    transition:transform .5s cubic-bezier(.16,1,.3,1);
   }
-  .search-result-item:hover, .search-result-item.is-active{background:rgba(18,18,20,.045);}
-  .search-result-title{font-size:13.5px; font-weight:500; color:var(--ink);}
-  .search-result-sub{font-size:11.5px; color:var(--graphite-soft); margin-top:1px;}
-  .search-result-item svg{width:14px;height:14px; stroke:var(--graphite-soft); flex-shrink:0;}
-  .search-empty{padding:26px 20px; text-align:center; font-size:12.5px; color:var(--graphite-soft);}
+  .search-page.is-open .search-page-inner{transform:none;}
+
+  .search-topbar{display:flex; align-items:center; gap:16px; padding:16px 20px 14px; flex-shrink:0;}
+  .search-field{
+    flex:1; min-width:0; display:flex; align-items:center; gap:10px;
+    height:46px; padding:0 8px 0 16px; border-radius:999px;
+    background:rgba(255,255,255,.85);
+    border:1px solid rgba(17,17,19,.07);
+    box-shadow:0 1px 2px rgba(0,0,0,.04), 0 8px 24px -8px rgba(0,0,0,.10), inset 0 1px 0 #fff;
+    transition:border-color .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .search-field:focus-within{
+    border-color:rgba(17,17,19,.22);
+    box-shadow:0 1px 2px rgba(0,0,0,.05), 0 12px 30px -8px rgba(0,0,0,.16), inset 0 1px 0 #fff;
+  }
+  .search-field > svg{width:17px; height:17px; stroke:var(--graphite); flex-shrink:0;}
+  .search-field input{
+    flex:1; min-width:0; border:none; outline:none; background:none; -webkit-appearance:none; appearance:none;
+    font:400 16px var(--font-ui); letter-spacing:-.01em; color:var(--ink); padding:0;
+  }
+  .search-field input::placeholder{color:var(--graphite-soft);}
+  .search-field input::-webkit-search-cancel-button,
+  .search-field input::-webkit-search-decoration{-webkit-appearance:none; display:none;}
+  .search-clear{
+    width:30px; height:30px; border-radius:50%; border:none; padding:0; cursor:pointer; flex-shrink:0; background:none;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity .2s var(--ease);
+  }
+  .search-clear i{width:18px; height:18px; border-radius:50%; background:rgba(18,18,20,.22); display:flex; align-items:center; justify-content:center;}
+  .search-clear svg{width:9px; height:9px; stroke:#fff; stroke-width:3;}
+  .search-field.has-value .search-clear{opacity:1; pointer-events:auto;}
+  .search-cancel{
+    background:none; border:none; padding:10px 0; cursor:pointer; flex-shrink:0;
+    font:500 15px var(--font-ui); letter-spacing:-.01em; color:var(--ink); transition:opacity .2s var(--ease);
+  }
+  .search-cancel:hover{opacity:.55;}
+
+  .search-body{flex:1; display:flex; flex-direction:column; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; padding:6px 20px calc(36px + env(safe-area-inset-bottom,0px));}
+  .search-section{flex-shrink:0;}
+  .search-section + .search-section{margin-top:34px;}
+  .search-section-title{
+    display:flex; align-items:baseline; justify-content:space-between;
+    font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--graphite-soft); margin:0 2px 12px;
+  }
+  .search-section-title em{font-style:normal; letter-spacing:.02em; text-transform:none; font-weight:500; font-size:12px;}
+
+  /* popular searches */
+  .search-chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .search-chip{
+    padding:9px 16px; border-radius:999px; cursor:pointer; font:500 13px var(--font-ui); letter-spacing:-.005em; color:var(--ink);
+    background:#fff; border:1px solid rgba(17,17,19,.09);
+    transition:border-color .2s var(--ease), background .2s var(--ease);
+  }
+  .search-chip:hover{border-color:rgba(17,17,19,.3);}
+
+  /* product list: one grouped, hairline-divided panel */
+  .search-cards{
+    background:#fff; border-radius:20px; overflow:hidden;
+    border:1px solid rgba(17,17,19,.07);
+    box-shadow:0 1px 2px rgba(0,0,0,.03), 0 14px 34px -18px rgba(0,0,0,.14);
+  }
+  .search-card{
+    display:flex; align-items:center; gap:16px; width:100%; text-align:left;
+    padding:12px 16px 12px 12px; cursor:pointer; border:none; background:none;
+    font-family:var(--font-ui); color:var(--ink); position:relative;
+    opacity:0; transform:translateY(6px);
+    animation:searchCardIn .45s cubic-bezier(.16,1,.3,1) forwards;
+    animation-delay:calc(var(--i,0) * 40ms);
+    transition:background .2s var(--ease);
+  }
+  .search-card + .search-card::before{content:''; position:absolute; top:0; left:104px; right:0; height:1px; background:rgba(17,17,19,.07);}
+  @keyframes searchCardIn{to{opacity:1; transform:none;}}
+  .search-card:hover, .search-card.is-active{background:rgba(17,17,19,.03);}
+  .search-card:active{background:rgba(17,17,19,.06);}
+  .search-card-media{width:80px; height:80px; border-radius:13px; overflow:hidden; background:#f0f0f2; flex-shrink:0;}
+  .search-card-media img{width:100%; height:100%; object-fit:cover; object-position:center 20%; display:block;}
+  .search-card-text{flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;}
+  .search-card-name{font-size:15px; font-weight:500; letter-spacing:-.014em; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .search-card-name b{font-weight:700;}
+  .search-card-sub{font-size:12.5px; color:var(--graphite-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .search-card-end{flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; gap:4px; text-align:right;}
+  .search-card-price{font-family:'Space Grotesk',sans-serif; font-size:14.5px; font-weight:600; letter-spacing:-.01em; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .search-card-old{font-size:12px; color:var(--graphite-soft); text-decoration:line-through; white-space:nowrap;}
+  .search-card-badge{padding:2px 7px; border-radius:999px; background:var(--ink); color:#fff; font-size:10.5px; font-weight:600;}
+  .search-card-chevron{flex-shrink:0; width:15px; height:15px; stroke:rgba(17,17,19,.28); transition:transform .2s var(--ease), stroke .2s var(--ease);}
+  .search-card:hover .search-card-chevron{transform:translateX(2px); stroke:var(--ink);}
+
+  /* suggested products: centred, with hairline-flanked title and a slimmer card */
+  .search-section.search-section--suggested{
+    width:100%; max-width:420px; align-self:center;
+    margin-top:auto; margin-bottom:auto; padding:30px 0;
+  }
+  .search-section--suggested .search-section-title{justify-content:center; gap:14px; margin:0 0 16px;}
+  .search-section--suggested .search-section-title::before,
+  .search-section--suggested .search-section-title::after{content:''; flex:1; height:1px; background:rgba(17,17,19,.09);}
+  .search-section--suggested .search-card{padding:10px 14px 10px 10px; gap:14px;}
+  .search-section--suggested .search-card + .search-card::before{left:88px;}
+  .search-section--suggested .search-card-media{width:64px; height:64px; border-radius:11px;}
+  .search-section--suggested .search-card-name{font-size:14px;}
+  .search-section--suggested .search-card-sub{font-size:12px;}
+  .search-section--suggested .search-card-price{font-size:13.5px;}
+
+  .search-empty{padding:44px 12px 8px; text-align:center;}
+  .search-empty-icon{width:52px; height:52px; margin:0 auto 16px; border-radius:50%; background:#fff; border:1px solid rgba(17,17,19,.08); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px -10px rgba(0,0,0,.18);}
+  .search-empty-icon svg{width:20px; height:20px; stroke:var(--graphite);}
+  .search-empty strong{display:block; font-size:16px; font-weight:600; letter-spacing:-.012em; color:var(--ink);}
+  .search-empty span{display:block; margin-top:6px; font-size:13px; color:var(--graphite-soft);}
+  @media (max-width:520px){
+    .search-topbar{padding:12px 16px 12px; gap:14px;}
+    .search-body{padding-left:16px; padding-right:16px;}
+    .search-card-media{width:72px; height:72px;}
+    .search-card + .search-card::before{left:96px;}
+  }
+  @media (prefers-reduced-motion:reduce){ .search-card{animation:none; opacity:1; transform:none;} }
+
+  /* ---------- REVIEWS: verified customers only ---------- */
+  .rv-stars{display:inline-flex; position:relative; line-height:0; white-space:nowrap;}
+  .rv-stars-row{display:inline-flex; gap:2px;}
+  .rv-stars svg{width:15px; height:15px; flex-shrink:0; fill:rgba(17,17,19,.14); stroke:none;}
+  .rv-stars-top{position:absolute; left:0; top:0; overflow:hidden; white-space:nowrap;}
+  .rv-stars-top svg{fill:var(--ink);}
+  .rv-mini{
+    display:inline-flex; align-items:center; gap:10px; margin-top:22px;
+    padding:11px 16px; border-radius:999px; cursor:pointer; text-decoration:none;
+    background:#fff; border:1px solid var(--hairline);
+    font:500 13px var(--font-ui); letter-spacing:-.005em; color:var(--ink);
+    transition:border-color .2s var(--ease);
+  }
+  .rv-mini:hover{border-color:rgba(17,17,19,.3);}
+  .rv-mini-sub{color:var(--graphite);}
+  .rv-mini svg.rv-mini-arrow{width:13px; height:13px; stroke:var(--graphite); fill:none; stroke-width:2;}
+
+  .reviews-section{padding-top:56px; border-top:1px solid var(--hairline);}
+  .reviews-head{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:26px;}
+  .reviews-title{font-family:var(--font-ui); font-size:clamp(24px,3vw,32px); font-weight:700; letter-spacing:-.028em; margin:0; color:var(--ink);}
+  .rv-write-btn{
+    all:unset; cursor:pointer; box-sizing:border-box; flex-shrink:0;
+    padding:12px 22px; border-radius:999px; background:var(--ink); color:#fff;
+    font:600 13.5px var(--font-ui); letter-spacing:-.005em;
+    transition:transform .2s var(--ease), box-shadow .3s var(--ease);
+  }
+  .rv-write-btn:hover{transform:translateY(-1px); box-shadow:0 8px 20px rgba(18,18,20,.16);}
+  .rv-write-btn:active{transform:none;}
+  .reviews-layout{display:grid; grid-template-columns:280px minmax(0,1fr); gap:28px; align-items:start;}
+  .rv-summary{
+    position:sticky; top:84px; padding:26px; border-radius:22px; background:#fff;
+    border:1px solid var(--hairline); box-shadow:0 14px 34px -22px rgba(0,0,0,.16);
+  }
+  .rv-avg-row{display:flex; align-items:flex-end; gap:12px;}
+  .rv-avg{font:700 54px/0.9 var(--font-ui); letter-spacing:-.045em; color:var(--ink);}
+  .rv-avg-meta{padding-bottom:3px; display:flex; flex-direction:column; gap:7px;}
+  .rv-avg-count{font-size:12.5px; color:var(--graphite);}
+  .rv-bars{margin-top:22px; display:grid; gap:9px;}
+  .rv-bar-row{display:grid; grid-template-columns:10px 1fr 22px; align-items:center; gap:10px; font-size:12px; color:var(--graphite); font-variant-numeric:tabular-nums;}
+  .rv-bar-row span:last-child{text-align:right;}
+  .rv-bar{height:6px; border-radius:99px; background:rgba(17,17,19,.08); overflow:hidden;}
+  .rv-bar i{display:block; height:100%; background:var(--ink); border-radius:inherit; transition:width .7s cubic-bezier(.16,1,.3,1);}
+  .rv-verified-note{margin-top:20px; padding-top:16px; border-top:1px solid var(--hairline); display:flex; gap:8px; font-size:12px; line-height:1.5; color:var(--graphite);}
+  .rv-verified-note svg{width:15px; height:15px; flex-shrink:0; margin-top:1px; stroke:#2a7a4f; fill:none; stroke-width:2;}
+  .rv-panel{background:#fff; border:1px solid var(--hairline); border-radius:22px; overflow:hidden; box-shadow:0 14px 34px -22px rgba(0,0,0,.16);}
+  .rv-item{padding:24px 28px; animation:rvIn .5s cubic-bezier(.16,1,.3,1) both; animation-delay:calc(var(--i,0) * 50ms);}
+  .rv-item + .rv-item{border-top:1px solid var(--hairline);}
+  @keyframes rvIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+  .rv-item-top{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .rv-date{font-size:12px; color:var(--graphite-soft);}
+  .rv-body{margin:12px 0 16px; font-size:14.5px; line-height:1.65; color:var(--ink); white-space:pre-line; overflow-wrap:anywhere;}
+  .rv-item-foot{display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:13px;}
+  .rv-name{font-weight:600; color:var(--ink);}
+  .rv-verified{display:inline-flex; align-items:center; gap:5px; padding:3px 9px 3px 7px; border-radius:999px; background:rgba(42,122,79,.09); color:#2a7a4f; font-size:11.5px; font-weight:600;}
+  .rv-verified svg{width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.6;}
+  .rv-more{all:unset; cursor:pointer; box-sizing:border-box; display:block; width:100%; padding:16px; text-align:center; border-top:1px solid var(--hairline); font:600 13px var(--font-ui); color:var(--ink); transition:background .2s var(--ease);}
+  .rv-more:hover{background:rgba(17,17,19,.03);}
+  .rv-state{grid-column:1 / -1; padding:54px 20px; text-align:center; background:#fff; border:1px solid var(--hairline); border-radius:22px;}
+  .rv-state-icon{width:52px; height:52px; margin:0 auto 16px; border-radius:50%; background:var(--paper); border:1px solid var(--hairline); display:flex; align-items:center; justify-content:center;}
+  .rv-state-icon svg{width:22px; height:22px; stroke:var(--graphite); fill:none; stroke-width:1.6;}
+  .rv-state strong{display:block; font-size:16px; font-weight:600; letter-spacing:-.012em; color:var(--ink);}
+  .rv-state p{margin:6px auto 0; max-width:340px; font-size:13px; line-height:1.55; color:var(--graphite);}
+  .rv-state .rv-write-btn{display:inline-block; margin-top:20px;}
+  .rv-skel{height:12px; border-radius:6px; background:linear-gradient(90deg,rgba(17,17,19,.06),rgba(17,17,19,.11),rgba(17,17,19,.06)); background-size:200% 100%; animation:rvSkel 1.3s linear infinite;}
+  @keyframes rvSkel{to{background-position:-200% 0;}}
+
+  /* write-a-review modal */
+  .glass-modal-card--rw{max-width:430px;}
+  .rw-body{padding:0 22px 22px; overflow-y:auto;}
+  .rw-step{display:none;}
+  .rw-step.is-active{display:block; animation:rwIn .35s var(--ease);}
+  @keyframes rwIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+  .rw-intro{font-size:13px; line-height:1.55; color:var(--graphite); margin:0 0 18px;}
+  .rw-field{margin-bottom:14px;}
+  .rw-field .form-label{display:block; margin-bottom:6px;}
+  .rw-msg{display:none; gap:10px; align-items:flex-start; margin-top:14px; padding:12px 14px; border-radius:14px; font-size:12.5px; line-height:1.5;}
+  .rw-msg.is-shown{display:flex;}
+  .rw-msg svg{width:16px; height:16px; flex-shrink:0; margin-top:1px; fill:none; stroke:currentColor; stroke-width:1.9;}
+  .rw-msg.is-error{background:rgba(255,61,31,.07); color:#c6321a;}
+  .rw-msg.is-info{background:rgba(17,17,19,.05); color:var(--ink);}
+  .rw-submit{margin-top:18px;}
+  .rw-submit.is-loading{opacity:.65; pointer-events:none;}
+  .rw-link{all:unset; cursor:pointer; display:block; margin:14px auto 0; width:max-content; font:500 12.5px var(--font-ui); color:var(--graphite);}
+  .rw-link:hover{color:var(--ink);}
+  .rw-chip{display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:14px; background:rgba(42,122,79,.08); color:#2a7a4f; font-size:12.5px; font-weight:600; line-height:1.4; margin-bottom:18px;}
+  .rw-chip svg{width:16px; height:16px; flex-shrink:0; stroke:currentColor; fill:none; stroke-width:2.4;}
+  .rw-chip span{color:var(--ink); font-weight:500;}
+  .rw-rate{display:flex; align-items:center; gap:14px; margin-bottom:16px;}
+  .rw-stars{display:flex; gap:4px;}
+  .rw-star{all:unset; cursor:pointer; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:transform .15s var(--ease);}
+  .rw-star:hover{transform:scale(1.12);}
+  .rw-star:focus-visible{box-shadow:0 0 0 3px rgba(18,18,20,.15);}
+  .rw-star svg{width:26px; height:26px; fill:rgba(17,17,19,.13); stroke:none; transition:fill .15s var(--ease);}
+  .rw-star.is-on svg{fill:var(--ink);}
+  .rw-rate-label{font-size:13px; font-weight:600; color:var(--ink); min-width:76px;}
+  .rw-textarea{
+    all:unset; box-sizing:border-box; display:block; width:100%; min-height:112px; padding:13px 16px;
+    border:1px solid var(--hairline); border-radius:14px; background:#fff; box-shadow:inset 0 1px 2px rgba(18,18,20,.035);
+    font:14.5px/1.55 var(--font-ui); color:var(--ink); white-space:pre-wrap; overflow-wrap:anywhere;
+    transition:border-color .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .rw-textarea:empty::before{content:attr(data-placeholder); color:var(--graphite-soft);}
+  .rw-textarea:hover{border-color:rgba(18,18,20,.18);}
+  .rw-textarea:focus{border-color:var(--ink); box-shadow:0 0 0 4px rgba(18,18,20,.07);}
+  .rw-count{margin-top:6px; text-align:right; font-size:11.5px; color:var(--graphite-soft); font-variant-numeric:tabular-nums;}
+  .rw-done{text-align:center; padding:14px 6px 4px;}
+  .rw-done-check{width:56px; height:56px; margin:0 auto 16px; border-radius:50%; background:var(--ink); display:flex; align-items:center; justify-content:center;}
+  .rw-done-check svg{width:26px; height:26px; stroke:#fff; fill:none; stroke-width:2.4;}
+  .rw-done strong{display:block; font-size:18px; font-weight:700; letter-spacing:-.02em; color:var(--ink);}
+  .rw-done p{margin:8px 0 22px; font-size:13px; line-height:1.55; color:var(--graphite);}
+  @media (max-width:820px){
+    .reviews-layout{grid-template-columns:1fr; gap:18px;}
+    .rv-summary{position:static;}
+    .reviews-section{padding-top:40px;}
+    .rv-item{padding:20px 20px;}
+  }
+  @media (max-width:520px){
+    .reviews-head{align-items:center;}
+    .rv-write-btn{padding:11px 18px;}
+  }
+  @media (prefers-reduced-motion:reduce){ .rv-item{animation:none;} .rw-step.is-active{animation:none;} }
 
   /* ---------- BREADCRUMB ---------- */
   .breadcrumb{
@@ -2234,7 +2482,7 @@
 
   /* ---------- WHATSAPP FLOAT ---------- */
   .whatsapp-float{
-    position:fixed; right:20px; bottom:20px; z-index:60;
+    position:fixed; right:20px; bottom:calc(20px + var(--wa-lift, 0px)); z-index:60;
     width:52px;height:52px; border-radius:50%; background:#25D366;
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 6px 20px rgba(0,0,0,.28);
@@ -2242,7 +2490,7 @@
   }
   .whatsapp-float:hover{transform:scale(1.06);}
   .whatsapp-float svg{width:25px;height:25px;}
-  @media (max-width:720px){ .whatsapp-float{right:14px; bottom:14px; width:47px;height:47px;} }
+  @media (max-width:720px){ .whatsapp-float{right:14px; bottom:calc(14px + var(--wa-lift, 0px)); width:47px;height:47px;} }
 
   /* ---------- COOKIE CONSENT ---------- */
   .cookie-banner{
@@ -2393,7 +2641,7 @@
   .cart-item-name{display:block; font-size:13.5px; font-weight:600; color:var(--ink);}
   .cart-item-size{display:block; font-size:12px; color:var(--graphite); margin:1px 0 8px;}
   .cart-item-right{display:flex; flex-direction:column; align-items:flex-end; gap:10px;}
-  .cart-item-price{font-size:13px; font-weight:600; color:var(--ink); white-space:nowrap;}
+  .cart-item-price{font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; color:var(--ink); white-space:nowrap;}
   .cart-item-remove{
     background:none; border:none; padding:2px; cursor:pointer;
     color:var(--graphite-soft); font-size:11px; text-decoration:underline;
@@ -2773,20 +3021,21 @@
     </div>
   </div>
 
-  <!-- SEARCH MODAL: a small honest "quick jump" search across real destinations on the site
-       (the product, size guide, policies, contact) — not a fake product-catalog search, since
-       there's currently only one product to find. -->
-  <div class="glass-modal" id="searchModal" role="dialog" aria-modal="true" aria-label="Search">
-    <div class="glass-modal-backdrop" id="searchBackdrop"></div>
-    <div class="glass-modal-card" style="max-width:440px; padding:0; overflow:hidden;">
-      <div class="search-input-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input type="text" id="searchInput" placeholder="Search the store..." autocomplete="off">
-        <button type="button" id="searchCloseBtn" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+  <!-- SEARCH PAGE: full-screen glass search. Products (the hoodie + any catalog products)
+       are searchable; each product card opens that product's page directly. -->
+  <div class="search-page" id="searchModal" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true">
+    <div class="search-page-inner">
+      <div class="search-topbar">
+        <label class="search-field" id="searchField">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="search" id="searchInput" placeholder="Search products" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Search products">
+          <button type="button" class="search-clear" id="searchClearBtn" aria-label="Clear search" tabindex="-1">
+            <i><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></i>
+          </button>
+        </label>
+        <button type="button" class="search-cancel" id="searchCloseBtn">Cancel</button>
       </div>
-      <div class="search-results" id="searchResults"></div>
+      <div class="search-body" id="searchResults"></div>
     </div>
   </div>
 
@@ -2941,12 +3190,7 @@
             <span class="tag">Limited batch</span>
           </div>
 
-          <div class="reviews-block">
-            <div class="reviews-empty">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.75l-6.16 3.24 1.18-6.88L2 9.24l6.92-1L12 2l3.08 6.24 6.92 1-5.02 4.87 1.18 6.88z"/></svg>
-              <div class="reviews-empty-text"><strong>No reviews yet</strong>Be the first to try the Vertex Hoodie — genuine customer reviews will appear here.</div>
-            </div>
-          </div>
+          <a href="#reviewsSection" class="rv-mini" id="reviewsMini" aria-label="Read customer reviews"></a>
         </div>
 
         <div class="image-col reveal">
@@ -3033,6 +3277,18 @@
         </div>
 
       </div>
+
+      <!-- CUSTOMER REVIEWS: read by everyone, written only by customers whose order has shipped -->
+      <section class="reviews-section" id="reviewsSection" aria-labelledby="reviewsTitle">
+        <div class="reviews-head">
+          <div>
+            <span class="section-kicker">Customer reviews</span>
+            <h3 class="reviews-title" id="reviewsTitle">What customers say</h3>
+          </div>
+          <button type="button" class="rv-write-btn" id="reviewsWriteBtn">Write a review</button>
+        </div>
+        <div class="reviews-layout" id="reviewsLayout"></div>
+      </section>
     </div>
   </div>
 
@@ -3413,6 +3669,73 @@
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
           <span>Measured flat, garment laid out. Between sizes or want extra room? Size up — the Vertex is already cut relaxed.</span>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WRITE A REVIEW: step 1 verifies order number + phone (server-side), step 2 is the form -->
+  <div class="glass-modal" id="reviewWriteModal" role="dialog" aria-modal="true" aria-labelledby="rwTitle">
+    <div class="glass-modal-backdrop" id="rwBackdrop"></div>
+    <div class="glass-modal-card glass-modal-card--rw">
+      <div class="glass-modal-header">
+        <div>
+          <h3 class="glass-modal-title" id="rwTitle">Write a review</h3>
+          <p class="glass-modal-subtitle" id="rwSubtitle">Verified customers only</p>
+        </div>
+        <button type="button" class="glass-modal-close" id="rwClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="rw-body">
+
+        <form class="rw-step is-active" data-step="verify" id="rwVerifyForm" novalidate>
+          <p class="rw-intro">Enter the order number and phone number you used when ordering. We'll check that your order has shipped before you can review it.</p>
+          <div class="rw-field">
+            <label class="form-label" for="rwRef">Order number</label>
+            <div class="form-input-shell">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+              <input type="text" class="form-input ltr" id="rwRef" placeholder="AV-123456" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text">
+            </div>
+          </div>
+          <div class="rw-field">
+            <label class="form-label" for="rwPhone">Phone number</label>
+            <div class="form-input-shell">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <input type="tel" class="form-input ltr" id="rwPhone" placeholder="05/06/07 00 00 00 00" autocomplete="tel" inputmode="tel">
+            </div>
+          </div>
+          <div class="rw-msg" id="rwVerifyMsg" role="alert" aria-live="polite"></div>
+          <button type="submit" class="checkout-btn rw-submit" id="rwVerifyBtn"><span>Verify order</span></button>
+        </form>
+
+        <form class="rw-step" data-step="write" id="rwWriteForm" novalidate>
+          <div class="rw-chip">
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            <div id="rwChipText"></div>
+          </div>
+          <div class="rw-rate">
+            <div class="rw-stars" id="rwStars" role="radiogroup" aria-label="Your rating"></div>
+            <span class="rw-rate-label" id="rwRateLabel">Tap to rate</span>
+          </div>
+          <div class="rw-field" style="margin-bottom:0;">
+            <label class="form-label" for="rwBody" style="display:block;margin-bottom:6px;">Your review</label>
+            <div class="rw-textarea" id="rwBody" contenteditable="plaintext-only" role="textbox" aria-multiline="true" aria-label="Your review" data-placeholder="How does it fit? How is the quality?"></div>
+            <div class="rw-count" id="rwCount">0 / 600</div>
+          </div>
+          <div class="rw-msg" id="rwWriteMsg" role="alert" aria-live="polite"></div>
+          <button type="submit" class="checkout-btn rw-submit" id="rwSubmitBtn"><span>Submit review</span></button>
+          <button type="button" class="rw-link" id="rwBackBtn">Use a different order</button>
+        </form>
+
+        <div class="rw-step" data-step="done">
+          <div class="rw-done">
+            <div class="rw-done-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <strong id="rwDoneTitle">Thank you</strong>
+            <p>Your review is now live on the product page.</p>
+            <button type="button" class="checkout-btn" id="rwDoneBtn" style="margin-top:0;"><span>Done</span></button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -3990,6 +4313,7 @@
       if (error) { console.error('Could not load catalog products:', error); return; }
       catalogProducts = data || [];
       renderCatalogGrid();
+      if (window.__airverRefreshSearch) window.__airverRefreshSearch();
     } catch (err) {
       console.error('Could not load catalog products:', err);
     }
@@ -5169,50 +5493,445 @@
   // sheet — a leftover handler here used to also open the product overlay on every click,
   // which is why clicking the cart icon looked like it "jumped straight to the product page".)
 
-  // ---- Search: a small, honest quick-jump list across what the site actually has — not a ----
-  // fake product search, since there's only one product right now.
+  // ---- Search: full-screen page. Finds products (the hoodie + catalog products) and opens ----
+  // the chosen product's page directly. Help pages (size guide, shipping...) show as chips
+  // only when the query matches them.
   const searchModal = document.getElementById('searchModal');
   const searchInput = document.getElementById('searchInput');
+  const searchField = document.getElementById('searchField');
   const searchResultsEl = document.getElementById('searchResults');
-  const SEARCH_ITEMS = [
-    { title: 'Vertex Hoodie', sub: 'Outerwear — Noir', kw: 'vertex hoodie product noir outerwear', run: () => openOverlay() },
-    { title: 'Size guide', sub: 'Chest, length & sleeve measurements', kw: 'size guide measurements fit chest length sleeve xl large small', run: () => document.getElementById('sizeGuideModal').classList.add('is-open') },
-    { title: 'Shipping', sub: 'Delivery time & coverage across wilayas', kw: 'shipping delivery wilaya time cost', run: () => openPolicies('shipping') },
-    { title: 'Returns & exchanges', sub: 'Exchange window & refunds', kw: 'return exchange refund wrong size', run: () => openPolicies('returns') },
-    { title: 'Privacy policy', sub: 'What we collect and why', kw: 'privacy data personal information', run: () => openPolicies('privacy') },
-    { title: 'Terms', sub: 'Orders, payment & governing law', kw: 'terms conditions legal', run: () => openPolicies('terms') },
-    { title: 'Contact us', sub: 'Chat with us on WhatsApp', kw: 'contact whatsapp help support message', run: () => window.open('https://wa.me/' + WHATSAPP_NUMBER, '_blank') }
+  const SEARCH_INFO = [
+    { title: 'Size guide', kw: 'size guide measurements fit chest length sleeve xl large small', run: () => document.getElementById('sizeGuideModal').classList.add('is-open') },
+    { title: 'Shipping', kw: 'shipping delivery wilaya time cost', run: () => openPolicies('shipping') },
+    { title: 'Returns & exchanges', kw: 'return exchange refund wrong size', run: () => openPolicies('returns') },
+    { title: 'Privacy policy', kw: 'privacy data personal information', run: () => openPolicies('privacy') },
+    { title: 'Terms', kw: 'terms conditions legal', run: () => openPolicies('terms') },
+    { title: 'Contact us', kw: 'contact whatsapp help support message', run: () => window.open('https://wa.me/' + WHATSAPP_NUMBER, '_blank') }
   ];
-  function renderSearchResults(query) {
-    const q = query.trim().toLowerCase();
-    const matches = q ? SEARCH_ITEMS.filter(i => (i.title + ' ' + i.kw).toLowerCase().includes(q)) : SEARCH_ITEMS;
-    searchResultsEl.innerHTML = '';
-    if (!matches.length) {
-      searchResultsEl.innerHTML = '<div class="search-empty">Nothing matches "' + query.replace(/</g, '&lt;') + '". Try "size", "shipping" or "returns".</div>';
+  const SEARCH_CHEVRON = '<svg class="search-card-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
+
+  function searchNorm(t) {
+    return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f\u064b-\u065f]/g, '');
+  }
+  // bolds the part of a product name that matches what was typed
+  function searchHighlight(text, q) {
+    const tokens = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (!tokens.length) return escapeHtml(text);
+    const low = String(text).toLowerCase();
+    const mark = new Array(text.length).fill(false);
+    tokens.forEach(t => { let i = low.indexOf(t); while (i !== -1) { for (let k = i; k < i + t.length; k++) mark[k] = true; i = low.indexOf(t, i + t.length); } });
+    let out = '', open = false;
+    for (let k = 0; k < text.length; k++) {
+      if (mark[k] && !open) { out += '<b>'; open = true; }
+      if (!mark[k] && open) { out += '</b>'; open = false; }
+      out += escapeHtml(text[k]);
+    }
+    return out + (open ? '</b>' : '');
+  }
+  function searchAllProducts() {
+    const hoodieImgEl = document.querySelector('#productCard .product-card-media img');
+    const hoodiePriceEl = document.querySelector('#productCard .product-card-price');
+    const list = [{
+      name: 'Vertex Hoodie', sub: 'Outerwear — Noir',
+      price: hoodiePriceEl ? hoodiePriceEl.textContent.trim() : PRICE_COD, old: '', badge: '',
+      img: hoodieImgEl ? hoodieImgEl.src : '',
+      kw: 'vertex hoodie noir outerwear jacket sweatshirt black airver هودي',
+      open: () => openOverlay()
+    }];
+    (typeof catalogProducts !== 'undefined' ? catalogProducts : []).forEach(p => {
+      const onSale = productIsOnSale(p);
+      list.push({
+        name: p.name,
+        sub: p.category || p.subtitle || 'AIRVER',
+        price: formatDZD(p.price),
+        old: onSale ? formatDZD(p.compare_at_price) : '',
+        badge: onSale ? '-' + productDiscountPct(p) + '%' : '',
+        img: (p.images && p.images[0]) || '',
+        kw: [p.name, p.category, p.description].filter(Boolean).join(' '),
+        open: () => openQuickView(p)
+      });
+    });
+    return list;
+  }
+  function searchMatches(q, hay) {
+    const tokens = searchNorm(q).split(/\s+/).filter(Boolean);
+    const h = searchNorm(hay);
+    return tokens.every(t => h.includes(t));
+  }
+  function searchCardHtml(p, idx, q) {
+    return '<button type="button" class="search-card" style="--i:' + idx + '" data-idx="' + idx + '">' +
+      '<span class="search-card-media">' + (p.img ? '<img src="' + p.img + '" alt="" loading="lazy">' : '') + '</span>' +
+      '<span class="search-card-text">' +
+        '<span class="search-card-name">' + searchHighlight(p.name, q || '') + '</span>' +
+        '<span class="search-card-sub">' + escapeHtml(p.sub) + '</span>' +
+      '</span>' +
+      '<span class="search-card-end">' +
+        '<span class="search-card-price">' + escapeHtml(p.price) + '</span>' +
+        (p.old ? '<span class="search-card-old">' + escapeHtml(p.old) + '</span>' : '') +
+        (p.badge ? '<span class="search-card-badge">' + escapeHtml(p.badge) + '</span>' : '') +
+      '</span>' + SEARCH_CHEVRON + '</button>';
+  }
+  let searchShown = [];   // products on screen, in order (results first, then suggestions)
+  let searchActive = -1;  // keyboard-highlighted card
+  function setSearchActive(i) {
+    const cards = searchResultsEl.querySelectorAll('.search-card');
+    searchActive = cards.length ? (i + cards.length) % cards.length : -1;
+    cards.forEach((c, n) => c.classList.toggle('is-active', n === searchActive));
+    if (searchActive > -1) cards[searchActive].scrollIntoView({ block: 'nearest' });
+  }
+  function renderSearch(query) {
+    const q = query.trim();
+    const all = searchAllProducts();
+    const results = q ? all.filter(p => searchMatches(q, p.name + ' ' + p.kw)) : [];
+    const suggested = all.filter(p => results.indexOf(p) === -1);
+    searchShown = results.concat(suggested);
+    searchActive = -1;
+    let html = '';
+    if (!q) {
+      const terms = ['Hoodie', 'Noir', 'Outerwear'];
+      all.slice(1).forEach(p => { [p.name, p.sub].forEach(t => { if (t && t !== 'AIRVER' && terms.indexOf(t) === -1) terms.push(t); }); });
+      html += '<section class="search-section"><div class="search-section-title">Popular searches</div><div class="search-chips">' +
+        terms.slice(0, 8).map(t => '<button type="button" class="search-chip" data-term="' + escapeHtml(t) + '">' + escapeHtml(t) + '</button>').join('') + '</div></section>';
+    } else if (results.length) {
+      html += '<section class="search-section"><div class="search-section-title">Results<em>' + results.length + (results.length === 1 ? ' product' : ' products') + '</em></div><div class="search-cards">' +
+        results.map((p, i) => searchCardHtml(p, i, q)).join('') + '</div></section>';
+    } else {
+      html += '<div class="search-empty"><div class="search-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div><strong>No results for “' + escapeHtml(q) + '”</strong><span>Check the spelling or try a different word.</span></div>';
+    }
+    if (q) {
+      const info = SEARCH_INFO.filter(i => searchMatches(q, i.title + ' ' + i.kw));
+      if (info.length) {
+        html += '<section class="search-section"><div class="search-section-title">Help</div><div class="search-chips">' +
+          info.map(i => '<button type="button" class="search-chip" data-info="' + SEARCH_INFO.indexOf(i) + '">' + escapeHtml(i.title) + '</button>').join('') + '</div></section>';
+      }
+    }
+    if (suggested.length) {
+      html += '<section class="search-section search-section--suggested"><div class="search-section-title">Suggested products</div><div class="search-cards">' +
+        suggested.map((p, i) => searchCardHtml(p, results.length + i, '')).join('') + '</div></section>';
+    }
+    searchResultsEl.innerHTML = html;
+    searchResultsEl.scrollTop = 0;
+    searchField.classList.toggle('has-value', !!searchInput.value);
+  }
+  function openSearchPage() {
+    searchInput.value = '';
+    renderSearch('');
+    const sbw = window.innerWidth - document.documentElement.clientWidth;
+    searchModal.classList.add('is-open');
+    searchModal.setAttribute('aria-hidden', 'false');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    if (sbw > 0) document.body.style.paddingRight = sbw + 'px';
+    setTimeout(() => searchInput.focus(), 150);
+  }
+  function closeSearchPage() {
+    if (!searchModal.classList.contains('is-open')) return;
+    searchModal.classList.remove('is-open');
+    searchModal.setAttribute('aria-hidden', 'true');
+    searchInput.blur();
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+  document.getElementById('searchBtn').addEventListener('click', openSearchPage);
+  searchInput.addEventListener('input', () => renderSearch(searchInput.value));
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setSearchActive(searchActive + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setSearchActive(searchActive - 1); }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      const idx = searchActive > -1 ? searchActive : (searchInput.value.trim() ? 0 : -1);
+      if (idx > -1 && searchShown[idx]) { const p = searchShown[idx]; closeSearchPage(); p.open(); }
+      else searchInput.blur();
+    }
+  });
+  document.getElementById('searchClearBtn').addEventListener('click', () => {
+    searchInput.value = ''; renderSearch(''); searchInput.focus();
+  });
+  document.getElementById('searchCloseBtn').addEventListener('click', closeSearchPage);
+  searchResultsEl.addEventListener('click', (e) => {
+    const card = e.target.closest('.search-card');
+    if (card) { const p = searchShown[+card.dataset.idx]; closeSearchPage(); if (p) p.open(); return; }
+    const chip = e.target.closest('.search-chip');
+    if (!chip) return;
+    if (chip.dataset.term) { searchInput.value = chip.dataset.term; renderSearch(searchInput.value); searchInput.focus(); return; }
+    const it = SEARCH_INFO[+chip.dataset.info]; closeSearchPage(); if (it) it.run();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && searchModal.classList.contains('is-open')) closeSearchPage();
+  });
+  // catalog products load a moment after the page does — refresh the list if search is open
+  window.__airverRefreshSearch = () => { if (searchModal.classList.contains('is-open')) renderSearch(searchInput.value); };
+
+  // ---- Customer reviews -----------------------------------------------------------------
+  // Everyone can read. To write, the customer enters their order number + phone; the
+  // database (functions in airver-reviews-setup.sql) checks the pair matches a real order
+  // AND that it has shipped — the browser never reads the orders table, and the same check
+  // runs again when the review is saved, so it cannot be skipped.
+  const REVIEW_PRODUCT = 'Vertex Hoodie';
+  const RV_STAR = '<svg viewBox="0 0 24 24"><path d="M12 17.75l-6.16 3.24 1.18-6.88L2 9.24l6.92-1L12 2l3.08 6.24 6.92 1-5.02 4.87 1.18 6.88z"/></svg>';
+  const RV_CHECK = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>';
+  const RV_INFO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r=".6" fill="currentColor"/></svg>';
+  const RV_LABELS = ['Poor', 'Fair', 'Good', 'Very good', 'Excellent'];
+  const reviewsLayout = document.getElementById('reviewsLayout');
+  const reviewsMini = document.getElementById('reviewsMini');
+  let reviewsList = [];
+  let reviewsState = 'loading';   // loading | ready | error
+  let reviewsVisible = 4;
+
+  function rvStars(value) {
+    const row = RV_STAR.repeat(5);
+    const pct = Math.max(0, Math.min(100, value / 5 * 100));
+    return '<span class="rv-stars" role="img" aria-label="' + value.toFixed(1) + ' out of 5"><span class="rv-stars-row">' + row + '</span><span class="rv-stars-top" style="width:' + pct + '%"><span class="rv-stars-row">' + row + '</span></span></span>';
+  }
+  function rvDate(iso) {
+    const d = new Date(iso);
+    return isNaN(d) ? '' : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function rvStateBox(icon, title, text, withBtn) {
+    return '<div class="rv-state"><div class="rv-state-icon">' + icon + '</div><strong>' + title + '</strong><p>' + text + '</p>' +
+      (withBtn ? '<button type="button" class="rv-write-btn" data-rv-write>Write a review</button>' : '') + '</div>';
+  }
+  function renderReviews() {
+    const starIcon = '<svg viewBox="0 0 24 24"><path d="M12 17.75l-6.16 3.24 1.18-6.88L2 9.24l6.92-1L12 2l3.08 6.24 6.92 1-5.02 4.87 1.18 6.88z"/></svg>';
+    if (reviewsState === 'loading') {
+      reviewsLayout.innerHTML = '<div class="rv-summary"><div class="rv-skel" style="width:60%;height:34px;margin-bottom:18px"></div><div class="rv-skel" style="width:90%;margin-bottom:10px"></div><div class="rv-skel" style="width:80%"></div></div>' +
+        '<div class="rv-panel"><div class="rv-item"><div class="rv-skel" style="width:30%;margin-bottom:14px"></div><div class="rv-skel" style="width:95%;margin-bottom:8px"></div><div class="rv-skel" style="width:70%"></div></div></div>';
+      reviewsMini.innerHTML = '';
+      reviewsMini.style.display = 'none';
       return;
     }
-    matches.forEach(item => {
-      const row = document.createElement('div');
-      row.className = 'search-result-item';
-      row.innerHTML = '<div><div class="search-result-title"></div><div class="search-result-sub"></div></div><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
-      row.querySelector('.search-result-title').textContent = item.title;
-      row.querySelector('.search-result-sub').textContent = item.sub;
-      row.addEventListener('click', () => {
-        searchModal.classList.remove('is-open');
-        item.run();
-      });
-      searchResultsEl.appendChild(row);
-    });
+    reviewsMini.style.display = '';
+    if (reviewsState === 'error') {
+      reviewsLayout.innerHTML = rvStateBox(starIcon, 'Reviews are unavailable right now', 'Please try again in a moment.', false);
+      reviewsMini.style.display = 'none';
+      return;
+    }
+    if (!reviewsList.length) {
+      reviewsLayout.innerHTML = rvStateBox(starIcon, 'No reviews yet', 'Reviews come from customers whose order has shipped. Bought the Vertex Hoodie? Be the first to share how it fits.', true);
+      reviewsMini.innerHTML = '<span class="rv-mini-sub">No reviews yet</span><span>Write the first</span>';
+      return;
+    }
+    const n = reviewsList.length;
+    const avg = reviewsList.reduce((a, r) => a + r.rating, 0) / n;
+    const counts = [5, 4, 3, 2, 1].map(k => reviewsList.filter(r => r.rating === k).length);
+    const bars = [5, 4, 3, 2, 1].map((k, i) =>
+      '<div class="rv-bar-row"><span>' + k + '</span><div class="rv-bar"><i style="width:' + Math.round(counts[i] / n * 100) + '%"></i></div><span>' + counts[i] + '</span></div>').join('');
+    const summary = '<aside class="rv-summary"><div class="rv-avg-row"><div class="rv-avg">' + avg.toFixed(1) + '</div><div class="rv-avg-meta">' + rvStars(avg) +
+      '<span class="rv-avg-count">' + n + (n === 1 ? ' review' : ' reviews') + '</span></div></div><div class="rv-bars">' + bars + '</div>' +
+      '<div class="rv-verified-note">' + RV_CHECK + '<span>Every review comes from a customer whose order has shipped.</span></div></aside>';
+    const shown = reviewsList.slice(0, reviewsVisible);
+    const items = shown.map((r, i) =>
+      '<article class="rv-item" style="--i:' + Math.min(i, 6) + '"><div class="rv-item-top">' + rvStars(r.rating) + '<span class="rv-date">' + rvDate(r.created_at) + '</span></div>' +
+      '<p class="rv-body">' + escapeHtml(r.body) + '</p>' +
+      '<div class="rv-item-foot"><span class="rv-name">' + escapeHtml(r.display_name) + '</span><span class="rv-verified">' + RV_CHECK + 'Verified purchase</span></div></article>').join('');
+    const more = reviewsList.length > reviewsVisible ? '<button type="button" class="rv-more" id="rvMoreBtn">Show more reviews</button>' : '';
+    reviewsLayout.innerHTML = summary + '<div class="rv-panel">' + items + more + '</div>';
+    reviewsMini.innerHTML = rvStars(avg) + '<span>' + avg.toFixed(1) + '</span><span class="rv-mini-sub">· ' + n + (n === 1 ? ' review' : ' reviews') + '</span>';
   }
-  document.getElementById('searchBtn').addEventListener('click', () => {
-    searchInput.value = '';
-    renderSearchResults('');
-    searchModal.classList.add('is-open');
-    setTimeout(() => searchInput.focus(), 350);
+  async function loadReviews() {
+    if (!sb) { reviewsState = 'error'; renderReviews(); return; }
+    try {
+      const { data, error } = await sb.from('public_reviews').select('id,product,rating,body,display_name,created_at')
+        .eq('product', REVIEW_PRODUCT).order('created_at', { ascending: false }).limit(200);
+      if (error) throw error;
+      reviewsList = data || [];
+      reviewsState = 'ready';
+    } catch (err) {
+      console.error('Reviews could not be loaded:', err);
+      reviewsState = 'error';
+    }
+    renderReviews();
+  }
+  reviewsLayout.addEventListener('click', (e) => {
+    if (e.target.closest('[data-rv-write]')) { openReviewModal(); return; }
+    if (e.target.closest('#rvMoreBtn')) { reviewsVisible += 6; renderReviews(); }
   });
-  searchInput.addEventListener('input', () => renderSearchResults(searchInput.value));
-  document.getElementById('searchCloseBtn').addEventListener('click', () => searchModal.classList.remove('is-open'));
-  document.getElementById('searchBackdrop').addEventListener('click', () => searchModal.classList.remove('is-open'));
+  document.getElementById('reviewsWriteBtn').addEventListener('click', () => openReviewModal());
+  reviewsMini.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // ---- write-a-review modal ----
+  const rwModal = document.getElementById('reviewWriteModal');
+  const rwRef = document.getElementById('rwRef');
+  const rwPhone = document.getElementById('rwPhone');
+  const rwBody = document.getElementById('rwBody');
+  const rwStarsEl = document.getElementById('rwStars');
+  let rwCtx = null;      // { ref, phone, name } once the order is verified
+  let rwRating = 0;
+
+  rwStarsEl.innerHTML = [1, 2, 3, 4, 5].map(k =>
+    '<button type="button" class="rw-star" role="radio" aria-checked="false" aria-label="' + k + ' star' + (k > 1 ? 's' : '') + '" data-k="' + k + '">' + RV_STAR + '</button>').join('');
+  function rwPaintStars(val) {
+    rwStarsEl.querySelectorAll('.rw-star').forEach(b => b.classList.toggle('is-on', +b.dataset.k <= val));
+    document.getElementById('rwRateLabel').textContent = val ? RV_LABELS[val - 1] : 'Tap to rate';
+  }
+  function rwSetRating(val) {
+    rwRating = val;
+    rwStarsEl.querySelectorAll('.rw-star').forEach(b => b.setAttribute('aria-checked', String(+b.dataset.k === val)));
+    rwPaintStars(val);
+  }
+  rwStarsEl.addEventListener('click', (e) => { const b = e.target.closest('.rw-star'); if (b) { rwSetRating(+b.dataset.k); rwMsg('rwWriteMsg'); } });
+  rwStarsEl.addEventListener('mouseover', (e) => { const b = e.target.closest('.rw-star'); if (b) rwPaintStars(+b.dataset.k); });
+  rwStarsEl.addEventListener('mouseleave', () => rwPaintStars(rwRating));
+  rwStarsEl.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { e.preventDefault(); rwSetRating(Math.min(5, (rwRating || 0) + 1)); rwStarsEl.querySelector('[data-k="' + rwRating + '"]').focus(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { e.preventDefault(); rwSetRating(Math.max(1, (rwRating || 2) - 1)); rwStarsEl.querySelector('[data-k="' + rwRating + '"]').focus(); }
+  });
+
+  function rwMsg(id, kind, text) {
+    const el = document.getElementById(id);
+    if (!kind) { el.className = 'rw-msg'; el.innerHTML = ''; return; }
+    el.className = 'rw-msg is-shown is-' + kind;
+    el.innerHTML = RV_INFO + '<div>' + escapeHtml(text) + '</div>';
+  }
+  const RW_TITLES = { verify: ['Write a review', 'Verified customers only'], write: ['Your review', 'Vertex Hoodie'], done: ['Review posted', ''] };
+  function rwShow(step) {
+    rwModal.querySelectorAll('.rw-step').forEach(x => x.classList.toggle('is-active', x.dataset.step === step));
+    document.getElementById('rwTitle').textContent = RW_TITLES[step][0];
+    document.getElementById('rwSubtitle').textContent = RW_TITLES[step][1];
+  }
+  function openReviewModal() {
+    rwCtx = null; rwSetRating(0);
+    rwRef.value = ''; rwPhone.value = ''; rwBody.textContent = '';
+    document.getElementById('rwCount').textContent = '0 / 600';
+    rwMsg('rwVerifyMsg'); rwMsg('rwWriteMsg');
+    rwShow('verify');
+    rwModal.classList.add('is-open');
+    setTimeout(() => rwRef.focus(), 300);
+  }
+  function closeReviewModal() { rwModal.classList.remove('is-open'); }
+  function rwLoading(btn, on, label) {
+    btn.classList.toggle('is-loading', on);
+    btn.querySelector('span').textContent = on ? label : btn.dataset.label;
+  }
+  const rwVerifyBtn = document.getElementById('rwVerifyBtn');
+  const rwSubmitBtn = document.getElementById('rwSubmitBtn');
+  rwVerifyBtn.dataset.label = 'Verify order';
+  rwSubmitBtn.dataset.label = 'Submit review';
+
+  document.getElementById('rwVerifyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    rwMsg('rwVerifyMsg');
+    const refDigits = rwRef.value.replace(/\D/g, '');
+    const phoneDigits = rwPhone.value.replace(/\D/g, '');
+    if (refDigits.length !== 6) { rwMsg('rwVerifyMsg', 'error', 'Enter the 6-digit number from your order confirmation, for example AV-123456.'); rwRef.focus(); return; }
+    if (phoneDigits.length < 9) { rwMsg('rwVerifyMsg', 'error', 'Enter the phone number you used when ordering.'); rwPhone.focus(); return; }
+    if (!sb) { rwMsg('rwVerifyMsg', 'error', 'We can’t reach our server right now. Please try again in a moment.'); return; }
+    rwLoading(rwVerifyBtn, true, 'Checking your order…');
+    try {
+      const { data, error } = await sb.rpc('review_check_order', { p_ref: rwRef.value.trim(), p_phone: rwPhone.value.trim() });
+      if (error) throw error;
+      const st = data && data.status;
+      if (st === 'not_found') {
+        rwMsg('rwVerifyMsg', 'error', 'We couldn’t find an order with these details. Check the order number and the phone number you gave when ordering.');
+      } else if (st === 'not_shipped') {
+        rwMsg('rwVerifyMsg', 'info', 'Your order hasn’t shipped yet. You’ll be able to review it once it’s on its way.');
+      } else if (st === 'ok') {
+        if ((data.products || []).indexOf(REVIEW_PRODUCT) === -1) {
+          rwMsg('rwVerifyMsg', 'info', 'This order doesn’t include the ' + REVIEW_PRODUCT + '.');
+        } else if ((data.reviewed || []).indexOf(REVIEW_PRODUCT) !== -1) {
+          rwMsg('rwVerifyMsg', 'info', 'You’ve already reviewed this order. Thank you!');
+        } else {
+          rwCtx = { ref: rwRef.value.trim(), phone: rwPhone.value.trim(), name: data.name || 'Verified customer' };
+          document.getElementById('rwChipText').innerHTML = 'Order ' + escapeHtml(data.ref || '') + ' verified<br><span>Posting as ' + escapeHtml(rwCtx.name) + '</span>';
+          rwMsg('rwWriteMsg');
+          rwShow('write');
+          setTimeout(() => rwStarsEl.querySelector('.rw-star').focus(), 250);
+        }
+      } else {
+        rwMsg('rwVerifyMsg', 'error', 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      console.error('Order check failed:', err);
+      rwMsg('rwVerifyMsg', 'error', 'We couldn’t check your order right now. Please try again in a moment.');
+    }
+    rwLoading(rwVerifyBtn, false);
+  });
+
+  rwBody.addEventListener('input', () => {
+    rwMsg('rwWriteMsg');
+    if (rwBody.textContent.length > 600) { rwBody.textContent = rwBody.textContent.slice(0, 600); }
+    document.getElementById('rwCount').textContent = rwBody.textContent.length + ' / 600';
+  });
+  [rwRef, rwPhone].forEach(i => i.addEventListener('input', () => rwMsg('rwVerifyMsg')));
+  rwBody.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const t = (e.clipboardData || window.clipboardData).getData('text');
+    document.execCommand('insertText', false, t);
+  });
+  document.getElementById('rwBackBtn').addEventListener('click', () => { rwCtx = null; rwMsg('rwVerifyMsg'); rwShow('verify'); });
+
+  document.getElementById('rwWriteForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    rwMsg('rwWriteMsg');
+    const text = rwBody.textContent.trim();
+    if (!rwCtx) { rwShow('verify'); return; }
+    if (!rwRating) { rwMsg('rwWriteMsg', 'error', 'Please choose a star rating.'); return; }
+    if (text.length < 10) { rwMsg('rwWriteMsg', 'error', 'Please write at least 10 characters.'); rwBody.focus(); return; }
+    rwLoading(rwSubmitBtn, true, 'Posting…');
+    try {
+      const { data, error } = await sb.rpc('submit_review', { p_ref: rwCtx.ref, p_phone: rwCtx.phone, p_product: REVIEW_PRODUCT, p_rating: rwRating, p_body: text });
+      if (error) throw error;
+      const st = data && data.status;
+      if (st === 'ok') {
+        document.getElementById('rwDoneTitle').textContent = 'Thank you, ' + rwCtx.name.split(' ')[0];
+        rwShow('done');
+        reviewsVisible = Math.max(reviewsVisible, 4);
+        loadReviews();
+      } else if (st === 'already_reviewed') {
+        rwMsg('rwWriteMsg', 'info', 'You’ve already reviewed this order. Thank you!');
+      } else if (st === 'not_shipped') {
+        rwMsg('rwWriteMsg', 'info', 'Your order hasn’t shipped yet. You’ll be able to review it once it’s on its way.');
+      } else {
+        rwMsg('rwWriteMsg', 'error', 'We couldn’t post your review. Please check it and try again.');
+      }
+    } catch (err) {
+      console.error('Review could not be saved:', err);
+      rwMsg('rwWriteMsg', 'error', 'We couldn’t post your review right now. Please try again in a moment.');
+    }
+    rwLoading(rwSubmitBtn, false);
+  });
+  document.getElementById('rwDoneBtn').addEventListener('click', closeReviewModal);
+  document.getElementById('rwClose').addEventListener('click', closeReviewModal);
+  document.getElementById('rwBackdrop').addEventListener('click', closeReviewModal);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && rwModal.classList.contains('is-open')) closeReviewModal(); });
+  renderReviews();
+  loadReviews();
+
+  // ---- Keep the WhatsApp button off the footer: once the footer scrolls into view the button
+  // rides up with its top edge, so it never covers the footer links. ----
+  (function () {
+    const wa = document.querySelector('.whatsapp-float');
+    const footer = document.getElementById('siteFooter');
+    if (!wa || !footer) return;
+    let queued = false;
+    function place() {
+      queued = false;
+      const overlap = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top);
+      wa.style.setProperty('--wa-lift', overlap + 'px');
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(place); } }
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    place();
+  })();
+
+  // ---- Product row: only "overflowing" (left-aligned, swipeable) when the cards really don't fit ----
+  (function () {
+    const grid = document.querySelector('.product-grid');
+    if (!grid) return;
+    function check() {
+      grid.classList.remove('is-overflowing');
+      if (grid.scrollWidth > grid.clientWidth + 2) grid.classList.add('is-overflowing');
+    }
+    window.addEventListener('resize', check);
+    window.addEventListener('load', check);
+    new MutationObserver(check).observe(grid, { childList: true });
+    check();
+  })();
 
   // ---- "Home" links (desktop nav, mobile menu, breadcrumb): close the overlay if open, scroll up ----
   function goHome(e) {
