@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script>addEventListener("load",function(){if(typeof jsQR!=="function"){var s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js";document.head.appendChild(s)}})</script>
 <style>
 :root{
   color-scheme:light;
@@ -53,10 +54,11 @@ button{background:none;border:0;cursor:pointer}
 .top{position:absolute;left:0;right:0;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:calc(var(--top) + 10px) 18px 8px;height:calc(var(--top) + 64px)}
 .top .logo{position:absolute;left:50%;top:calc(var(--top) + 33px);transform:translate(-50%,-50%);height:31px;width:auto}
 #app[data-tab=scan] .top .logo{filter:brightness(1.7) saturate(1.2) drop-shadow(0 0 6px rgba(0,0,0,.35))}
-.menu-b{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#fff;
-  box-shadow:inset 0 0 0 1px var(--line),0 8px 22px -10px var(--shade);transition:transform .25s var(--spring)}
-.menu-b:active{transform:scale(.92)}
-.menu-b svg{width:22px;height:22px}
+.glass-c{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(18px) saturate(190%);backdrop-filter:blur(18px) saturate(190%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.34),inset 0 1.5px 0 rgba(255,255,255,.6),inset 0 -8px 12px -6px rgba(255,255,255,.12),0 10px 26px -10px rgba(0,0,0,.55);transition:transform .25s var(--spring),background .25s}
+.glass-c:active{transform:scale(.92);background:rgba(255,255,255,.28)}
+.glass-c svg{width:22px;height:22px}.menu-b svg{width:21px;height:21px}
+#app[data-tab=people] .menu-b{color:var(--ink);background:rgba(14,16,22,.045);box-shadow:inset 0 0 0 1px rgba(14,16,22,.1),inset 0 1.5px 0 rgba(255,255,255,.95),inset 0 -8px 12px -6px rgba(14,16,22,.05),0 10px 24px -14px var(--shade)}
 .page{position:absolute;inset:0;display:none;flex-direction:column}
 .page.on{display:flex}
 
@@ -76,7 +78,8 @@ button{background:none;border:0;cursor:pointer}
 .nocam{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:30px;text-align:center;color:#c4cdea}
 .nocam svg{width:46px;height:46px;opacity:.7}.nocam p{font-size:14.5px;line-height:1.55;max-width:270px}
 .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}.flash.go{animation:flash .35s ease-out}
-.shutter{position:absolute;left:0;right:0;bottom:calc(var(--bot) + 84px);display:grid;place-items:center;z-index:6}
+.shutter{position:absolute;left:0;right:0;bottom:calc(var(--bot) + 84px);display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;padding:0 24px;z-index:6}
+#shot{grid-column:2}#upBtn{grid-column:1;justify-self:start}
 #shot{width:80px;height:80px;border-radius:50%;padding:6px;background:rgba(255,255,255,.28);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 0 0 2px rgba(255,255,255,.85),0 14px 30px -12px rgba(0,0,0,.5);transition:transform .2s var(--spring)}
 #shot span{display:block;width:100%;height:100%;border-radius:50%;background:linear-gradient(180deg,#FBFBFD,#DCDFE6);box-shadow:inset 0 2px 2px rgba(255,255,255,.9),inset 0 -3px 6px rgba(80,90,120,.18),0 2px 8px rgba(0,0,0,.18);transition:transform .2s var(--spring)}
 #shot:active{transform:scale(.94)}#shot:active span{transform:scale(.9)}
@@ -164,7 +167,7 @@ button{background:none;border:0;cursor:pointer}
 .grab{width:38px;height:5px;border-radius:3px;background:rgba(14,16,22,.14);margin:0 auto 16px}
 .sheet h2{font-size:22px;font-weight:750;letter-spacing:-.5px;line-height:1.2}
 .cust{display:flex;align-items:center;gap:12px;padding:12px;border-radius:22px;background:var(--soft);margin-bottom:18px}
-.cust .av{width:44px;height:44px;font-size:17px}.cust .meta small{margin-top:3px}
+.cust .av{width:44px;height:44px;font-size:17px}.cust .meta small{margin-top:3px}.cust .pr{flex:none;font-size:16px;font-weight:750;letter-spacing:-.3px;white-space:nowrap}
 .sheet h2.q{margin:0 2px 16px}
 .act{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:58px;border-radius:20px;font-size:16.5px;font-weight:650;letter-spacing:-.2px;color:#fff;transition:transform .25s var(--spring)}
 .act:active{transform:scale(.97)}.act svg{width:22px;height:22px}
@@ -190,6 +193,30 @@ button{background:none;border:0;cursor:pointer}
   padding:11px 18px;border-radius:99px;font-size:14px;font-weight:500;transition:all .35s var(--ease)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes sweepA{0%{top:-52px}100%{top:100%}}
+.an{position:fixed;inset:0;z-index:48;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:rgba(8,12,26,.62);-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);opacity:0;pointer-events:none;transition:opacity .35s}
+.an.on{opacity:1;pointer-events:auto}
+.an-img{position:relative;width:min(74vw,290px);aspect-ratio:1;border-radius:32px;overflow:hidden;background:#111;box-shadow:0 0 0 2px rgba(255,255,255,.28),0 34px 60px -24px rgba(0,0,0,.7);transform:scale(.92);transition:transform .5s var(--spring)}
+.an.on .an-img{transform:none}
+.an-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.8)}
+.an-img i{position:absolute;width:30px;height:30px;border:3.5px solid #fff;z-index:2}
+.an-img i:nth-of-type(1){top:14px;left:14px;border-right:0;border-bottom:0;border-top-left-radius:14px}.an-img i:nth-of-type(2){top:14px;right:14px;border-left:0;border-bottom:0;border-top-right-radius:14px}
+.an-img i:nth-of-type(3){bottom:14px;left:14px;border-right:0;border-top:0;border-bottom-left-radius:14px}.an-img i:nth-of-type(4){bottom:14px;right:14px;border-left:0;border-top:0;border-bottom-right-radius:14px}
+.an-line{position:absolute;left:0;right:0;top:-52px;height:52px;z-index:1;background:linear-gradient(180deg,rgba(90,190,255,0),rgba(90,190,255,.5));border-bottom:2px solid #9BE0FF;box-shadow:0 8px 22px rgba(90,190,255,.55);animation:sweepA 1.5s ease-in-out infinite}
+.an.done .an-line,.an.fail .an-line{display:none}
+.an-res{position:absolute;left:50%;top:50%;width:88px;height:88px;margin:-44px 0 0 -44px;border-radius:50%;z-index:3;display:grid;place-items:center;transform:scale(.4);opacity:0;transition:transform .5s var(--spring),opacity .25s}
+.an-res.show{transform:none;opacity:1}.an-res.ok{background:#1E9E5A;box-shadow:0 14px 30px -10px rgba(30,158,90,.8)}.an-res.bad{background:#D93A4E;box-shadow:0 14px 30px -10px rgba(217,58,78,.8)}
+.an-res svg{width:42px;height:42px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.an-bar{width:min(74vw,290px);height:4px;border-radius:2px;background:rgba(255,255,255,.2);margin-top:26px;overflow:hidden}
+.an-bar div{height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,#5ac8ff,#fff)}
+.an.done .an-bar div{background:#35d489}.an.fail .an-bar div{background:#ff6b7d}
+.an-st{display:flex;align-items:center;gap:10px;margin-top:18px;color:#fff;font-size:17px;font-weight:650;letter-spacing:-.2px}
+.an-spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .8s linear infinite}
+.an.done .an-spin,.an.fail .an-spin{display:none}
+.an-sub{margin-top:6px;min-height:20px;color:rgba(255,255,255,.72);font-size:14px;text-align:center;max-width:290px;line-height:1.4}
+.an-btns{display:flex;flex-direction:column;gap:10px;margin-top:20px;width:min(74vw,290px)}
+.an-b{height:52px;border-radius:18px;font-weight:650;font-size:16px;background:#fff;color:var(--ink)}.an-b.ghost{background:rgba(255,255,255,.14);color:#fff}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes flash{0%{opacity:.85}100%{opacity:0}}
 @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
@@ -224,7 +251,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-of
 <section class="screen" id="app" data-tab="scan">
   <div class="veil"></div>
   <header class="top">
-    <button class="menu-b" id="menuBtn" aria-label="Open menu">
+    <button class="glass-c menu-b" id="menuBtn" aria-label="Open menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
     <img class="logo" alt="Blex" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
@@ -235,13 +262,16 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-of
       <video id="video" playsinline muted autoplay></video>
       <div class="nocam" id="nocam">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.5l1.2-2h6.6l1.2 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/><path d="m3 3 18 18"/></svg>
-        <p>Camera unavailable. Allow camera access, or tap the button below to choose a photo of a QR code.</p>
+        <p id="nocamMsg">Camera unavailable. Allow camera access, or upload a photo of the QR code with the button on the left.</p>
       </div>
       <div class="frame" id="frame"><i></i><i></i><i></i><i></i></div>
-      <div class="hint" id="hint">Point the camera at a QR code, then tap the button</div>
+      <div class="hint" id="hint">Point the camera at a QR code. It scans automatically.</div>
       <div class="flash" id="flash"></div>
     </div>
-    <div class="shutter"><button id="shot" aria-label="Scan QR code"><span></span></button></div>
+    <div class="shutter">
+      <button class="glass-c" id="upBtn" aria-label="Upload a photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="4"/><circle cx="9" cy="10" r="1.6"/><path d="m4 17 5-4.5 3.6 3.2 3-2.6 4.4 3.9"/></svg></button>
+      <button id="shot" aria-label="Scan QR code"><span></span></button>
+    </div>
   </div>
 
   <div class="page" id="p-people">
@@ -293,6 +323,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-of
 <div class="dim" id="dim"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grab"></div><div id="shBody"></div></div>
 <input id="file" type="file" accept="image/*" capture="environment" hidden>
+<input id="fileUp" type="file" accept="image/*" hidden>
+<div class="an" id="an" aria-live="polite">
+  <div class="an-img"><img id="anPic" alt=""><i></i><i></i><i></i><i></i><div class="an-line"></div><div class="an-res" id="anRes"></div></div>
+  <div class="an-bar"><div id="anFill"></div></div>
+  <div class="an-st"><span class="an-spin"></span><b id="anTxt">Reading image…</b></div>
+  <p class="an-sub" id="anSub"></p>
+  <div class="an-btns" id="anBtns"></div>
+</div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -411,45 +449,82 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-of
   })();
 
   /* ---------- camera ---------- */
+  var autoT=0, autoBusy=false, analyzing=false, coolUntil=0, lastDup='', lastDupT=0, curUrl='';
   function startCam(){
     if(stream) return;
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){noCam();return}
     navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280}},audio:false}).then(function(s){
       if(tab!=='scan'){s.getTracks().forEach(function(t){t.stop()});return}
-      stream=s; camOK=true; $('video').srcObject=s; $('nocam').style.display='none'; $('frame').style.display=''; $('hint').style.display='';
+      stream=s; camOK=true; var v=$('video'); v.srcObject=s; var p=v.play(); if(p&&p.catch) p.catch(function(){});
+      $('nocam').style.display='none'; $('frame').style.display=''; $('hint').style.display=''; autoLoop();
     }).catch(noCam);
   }
-  function noCam(){camOK=false; $('nocam').style.display='flex'; $('frame').style.display='none'; $('hint').style.display='none'}
-  function stopCam(){ if(stream){stream.getTracks().forEach(function(t){t.stop()}); stream=null} $('video').srcObject=null }
+  function noCam(err){
+    camOK=false; var msg='Camera unavailable. Allow camera access, or upload a photo of the QR code with the button on the left.';
+    if(err&&err.name==='NotAllowedError'&&window.self!==window.top) msg='The camera is blocked while the app is shown inside another page. Open the app directly in your browser, or upload a QR photo with the button on the left.';
+    $('nocamMsg').textContent=msg; $('nocam').style.display='flex'; $('frame').style.display='none'; $('hint').style.display='none';
+  }
+  function stopCam(){ clearTimeout(autoT); if(stream){stream.getTracks().forEach(function(t){t.stop()}); stream=null} $('video').srcObject=null }
 
-  /* ---------- decode ---------- */
+  /* ---------- decode (native BarcodeDetector first, jsQR as backup, several sizes) ---------- */
   var detector=null;
   try{ if('BarcodeDetector' in window) detector=new BarcodeDetector({formats:['qr_code']}) }catch(e){}
-  function decode(source,w,h){
-    var c=document.createElement('canvas'), k=Math.min(1,1280/Math.max(w,h));
-    c.width=Math.round(w*k); c.height=Math.round(h*k);
-    var x=c.getContext('2d',{willReadFrequently:true}); x.drawImage(source,0,0,c.width,c.height);
-    var fallback=function(){
-      if(typeof jsQR!=='function') return null;
-      var d=x.getImageData(0,0,c.width,c.height), r=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});
-      return r?r.data:null;
-    };
-    if(detector) return detector.detect(c).then(function(r){return r.length?r[0].rawValue:fallback()}).catch(fallback);
-    return Promise.resolve(fallback());
+  function toCanvas(src,w,h,max){
+    var k=Math.min(max/Math.max(w,h),3), iw=Math.max(1,Math.round(w*k)), ih=Math.max(1,Math.round(h*k));
+    var pad=Math.max(32,Math.round(Math.max(iw,ih)*.12)), c=document.createElement('canvas');
+    c.width=iw+pad*2; c.height=ih+pad*2;
+    var x=c.getContext('2d',{willReadFrequently:true}); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height); x.drawImage(src,pad,pad,iw,ih);
+    return {c:c,x:x};
   }
+  function decodeOne(o){
+    var js=function(){
+      if(typeof jsQR!=='function') return null;
+      var d=o.x.getImageData(0,0,o.c.width,o.c.height), r=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});
+      return r&&r.data?r.data:null;
+    };
+    if(detector) return detector.detect(o.c).then(function(r){return r.length&&r[0].rawValue?r[0].rawValue:js()}).catch(js);
+    return Promise.resolve(js());
+  }
+  function decode(src,w,h,sizes){
+    if(!detector&&typeof jsQR!=='function') return Promise.reject('noengine');
+    sizes=sizes||[1600,1000,640]; var i=0;
+    return (function next(){
+      if(i>=sizes.length) return Promise.resolve(null);
+      return decodeOne(toCanvas(src,w,h,sizes[i++])).then(function(t){return t||next()});
+    })();
+  }
+  function clean(s){return String(s).replace(/E28094/g,'—').replace(/\s+/g,' ').trim()}
   function parse(text){
     var o={}, d=null;
     try{ d=JSON.parse(text) }catch(e){}
     if(d&&typeof d==='object'){
-      var pick=function(keys){for(var i=0;i<keys.length;i++){if(d[keys[i]]) return String(d[keys[i]])}return ''};
+      var pick=function(keys){for(var i=0;i<keys.length;i++){if(d[keys[i]]) return clean(d[keys[i]])}return ''};
       o.name=pick(['name','customer','client','full_name']);
       o.phone=pick(['phone','tel','mobile']);
       o.address=pick(['address','city','wilaya']);
       o.product=pick(['product','item']);
-      o.code=pick(['id','order','order_id','code','ref'])||text.slice(0,24);
-    }else{ o.code=text.trim().slice(0,60) }
+      o.price=pick(['price','total','amount']);
+      o.code=pick(['id','order','order_id','code','ref'])||clean(text).slice(0,24);
+    }else if(text.indexOf('|')>-1&&text.split('|').length>=4){
+      var p=text.split('|').map(clean);          /* BRAND | ORDER | NAME | PHONE | WILAYA | PRICE | SIZE */
+      o.code=p[1]||p[0]; o.name=p[2]||''; o.phone=p[3]||''; o.address=p[4]||''; o.price=p[5]||'';
+      o.product=[p[0],p[6]?'Size '+p[6]:''].filter(Boolean).join(' · ');
+    }else{ o.code=clean(text).slice(0,60) }
     if(!o.name) o.name='Order '+o.code;
     return o;
+  }
+
+  /* ---------- live auto-scan ---------- */
+  function autoLoop(){
+    clearTimeout(autoT);
+    if(!stream||tab!=='scan') return;
+    autoT=setTimeout(function(){
+      var v=$('video');
+      if(autoBusy||busy||pending||analyzing||Date.now()<coolUntil||!v.videoWidth){autoLoop();return}
+      autoBusy=true;
+      decode(v,v.videoWidth,v.videoHeight,[720]).then(function(t){autoBusy=false; if(t&&!pending&&!analyzing) found(t,true)})
+        .catch(function(){autoBusy=false}).then(autoLoop);
+    },320);
   }
 
   /* ---------- capture ---------- */
@@ -459,21 +534,61 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-of
     if(ok&&navigator.vibrate) try{navigator.vibrate(40)}catch(e){}
     setTimeout(function(){$('frame').classList.remove('hit')},900);
   }
-  function miss(){var b=$('shot'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); toast('No QR code found. Move closer and try again.')}
-  function found(text){ ping(true); var o=parse(text); if(scans.some(function(s){return s.code===o.code})){toast('This order is already scanned.');return} pending=o; showSheet() }
+  function miss(e){var b=$('shot'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake');
+    toast(e==='noengine'?'The QR reader could not load. Check your connection.':'No QR code found. Move closer and try again.')}
+  function found(text,auto){
+    var o=parse(text);
+    if(scans.some(function(s){return s.code===o.code})){
+      if(!auto||lastDup!==o.code||Date.now()-lastDupT>4000) toast('This order is already scanned.');
+      lastDup=o.code; lastDupT=Date.now(); coolUntil=Date.now()+1500; return;
+    }
+    ping(true); pending=o; showSheet();
+  }
   $('shot').onclick=function(){
-    if(busy) return;
+    if(busy||analyzing) return;
     if(!camOK||!stream){ $('file').click(); return }
     var v=$('video'); if(!v.videoWidth){toast('Camera is starting, try again in a moment.');return}
     busy=true; ping(false);
-    decode(v,v.videoWidth,v.videoHeight).then(function(t){busy=false; t?found(t):miss()}).catch(function(){busy=false;miss()});
+    decode(v,v.videoWidth,v.videoHeight,[1280,720]).then(function(t){busy=false; t?found(t):miss()}).catch(function(e){busy=false;miss(e)});
   };
-  $('file').onchange=function(){
-    var f=this.files&&this.files[0]; this.value=''; if(!f) return;
-    var img=new Image(), url=URL.createObjectURL(f);
-    img.onload=function(){decode(img,img.naturalWidth,img.naturalHeight).then(function(t){URL.revokeObjectURL(url); t?found(t):miss()})};
-    img.onerror=miss; img.src=url;
-  };
+  $('upBtn').onclick=function(){ if(!analyzing) $('fileUp').click() };
+  $('file').onchange=$('fileUp').onchange=function(){ var f=this.files&&this.files[0]; this.value=''; if(f) analyze(f) };
+
+  /* ---------- photo analysis ---------- */
+  var icoOk='<svg viewBox="0 0 24 24"><path d="m6 12.5 4 4L18 8"/></svg>', icoNo='<svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg>';
+  function setSt(t,s){$('anTxt').textContent=t;$('anSub').textContent=s||''}
+  function closeAn(){ $('an').className='an'; analyzing=false; coolUntil=Date.now()+800; setTimeout(function(){if(curUrl&&!analyzing){URL.revokeObjectURL(curUrl);curUrl=''}},500) }
+  function analyze(file){
+    analyzing=true; if(curUrl) URL.revokeObjectURL(curUrl);
+    var url=curUrl=URL.createObjectURL(file), an=$('an'), fill=$('anFill'), timers=[];
+    $('anPic').src=url; $('anBtns').textContent=''; $('anRes').className='an-res'; $('anRes').textContent='';
+    an.className='an on'; setSt('Reading image…','');
+    fill.style.transition='none'; fill.style.width='0%'; void fill.offsetWidth; fill.style.transition='width 1.9s cubic-bezier(.3,.6,.2,1)'; fill.style.width='90%';
+    timers.push(setTimeout(function(){setSt('Looking for the QR code…','')},650), setTimeout(function(){setSt('Reading order data…','')},1250));
+    var img=new Image();
+    var dec=new Promise(function(res,rej){
+      img.onload=function(){decode(img,img.naturalWidth,img.naturalHeight).then(res,rej)};
+      img.onerror=function(){rej('badimg')}; img.src=url;
+    }).then(function(t){return {t:t}},function(e){return {e:e}});
+    var wait=new Promise(function(r){setTimeout(r,1900)});
+    Promise.all([dec,wait]).then(function(r){
+      timers.forEach(clearTimeout); r=r[0];
+      if(r.t){
+        fill.style.transition='width .3s'; fill.style.width='100%'; an.classList.add('done');
+        $('anRes').innerHTML=icoOk; $('anRes').className='an-res ok show'; setSt('QR code detected','Preparing the order…');
+        setTimeout(function(){closeAn(); found(r.t)},950);
+      }else{
+        an.classList.add('fail'); $('anRes').innerHTML=icoNo; $('anRes').className='an-res bad show'; fill.style.width='100%';
+        var m=r.e==='noengine'?['The QR reader could not load','Check your connection and try again.']
+             :r.e==='badimg'?['This file can’t be read','Choose a photo or a screenshot.']
+             :['No QR code found','Make sure the whole code is visible and sharp.'];
+        setSt(m[0],m[1]);
+        var a=el('button','an-b','Choose another image'); a.type='button'; a.onclick=function(){closeAn(); $('fileUp').click()};
+        var b=el('button','an-b ghost','Close'); b.type='button'; b.onclick=closeAn;
+        $('anBtns').append(a,b);
+      }
+    });
+  }
 
   /* ---------- result sheet: delivered or cancelled ---------- */
   var S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">';
@@ -512,7 +627,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-of
   function viewAsk(){
     var o=pending,c=el('div','cust'),m=el('div','meta');
     m.append(el('b',null,o.name),el('small',null,(o.product?o.product+' · ':'')+'Order '+o.code));
-    c.append(el('div','av',(o.name.trim()[0]||'?').toUpperCase()),m);
+    var loc=[o.address,o.phone].filter(Boolean).join(' · '); if(loc) m.append(el('small',null,loc));
+    c.append(el('div','av',(o.name.trim()[0]||'?').toUpperCase()),m); if(o.price) c.append(el('div','pr',o.price));
     var g=el('button','act good');g.type='button';g.innerHTML=icoCheckC;g.append('Order completed successfully');g.onclick=function(){finish('delivered','')};
     var r=el('button','cancel-t');r.type='button';r.append('Customer cancelled the order');r.insertAdjacentHTML('beforeend',icoChev);r.onclick=viewReasons;
     setBody([c,el('h2','q','Did the customer receive the product?'),g,r]);
@@ -537,7 +653,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-of
     setTimeout(function(){t.focus()},380);
   }
   function showSheet(){viewAsk();$('dim').classList.add('on');$('sheet').classList.add('on')}
-  function hideSheet(){$('dim').classList.remove('on');$('sheet').classList.remove('on');pending=null}
+  function hideSheet(){$('dim').classList.remove('on');$('sheet').classList.remove('on');pending=null;coolUntil=Date.now()+2500}
   $('dim').onclick=hideSheet;
   function finish(status,reason){
     var p=pending;if(!p)return;
